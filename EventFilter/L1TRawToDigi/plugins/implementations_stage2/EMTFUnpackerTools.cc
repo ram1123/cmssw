@@ -31,7 +31,7 @@ namespace l1t {
 							_hit.Subsector(), _hit.Ring(), _hit.CSC_ID() ) );
 
         _hit.SetCSCDetId   ( _hit.CreateCSCDetId() );
-        _hit.SetCSCLCTDigi ( _hit.CreateCSCCorrelatedLCTDigi() );
+       // _hit.SetCSCLCTDigi ( _hit.CreateCSCCorrelatedLCTDigi() );
 	
 	// Station, CSC_ID, Sector, Subsector, and Neighbor filled in
 	// EventFilter/L1TRawToDigi/src/implementations_stage2/EMTFBlockME.cc
@@ -55,8 +55,8 @@ namespace l1t {
 	_hit.set_is_RPC    ( true  );
 	_hit.set_subsystem ( 2 );
 	
+        _hit.SetRPCDetId ( _hit.CreateRPCDetId() );
         // // Not yet implemented - AWB 15.03.17
-        // _hit.SetRPCDetId ( _hit.CreateRPCDetId() );
         // _hit.SetRPCDigi  ( _hit.CreateRPCDigi() );
 
 	// Convert integer values to degrees

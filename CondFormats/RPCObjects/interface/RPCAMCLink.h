@@ -21,7 +21,7 @@ public:
     static int const min_amcnumber_ = 0;
     static int const max_amcnumber_ = 12;
     static int const min_amcinput_ = 0;
-    static int const max_amcinput_ = 80;
+    static int const max_amcinput_ = 128;
     /** @} */
 
 protected:

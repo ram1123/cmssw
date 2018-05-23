@@ -1,0 +1,38 @@
+%MSG-i PopCon:  RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@ctor  23-May-2018 14:34:08 CEST pre-events
+This is PopCon (Populator of Condition) v5.0.
+Please report any problem and feature request through the JIRA project CMSCONDDB.
+
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@ctor  23-May-2018 14:34:08 CEST pre-events
+Configuring Input Connection
+%MSG
+Begin processing the 1st record. Run 1, Event 1, LumiSection 1 on stream 0 at 23-May-2018 14:34:08.609 CEST
+%MSG-i PopCon:  RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:08 CEST PostGlobalEndRun
+payload name 
+%MSG
+%MSG-i PopCon:  RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:08 CEST PostGlobalEndRun
+destination DB: sqlite_file:data/RPCLinkMap.db, target DB: sqlite_file:data/RPCLinkMap.db
+TAG: RPCDCCLinkMap_v1, last since/till: 1/18446744073709551615, size: 1
+
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:08 CEST PostGlobalEndRun
+getNewObjects
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:08 CEST PostGlobalEndRun
+Opening read-only Input Session
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:10 CEST PostGlobalEndRun
+Started Input Transaction
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:10 CEST PostGlobalEndRun
+Execute query
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:10 CEST PostGlobalEndRun
+Fill txtFile
+%MSG
+%MSG-i RPCDCCLinkMapHandler:   RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:10 CEST PostGlobalEndRun
+Add to transfer list
+%MSG
+%MSG-i PopCon:  RPCDCCLinkMapPopConAnalyzer:RPCDCCLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:10 CEST PostGlobalEndRun
+Since 1
+%MSG
