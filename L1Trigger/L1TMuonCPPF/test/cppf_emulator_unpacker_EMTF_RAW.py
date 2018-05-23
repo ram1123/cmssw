@@ -110,7 +110,7 @@ for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitl
     readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
 #process.maxLuminosityBlocks = cms.untracked.PSet(input = cms.untracked.int32(10))
 
 process.p = cms.Path( process.rpcUnpackingModule 
