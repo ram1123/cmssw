@@ -43,6 +43,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   ~DQM_CPPF() override;
   void beginRun(const edm::Run&, const edm::EventSetup&) override;
   void analyze(const edm::Event&, const edm::EventSetup&) override;
+  int occupancy_value(int region_, int station_, int ring_);
+  int bx_value(int region_, int emtfsector_);
 
   edm::ESHandle <RPCGeometry> rpcGeom;
   
