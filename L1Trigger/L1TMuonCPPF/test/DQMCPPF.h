@@ -103,8 +103,17 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* Theta_Global_Integer;
   TH2D* Occupancy;
   TH2D* Occupancy_unpacker;
-  TH2D* Occupancy_EMTF;
+  TH2D* Occupancy_emtf;
   TH2D* Bx;
+  TH2D* Bx_emu_unpacker;
+  TH2D* Bx_emu_emtf;
+ 
+  TH2D* station_emu_unpacker;
+  TH2D* station_emu_emtf;
+
+  TH2D* region_emu_unpacker;
+  TH2D* region_emu_emtf;
+
   TH2D* Bx_Occupancy;
 
   TH2D* Phi_emu_unpacker;

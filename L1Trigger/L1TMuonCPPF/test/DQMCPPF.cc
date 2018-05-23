@@ -71,19 +71,27 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     matches_unpacker = 0;  
     for(auto& cppf_digis_unpacker : *CppfDigis2){
       
-      //RPCDetId rpcId_unpacker = cppf_digis_unpacker.rpcId();
+      RPCDetId rpcId_unpacker = cppf_digis_unpacker.rpcId();
       //int ring_unpacker = rpcId_unpacker.ring();
-      //int station_unpacker = rpcId_unpacker.station();
-      //int region_unpacker = rpcId_unpacker.region();
+      int station_unpacker = rpcId_unpacker.station();
+      int region_unpacker = rpcId_unpacker.region();
       //int subsector_unpacker = rpcId_unpacker.subsector();
       int phi_int_unpacker = cppf_digis_unpacker.phi_int();
       int theta_int_unpacker =  cppf_digis_unpacker.theta_int();
       int bx_unpacker = cppf_digis_unpacker.bx();
 
-      if((phi_int == phi_int_unpacker) && (theta_int == theta_int_unpacker)){
+      if((phi_int == phi_int_unpacker) && 
+	(theta_int == theta_int_unpacker) && 
+	(cppf_digis.bx() == bx_unpacker)){
 	matches_unpacker++;
 	Occupancy_unpacker->Fill(EMTF_subsector, fill_occupancy);
-        std::cout << " emulated bx " << cppf_digis.bx() << " unpacker " << bx_unpacker << std::endl; 
+        Bx_emu_unpacker->Fill(cppf_digis.bx(),bx_unpacker);
+        station_emu_unpacker->Fill(station, station_unpacker);
+        if(region_unpacker < 0) {
+		region_unpacker -= 1;
+                region -= 1;
+		}
+        region_emu_unpacker->Fill(region, region_unpacker);
       }
             
     }
@@ -103,18 +111,26 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       int fill_occupancy_emtf = occupancy_value(region_emtf, station_emtf, ring_emtf);
       int EMTF_subsector_emtf = fill_info[cppf_digis_emtf.emtf_sector()][subsector_emtf-1];
 
-      if((phi_int == phi_int_emtf) && (theta_int == theta_int_emtf)){
+      if((phi_int == phi_int_emtf) && 
+	(theta_int == theta_int_emtf) && 
+	(cppf_digis.bx() == bx_emtf)){
 	matches_emtf++;
-	Occupancy_EMTF->Fill(EMTF_subsector_emtf, fill_occupancy_emtf);
-        std::cout << " emulated bx " << cppf_digis.bx() << " EMTF " << bx_emtf << std::endl;
+	Occupancy_emtf->Fill(EMTF_subsector_emtf, fill_occupancy_emtf);
+        Bx_emu_emtf->Fill(cppf_digis.bx(),bx_emtf);
+        station_emu_emtf->Fill(station, station_emtf);
+        if(region_emtf < 0) {
+		region_emtf -= 1;
+		region -= 1;
+		}
+        region_emu_emtf->Fill(region, region_emtf);
       }
             
     }
 
     
-    std::cout << matches_unpacker << std::endl;
-    std::cout << matches_emtf << std::endl;
-    std::cout << "--------------" << std::endl;
+  //  std::cout << matches_unpacker << std::endl;
+  //  std::cout << matches_emtf << std::endl;
+  //  std::cout << "--------------" << std::endl;
     
 
     Occupancy->Fill(EMTF_subsector, fill_occupancy); 
@@ -122,14 +138,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     Bx->Fill(fill_bx,EMTF_bx);
       
       
-      Phi_Integer->Fill(cppf_digis.phi_int());
-      Theta_Integer->Fill(cppf_digis.theta_int());
-      
-      Phi_Global->Fill(cppf_digis.phi_glob()*TMath::Pi()/180.);
-      Theta_Global->Fill(cppf_digis.theta_glob()*TMath::Pi()/180.);
-      
-      Board->Fill(cppf_digis.board());
-      Channel->Fill(cppf_digis.channel());
       
       if(cppf_digis.bx() == 0){
 	Matches->Fill(matches_unpacker);
@@ -141,9 +149,14 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       else if (cppf_digis.bx() == +1) Matches_e_plus1->Fill(matches_emtf);
       else if (cppf_digis.bx() == +2) Matches_e_plus2->Fill(matches_emtf);
       
+      Phi_Integer->Fill(cppf_digis.phi_int());
+      Theta_Integer->Fill(cppf_digis.theta_int());
+      Phi_Global->Fill(cppf_digis.phi_glob()*TMath::Pi()/180.);
+      Theta_Global->Fill(cppf_digis.theta_glob()*TMath::Pi()/180.);
+      Board->Fill(cppf_digis.board());
+      Channel->Fill(cppf_digis.channel());
       Phi_Global_Integer->Fill(cppf_digis.phi_glob(), cppf_digis.phi_int());
       Theta_Global_Integer->Fill(cppf_digis.theta_glob(), cppf_digis.theta_int());
-      
       
       
       if(matches_unpacker == 0 && cppf_digis.bx() == 0){
@@ -167,7 +180,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	  }
 	}
 	Theta_emu_unpacker_near->Fill(cppf_digis.theta_int(),near_value2);	
-	if(cppf_digis.theta_int() == 11) std::cout << cppf_digis.theta_int() << "  " << near_value2 << std::endl;
+//	if(cppf_digis.theta_int() == 11) std::cout << cppf_digis.theta_int() << "  " << near_value2 << std::endl;
       } 
       
       
@@ -259,7 +272,16 @@ void DQM_CPPF::beginJob(){
 
   Occupancy = fs->make<TH2D>("Occupancy", "CPPFDigis Occupancy", 36, 0.5, 36.5, 12, 0.5,12.5); 
   Occupancy_unpacker = fs->make<TH2D>("Occupancy_unpacker", "CPPFDigis Occupancy_unpacker", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  Occupancy_EMTF = fs->make<TH2D>("Occupancy_EMTF", "CPPFDigis Occupancy_EMTF", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  Occupancy_emtf = fs->make<TH2D>("Occupancy_emtf", "CPPFDigis Occupancy_EMTF", 36, 0.5, 36.5, 12, 0.5,12.5); 
+
+  Bx_emu_unpacker = fs->make<TH2D>("Bx_emu_unpacker","Bx_emu_unpacker", 8, -3.5,4.5, 8, -3.5, 4.5);
+  Bx_emu_emtf = fs->make<TH2D>("Bx_emu_emtf","Bx_emu_emtf", 8, -3.5,4.5, 8, -3.5, 4.5);
+
+  station_emu_unpacker = fs->make<TH2D>("station_emu_unpacker", "station_emu_unpacker", 4, 1., 5., 4, 1., 5. );
+  station_emu_emtf = fs->make<TH2D>("station_emu_emtf", "station_emu_emtf", 4, 1., 5., 4, 1., 5. );
+
+  region_emu_unpacker = fs->make<TH2D>("region_emu_unpacker", "region_emu_unpacker", 4, -2., 2., 4, -2., 2. );
+  region_emu_emtf = fs->make<TH2D>("region_emu_emtf", "region_emu_emtf", 4, -2., 2., 4, -2., 2. );
 
   Bx = fs->make<TH2D>("Bx","CPPFDigis Bx", 12, 0.5, 12.5, 8,-3.5,4.5);
   Bx_Occupancy = fs->make<TH2D>("Bx_Occupancy","CPPFDigis Bx_Occupancy", 8, -3.5, 4.5, 12, 0.5, 12.5);
