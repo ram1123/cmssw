@@ -4,8 +4,6 @@
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
 # with command line options: SingleMuPt10_pythia8_cfi.py -s GEN,SIM,DIGI --pileup=NoPileUp --geometry DB --conditions=auto:run1_mc --eventcontent FEVTDEBUGHLT --no_exec -n 30
 import FWCore.ParameterSet.Config as cms
-import datetime
-import random
 
 process = cms.Process('DIGI')
 
@@ -17,10 +15,9 @@ process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 #process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 #process.load('Configuration.Geometry.GeometryDB_cff')
-#process.load('Configuration.StandardSequences.GeometryExtended_cff')
 process.load('Configuration.Geometry.GeometryExtended2016_cff')
 process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
-process.load('Configuration.StandardSequences.MagneticField_38T_cff')
+process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi')
 process.load('GeneratorInterface.Core.genFilterSummary_cff')
@@ -35,18 +32,24 @@ from RecoLocalMuon.RPCRecHit.rpcRecHits_cfi import *
 process.load('L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi')
 from L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi import *
 
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1)
-process.MessageLogger = cms.Service("MessageLogger")
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10)
 process.maxEvents = cms.untracked.PSet(
-	input = cms.untracked.int32(300)
+	input = cms.untracked.int32(30)
 	)
 
-
 # Input source
-process.source = cms.Source("EmptySource"
+process.source = cms.Source("EmptySource",
+			    firstEvent = cms.untracked.uint32(1),
+			    firstRun = cms.untracked.uint32(2),
+			    firstLuminosityBlock = cms.untracked.uint32(1)
 			    )
 process.options = cms.untracked.PSet(
 	)
+
+from IOMC.RandomEngine.RandomServiceHelper import  RandomNumberServiceHelper
+randHelper =  RandomNumberServiceHelper(process.RandomNumberGeneratorService)
+randHelper.populate()
+process.RandomNumberGeneratorService.saveFileName = cms.untracked.string("RandomEngineState.log")
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
@@ -66,9 +69,12 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 		filterName = cms.untracked.string('')
 		),
 					      eventAutoFlushCompressedSize = cms.untracked.int32(10485760),
-					      fileName = cms.untracked.string('SingleMuPt10_pythia8_cfi_py_GEN_SIM_DIGI.root'),
-					      outputCommands = cms.untracked.vstring('drop *',"keep *_emulatorMuonRPCDigis_*_*", "keep *_emulatorCppfDigis_*_*", 
-										     "keep *_rpcRecHits_*_*", "keep *_genParticles_*_*"),
+					      fileName = cms.untracked.string('MC.root'),
+					      outputCommands = cms.untracked.vstring('drop *',
+										     "keep *_emulatorMuonRPCDigis_*_*", 
+										     "keep *_emulatorCppfDigis_*_*", 
+										     "keep *_rpcRecHits_*_*",
+										     "keep *_genParticles_*_*"),
 					      #outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
 					      splitLevel = cms.untracked.int32(0)
 					      )
@@ -80,20 +86,12 @@ process.genstepfilter.triggerConditions=cms.vstring("generation_step")
 from Configuration.AlCa.GlobalTag import GlobalTag
 process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 
-
-from IOMC.RandomEngine.RandomServiceHelper import  RandomNumberServiceHelper
-randHelper =  RandomNumberServiceHelper(process.RandomNumberGeneratorService)
-randHelper.populate()
-
-process.RandomNumberGeneratorService.saveFileName =  cms.untracked.string("RandomEngineState.log")
-
-
 process.generator = cms.EDFilter("Pythia8PtGun",
 				 PGunParameters = cms.PSet(
 		AddAntiParticle = cms.bool(True),
 		MaxEta = cms.double(1.6),
 		MaxPhi = cms.double(3.14159265359),
-		MaxPt = cms.double(30.1),
+		MaxPt = cms.double(100.01),
 		MinEta = cms.double(1.2),
 		MinPhi = cms.double(-3.14159265359),
 		MinPt = cms.double(1.1),

@@ -20,19 +20,42 @@ cmsenv
 
 ```
 git cms-init
+git cms-addpkg DataFormats/L1TMuon
+git cms-addpkg DataFormats/RPCDigi
+git cms-addpkg L1Trigger/L1TMuonEndCap
+git cms-addpkg EventFilter/L1TRawToDigi
+git cms-addpkg EventFilter/RPCRawToDigi
+git cms-addpkg CondTools/RPC
+git cms-addpkg CondFormats/RPCObjects
+git remote add maseguracern git@github.com:maseguracern/cmssw.git
 git fetch maseguracern
-#git cms-merge-topic -u maseguracern:CPPF_Emulator_V2
-git cms-merge-topic -u maseguracern:maseguracern/DQM_CPPF
-#scram b clean 
+git cms-merge-topic -u maseguracern:EMTF_test
+git checkout maseguracern/EMTF_test
 scram b -j6
+```
+
+## Update the AMCLink Map locally
+
+```
+cd CondTools/RPC
+cp /eos/cms/store/group/dpg_rpc/comm_rpc/Run-II/cppf_payloads/RPCLinkMap.db data
+for analyser in test/RPC*LinkMapPopConAnalyzer_cfg.py; do 
+  cmsRun $analyser
+done; # <- this produces RPCLinkMap.db sqlite file yourself
+cd -
 ```
 
 ## Run the code (check the input)
 ```
-cd L1Trigger/L1TMuonCPPF
-cmsRun test/cppf_emulator_RAW.py (Generate Tree CPPF_Digis)
-cmsRun test/Generator_DQM_CPPF.py (Create DQM-plots for before step)
-cmsRun test/cppf_emulator_RAW_DQM_Plots.py (Whole sequence)
+cd L1Trigger/L1TMuonCPPF/test/
+cmsRun cppf_emulator_RAW.py (Generate CPPFDigis only rpc unpacker)
+cmsRun cppf_emulator_unpacker_RAW.py (before step plus Emulator Digis)
+cmsRun cppf_emulator_unpacker_EMTF_RAW.py  (before step plus EMTF Digis)
+```
+
+## Run DQM comparisons
+```
+cmsRun Generator_DQM_CPPF.py
 ```
 
 ## Setup your Github space (In case you haven't)

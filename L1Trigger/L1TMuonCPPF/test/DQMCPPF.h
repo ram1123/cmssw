@@ -49,12 +49,28 @@ class DQM_CPPF : public edm::EDAnalyzer {
  private:
   
   void beginJob() override;
-  const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken_;
+
+  const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken1_;
+  const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken2_;
+  const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken3_;
 
   int EMTF_sector;
   int EMTF_subsector;
+  int EMTF_subsector_unpacker;
+  int EMTF_subsector_EMTF;
   int EMTF_bx;
-  
+ 
+  std::vector<int> phi_int_unpacker;
+  std::vector<int> theta_int_unpacker;
+  std::vector<int> emtf_sector_unpacker;
+  std::vector<int> subsector_unpacker;
+ 
+  std::vector<int> phi_int_EMTF;
+  std::vector<int> theta_int_EMTF;
+  std::vector<int> emtf_sector_EMTF;
+  std::vector<int> subsector_EMTF;
+
+  std::vector<int> EMTFsector0bins;
   std::vector<int> EMTFsector1bins;
   std::vector<int> EMTFsector2bins;
   std::vector<int> EMTFsector3bins;
@@ -66,12 +82,42 @@ class DQM_CPPF : public edm::EDAnalyzer {
   
   TH1D* Phi_Integer;
   TH1D* Theta_Integer;
+  TH1D* Phi_Integer_unpacker;
+  TH1D* Theta_Integer_unpacker;
+
   TH1D* Phi_Global;
   TH1D* Theta_Global;
+
+  TH1D* Board;
+  TH1D* Channel;
+
+  TH1D* Matches;
+  TH1D* Matches_e;
+  TH1D* Matches_e_minus1;
+  TH1D* Matches_e_minus2;
+  TH1D* Matches_e_plus1;
+  TH1D* Matches_e_plus2;
+
   TH2D* Phi_Global_Integer;
   TH2D* Theta_Global_Integer;
-  TH2D* Occupancy_EMTFSector;
-  TH2D* Track_Bx;
+  TH2D* Occupancy;
+  TH2D* Occupancy_unpacker;
+  TH2D* Occupancy_EMTF;
+  TH2D* Bx;
+  TH2D* Bx_Occupancy;
+
+  TH2D* Phi_emu_unpacker;
+  TH2D* Theta_emu_unpacker;
+
+  TH2D* Phi_emu_emtf;
+  TH2D* Theta_emu_emtf;
+
+  TH2D* Phi_emu_unpacker_nomatched;
+  TH2D* Theta_emu_unpacker_nomatched;
+  TH2D* Phi_emu_unpacker_near;
+  TH2D* Theta_emu_unpacker_near;
+
+  TH2D* emtf_sector_comparison;
 };
 
 

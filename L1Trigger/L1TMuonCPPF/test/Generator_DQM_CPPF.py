@@ -17,14 +17,14 @@ process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.Geometry.GeometryExtended2016_cff')
 process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
 
-
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 readFiles = cms.untracked.vstring()
 process.source = cms.Source("PoolSource",
         fileNames = readFiles,
 )
 in_dir_name = './'
-readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_emulator.root') )
+readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator.root') )
 
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')

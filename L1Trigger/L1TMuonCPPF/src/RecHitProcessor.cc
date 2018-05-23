@@ -1,9 +1,16 @@
 #include "L1Trigger/L1TMuonCPPF/interface/RecHitProcessor.h"
 
-RecHitProcessor::RecHitProcessor() {
+RecHitProcessor::RecHitProcessor():
+MainVariables1(nullptr),
+MainVariables2(nullptr){
 }
 
 RecHitProcessor::~RecHitProcessor() {
+//auto deleter = [](l1t::CPPFDigi*p){
+//                delete p;
+//               };
+//std::shared_ptr<l1t::CPPFDigi> MainVariables1(new l1t::CPPFDigi(), deleter);
+//std::shared_ptr<l1t::CPPFDigi> MainVariables2(new l1t::CPPFDigi(), deleter);
 }
 
 void RecHitProcessor::processLook(
@@ -12,7 +19,8 @@ void RecHitProcessor::processLook(
 				  const edm::EDGetToken& recHitToken,
 				  std::vector<RecHitProcessor::CppfItem>& CppfVec1,
 				  l1t::CPPFDigiCollection& cppfDigis,
-				  const int MaxClusterSize
+				  const int MaxClusterSize,
+                                  std::vector<int> BxCut 
 				  ) const {
   
   edm::Handle<RPCRecHitCollection> recHits;
@@ -64,15 +72,17 @@ void RecHitProcessor::processLook(
 	//::::::::::::::::::::::::::::
 	//Establish the average position of the rechit    
 	int rechitstrip = firststrip;
-	
         if(clustersize > 2) {
 	  int medium = 0;
 	  if (clustersize % 2 == 0) medium = 0.5*(clustersize); 
 	  else medium = 0.5*(clustersize-1);
 	  rechitstrip += medium; 
 	} 
-	
-	if(clustersize > MaxClusterSize) continue;	
+	if(clustersize > MaxClusterSize) continue;
+        
+        std::vector<int>::iterator bx_iterator;
+        bx_iterator = find(BxCut.begin(), BxCut.end(), Bx);
+        if(bx_iterator == BxCut.end()) continue;
 	//This is just for test CPPFDigis with the RPC Geometry, It must be "true" in the normal runs 
 	bool Geo = true;
 	////:::::::::::::::::::::::::::::::::::::::::::::::::
@@ -238,7 +248,6 @@ void RecHitProcessor::processLook(
 	    else if((it != chamber_repetitions.end()) && (chamber_repetitions[temporal] == 2)){
 	      continue;
 	    }
-	    
 	    //  for(std::map<std::pair<int, int>, int>::iterator it = chamber_repetitions.begin() ; it != chamber_repetitions.end(); it++){
 	    //     std::pair<int, int> temp = it->first;
 	    //     std::cout << temp.first << "," << temp.second << " Repetitions: " << it->second <<std::endl;
@@ -246,9 +255,10 @@ void RecHitProcessor::processLook(
 	    
 	    //Using the RPCGeometry	
 	    if(Geo){
-	      std::shared_ptr<l1t::CPPFDigi> MainVariables1(new l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector1, EMTFLink1, old_strip, clustersize, global_phi, global_theta));
-	      std::shared_ptr<l1t::CPPFDigi> MainVariables2(new l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector2, EMTFLink2, old_strip, clustersize, global_phi, global_theta));
-	      
+	      auto MainVariables1 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector1, EMTFLink1, old_strip, clustersize, global_phi, global_theta));
+	      auto MainVariables2 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector2, EMTFLink2, old_strip, clustersize, global_phi, global_theta));
+               	     
+
 	      if ((EMTFsector1 > 0) && (EMTFsector2 == 0)){
 		cppfDigis.push_back(*MainVariables1.get());
 	      } 
@@ -263,8 +273,8 @@ void RecHitProcessor::processLook(
 	    else {
 	      global_phi = 0.;
 	      global_theta = 0.;
-	      std::shared_ptr<l1t::CPPFDigi> MainVariables1(new l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector1, EMTFLink1, old_strip, clustersize, global_phi, global_theta));
-	      std::shared_ptr<l1t::CPPFDigi> MainVariables2(new l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector2, EMTFLink2, old_strip, clustersize, global_phi, global_theta));
+	      auto MainVariables1 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector1, EMTFLink1, old_strip, clustersize, global_phi, global_theta));
+	      auto MainVariables2 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , (*cppf).int_phi, (*cppf).int_theta, isValid, (*cppf).lb, (*cppf).halfchannel, EMTFsector2, EMTFLink2, old_strip, clustersize, global_phi, global_theta));
 	      if ((EMTFsector1 > 0) && (EMTFsector2 == 0)){
 		cppfDigis.push_back(*MainVariables1.get());
 	      } 
@@ -289,7 +299,9 @@ void RecHitProcessor::process(
 			      const edm::Event& iEvent,
 			      const edm::EventSetup& iSetup,
 			      const edm::EDGetToken& recHitToken,
-			      l1t::CPPFDigiCollection& cppfDigis
+			      l1t::CPPFDigiCollection& cppfDigis,
+			      const int MaxClusterSize,
+                              std::vector<int> BxCut
 			      ) const {
   
   // Get the RPC Geometry
@@ -339,6 +351,11 @@ void RecHitProcessor::process(
         float global_phi   = emtf::rad_to_deg(gPos.phi().value());
         //Endcap region only
 	
+	if(clustersize > MaxClusterSize) continue;	
+        std::vector<int>::iterator bx_iterator;
+        bx_iterator = find(BxCut.begin(), BxCut.end(), Bx);
+        if(bx_iterator == BxCut.end()) continue;
+
         if (region != 0) {
 	  
 	  int int_theta = (region == -1 ? 180. * 32. / 36.5 : 0.)
@@ -498,8 +515,8 @@ void RecHitProcessor::process(
 	    continue;
 	  }
 	  
-	  std::shared_ptr<l1t::CPPFDigi> MainVariables1(new l1t::CPPFDigi(rpcId, Bx , int_phi, int_theta, isValid, lb, halfchannel, EMTFsector1, EMTFLink1, firststrip, clustersize, global_phi, global_theta));
-	  std::shared_ptr<l1t::CPPFDigi> MainVariables2(new l1t::CPPFDigi(rpcId, Bx , int_phi, int_theta, isValid, lb, halfchannel, EMTFsector2, EMTFLink2, firststrip, clustersize, global_phi, global_theta));
+	  auto MainVariables1 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , int_phi, int_theta, isValid, lb, halfchannel, EMTFsector1, EMTFLink1, firststrip, clustersize, global_phi, global_theta));
+	  auto MainVariables2 = std::make_shared<l1t::CPPFDigi>(l1t::CPPFDigi(rpcId, Bx , int_phi, int_theta, isValid, lb, halfchannel, EMTFsector2, EMTFLink2, firststrip, clustersize, global_phi, global_theta));
 	  if(int_theta == 31) continue;
           if ((EMTFsector1 > 0) && (EMTFsector2 == 0)){
 	    cppfDigis.push_back(*MainVariables1.get());
@@ -518,8 +535,4 @@ void RecHitProcessor::process(
     } // End loop: for (std::vector<const RPCRoll*>::const_iterator r = rolls.begin(); r != rolls.end(); ++r)
   } // End loop: for (TrackingGeometry::DetContainer::const_iterator iDet = rpcGeom->dets().begin(); iDet < rpcGeom->dets().end(); iDet++)
 } // End function: void RecHitProcessor::process()
-
-
-  
-
 

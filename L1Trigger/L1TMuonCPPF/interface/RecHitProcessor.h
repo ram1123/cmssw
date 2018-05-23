@@ -13,6 +13,7 @@
 #include "DataFormats/MuonDetId/interface/RPCDetId.h"
 #include "DataFormats/RPCRecHit/interface/RPCRecHitCollection.h"
 #include "DataFormats/L1TMuon/interface/CPPFDigi.h"
+#include "SimDataFormats/GeneratorProducts/interface/HepMCProduct.h"
 
 #include "CondFormats/RPCObjects/interface/RPCMaskedStrips.h"
 #include "CondFormats/RPCObjects/interface/RPCDeadStrips.h"
@@ -59,7 +60,8 @@ class RecHitProcessor {
 		   std::vector<RecHitProcessor::CppfItem>& CppfVec1, 
 		   // Output
 		   l1t::CPPFDigiCollection& cppfDigis,
-		   const int MaxClusterSize
+		   const int MaxClusterSize,
+		   std::vector<int> BxCut
 		   ) const;
   
   void process(
@@ -68,14 +70,18 @@ class RecHitProcessor {
 	       const edm::EventSetup& iSetup,
 	       const edm::EDGetToken& recHitToken,
 	       // Output
-	       l1t::CPPFDigiCollection& cppfDigis
+	       l1t::CPPFDigiCollection& cppfDigis,
+	       const int MaxClusterSize,
+	       std::vector<int> BxCut
 	       ) const;
   
-  void print(int a, int b, float c, float d) const {std::cout << a << " " << b << " " << c << " " << d << std::endl;};
-  
+ 
   COND_SERIALIZABLE;
   
  private:
+
+  std::shared_ptr<l1t::CPPFDigi> MainVariables1; 
+  std::shared_ptr<l1t::CPPFDigi> MainVariables2; 
   
 };
 
