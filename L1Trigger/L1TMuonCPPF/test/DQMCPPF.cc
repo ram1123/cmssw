@@ -177,6 +177,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	     (sector == sector_emtf) &&
 	     (subsector == subsector_emtf)){
       */
+      int fill_occupancy_emtf = occupancy_value(region_emtf, station_emtf, ring_emtf);
+
       if((chamberID_emtf == 35) || (chamberID_emtf == 36)) chamberID_emtf -= 34;
       else chamberID_emtf += 2;
       
@@ -202,7 +204,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	    Matches_emtf_int->Fill(matches_emtf_int);
 	    phi_emu_emtf_int->Fill(phi_int, phi_int_emtf);
 	    theta_emu_emtf_int->Fill(theta_int, theta_int_emtf); 
-	    occupancy_emtf->Fill(EMTF_subsector_e, fill_occupancy);
+	    occupancy_emtf->Fill(EMTF_subsector_e, fill_occupancy_emtf);
 	    occupancy_emu_emtf->Fill(EMTF_subsector, fill_occupancy); 
 	  }	    
         }
