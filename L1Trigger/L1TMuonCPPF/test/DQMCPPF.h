@@ -60,16 +60,6 @@ class DQM_CPPF : public edm::EDAnalyzer {
   int EMTF_subsector_unpacker;
   int EMTF_subsector_EMTF;
   int EMTF_bx;
- 
-  std::vector<int> phi_int_unpacker;
-  std::vector<int> theta_int_unpacker;
-  std::vector<int> emtf_sector_unpacker;
-  std::vector<int> subsector_unpacker;
- 
-  std::vector<int> phi_int_EMTF;
-  std::vector<int> theta_int_EMTF;
-  std::vector<int> emtf_sector_EMTF;
-  std::vector<int> subsector_EMTF;
 
   std::vector<int> EMTFsector0bins;
   std::vector<int> EMTFsector1bins;
@@ -81,53 +71,43 @@ class DQM_CPPF : public edm::EDAnalyzer {
   
   std::map<int , std::vector<int>> fill_info;
   
-  TH1D* Phi_Integer;
-  TH1D* Theta_Integer;
-  TH1D* Phi_Integer_unpacker;
-  TH1D* Theta_Integer_unpacker;
+  TH2D* chamber_emu_unpacker;
+  TH2D* occupancy_unpacker;
+  TH2D* occupancy_emu_unpacker;
+  TH2D* phi_emu_unpacker;
+  TH2D* theta_emu_unpacker;
+  TH2D* bx_emu_unpacker;
+  TH2D* bx_emu_unpacker_bx;
+  TH2D* phi_emu_unpacker_bx;
+  TH2D* theta_emu_unpacker_bx;
 
-  TH1D* Phi_Global;
-  TH1D* Theta_Global;
+  TH1D* Matches_unpacker;
+  TH1D* Matches_unpacker_ch;
+  TH1D* Matches_unpacker_bx;
+  TH1D* Matches_unpacker_int;
 
-  TH1D* Board;
-  TH1D* Channel;
+  TH2D* chamber_emu_emtf_test;
+  TH2D* chamber_emu_emtf;
+  TH2D* occupancy_emtf;
+  TH2D* occupancy_emu_emtf;
+  TH2D* phi_emu_emtf;
+  TH2D* theta_emu_emtf;
+  TH2D* bx_emu_emtf;
+  TH2D* bx_emu_emtf_bx;
+  TH2D* phi_emu_emtf_bx;
+  TH2D* theta_emu_emtf_bx;
 
-  TH1D* Matches;
-  TH1D* Matches_e;
-  TH1D* Matches_e_minus1;
-  TH1D* Matches_e_minus2;
-  TH1D* Matches_e_plus1;
-  TH1D* Matches_e_plus2;
+  TH1D* Matches_emtf;
+  TH1D* Matches_emtf_bx;
+  TH1D* Matches_emtf_ch;
+  TH1D* Matches_emtf_int;
 
-  TH2D* Phi_Global_Integer;
-  TH2D* Theta_Global_Integer;
-  TH2D* Occupancy;
-  TH2D* Occupancy_unpacker;
-  TH2D* Occupancy_emtf;
-  TH2D* Bx;
-  TH2D* Bx_emu_unpacker;
-  TH2D* Bx_emu_emtf;
+
  
-  TH2D* station_emu_unpacker;
-  TH2D* station_emu_emtf;
+  TH2D* occupancy_emu;
+  TH2D* bx;
+  TH2D* bx_occupancy;
 
-  TH2D* region_emu_unpacker;
-  TH2D* region_emu_emtf;
-
-  TH2D* Bx_Occupancy;
-
-  TH2D* Phi_emu_unpacker;
-  TH2D* Theta_emu_unpacker;
-
-  TH2D* Phi_emu_emtf;
-  TH2D* Theta_emu_emtf;
-
-  TH2D* Phi_emu_unpacker_nomatched;
-  TH2D* Theta_emu_unpacker_nomatched;
-  TH2D* Phi_emu_unpacker_near;
-  TH2D* Theta_emu_unpacker_near;
-
-  TH2D* emtf_sector_comparison;
 };
 
 
