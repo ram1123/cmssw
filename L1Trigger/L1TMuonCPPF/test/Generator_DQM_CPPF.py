@@ -17,7 +17,8 @@ process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.Geometry.GeometryExtended2016_cff')
 process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50000) )
 
 readFiles = cms.untracked.vstring()
 process.source = cms.Source("PoolSource",
