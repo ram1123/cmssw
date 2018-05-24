@@ -71,40 +71,47 @@ class DQM_CPPF : public edm::EDAnalyzer {
   
   std::map<int , std::vector<int>> fill_info;
   
+  TH1D* Matches_unpacker;
+
+  TH1D* Matches_unpacker_ch;
   TH2D* chamber_emu_unpacker;
-  TH2D* occupancy_unpacker;
-  TH2D* occupancy_emu_unpacker;
   TH2D* phi_emu_unpacker;
   TH2D* theta_emu_unpacker;
   TH2D* bx_emu_unpacker;
-  TH2D* bx_emu_unpacker_bx;
+
+  TH1D* Matches_unpacker_bx;
   TH2D* phi_emu_unpacker_bx;
   TH2D* theta_emu_unpacker_bx;
+  TH2D* bx_emu_unpacker_bx;
 
-  TH1D* Matches_unpacker;
-  TH1D* Matches_unpacker_ch;
-  TH1D* Matches_unpacker_bx;
   TH1D* Matches_unpacker_int;
+  TH2D* phi_emu_unpacker_int;
+  TH2D* theta_emu_unpacker_int;
+  TH2D* occupancy_unpacker;
+  TH2D* occupancy_emu_unpacker;
 
+  TH1D* Matches_emtf;
+
+  TH1D* Matches_emtf_ch;
   TH2D* chamber_emu_emtf_test;
   TH2D* chamber_emu_emtf;
-  TH2D* occupancy_emtf;
-  TH2D* occupancy_emu_emtf;
   TH2D* phi_emu_emtf;
   TH2D* theta_emu_emtf;
   TH2D* bx_emu_emtf;
-  TH2D* bx_emu_emtf_bx;
+
+  TH1D* Matches_emtf_bx;
   TH2D* phi_emu_emtf_bx;
   TH2D* theta_emu_emtf_bx;
+  TH2D* bx_emu_emtf_bx;
 
-  TH1D* Matches_emtf;
-  TH1D* Matches_emtf_bx;
-  TH1D* Matches_emtf_ch;
+  
   TH1D* Matches_emtf_int;
-
+  TH2D* phi_emu_emtf_int;
+  TH2D* theta_emu_emtf_int;
+  TH2D* occupancy_emtf;
+  TH2D* occupancy_emu_emtf;
 
  
-  TH2D* occupancy_emu;
   TH2D* bx;
   TH2D* bx_occupancy;
 
