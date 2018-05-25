@@ -90,6 +90,12 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* occupancy_unpacker;
   TH2D* occupancy_emu_unpacker;
 
+  TH2D* bx_occupancy_unpacker;
+  TH2D* bx_occupancy_emu_unpacker;
+  TH2D* bx_sector_unpacker; 
+  TH2D* bx_sector_emu_unpacker;
+
+
   TH1D* Matches_emtf;
 
   TH1D* Matches_emtf_ch;
@@ -111,6 +117,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* occupancy_emtf;
   TH2D* occupancy_emu_emtf;
 
+  TH2D* bx_occupancy_emtf;
+  TH2D* bx_occupancy_emu_emtf;
+  TH2D* bx_sector_emtf; 
+  TH2D* bx_sector_emu_emtf;
  
   TH2D* bx;
   TH2D* bx_occupancy;

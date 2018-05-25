@@ -77,10 +77,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     (ring == 1 && station > 1) ? nsub_e = 3 : nsub_e = 6;
     int chamberID = subsector + nsub_e * ( sector - 1);
     
-    bx_occupancy->Fill(EMTF_bx, fill_occupancy);
-    bx->Fill(fill_bx,EMTF_bx);
-    
-    
     
     matches_unpacker = 0;  
     matches_unpacker_bx = 0;
@@ -97,11 +93,16 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       int theta_int_unpacker =  cppf_digis_unpacker.theta_int();
       int bx_unpacker = cppf_digis_unpacker.bx();
       
+      int EMTF_sector_u = cppf_digis_unpacker.emtf_sector();
+      int EMTF_subsector_u = fill_info[EMTF_sector_u][subsector_unpacker-1];
+
       //Chamber ID
       int nsub_un = 6;
       (ring_unpacker == 1 && station_unpacker > 1) ? nsub_un = 3 : nsub_un = 6;
       int chamberID_unpacker = subsector_unpacker + nsub_un * ( sector_unpacker - 1);
       
+      int fill_occupancy_unpacker = occupancy_value(region_unpacker, station_unpacker, ring_unpacker);
+      int fill_bx_unpacker = bx_value(region_unpacker, EMTF_sector_u);
       
       if((region == region_unpacker) && 
 	 (station == station_unpacker) &&
@@ -130,8 +131,15 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	    Matches_unpacker_int->Fill(matches_unpacker_int);	
 	    phi_emu_unpacker_int->Fill(phi_int, phi_int_unpacker);
 	    theta_emu_unpacker_int->Fill(theta_int, theta_int_unpacker); 
-	    occupancy_unpacker->Fill(EMTF_subsector, fill_occupancy);
-	    occupancy_emu_unpacker->Fill(EMTF_subsector, fill_occupancy); 
+            //Occupancy 
+	    occupancy_unpacker->Fill(EMTF_subsector_u, fill_occupancy_unpacker);
+	    occupancy_emu_unpacker->Fill(EMTF_subsector, fill_occupancy);
+            //bx occupancy 
+            bx_occupancy_unpacker->Fill(EMTF_bx, fill_occupancy_unpacker);
+            bx_occupancy_emu_unpacker->Fill(EMTF_bx, fill_occupancy);
+            //bx
+            bx_sector_unpacker->Fill(fill_bx_unpacker,EMTF_bx);
+            bx_sector_emu_unpacker->Fill(fill_bx,EMTF_bx);
 	  } 
 	}
 	
@@ -178,6 +186,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	     (subsector == subsector_emtf)){
       */
       int fill_occupancy_emtf = occupancy_value(region_emtf, station_emtf, ring_emtf);
+      int fill_bx_emtf = bx_value(region_emtf, EMTF_sector_e);
 
       if((chamberID_emtf == 35) || (chamberID_emtf == 36)) chamberID_emtf -= 34;
       else chamberID_emtf += 2;
@@ -203,9 +212,20 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	    matches_emtf_int++;
 	    Matches_emtf_int->Fill(matches_emtf_int);
 	    phi_emu_emtf_int->Fill(phi_int, phi_int_emtf);
-	    theta_emu_emtf_int->Fill(theta_int, theta_int_emtf); 
+	    theta_emu_emtf_int->Fill(theta_int, theta_int_emtf);
+ 
+            //Occupancy
 	    occupancy_emtf->Fill(EMTF_subsector_e, fill_occupancy_emtf);
+            //Setting up the subsector
+            if((EMTF_subsector == 1) || (EMTF_subsector == 2)) EMTF_subsector += 34;
+            else EMTF_subsector -= 2; 		 
 	    occupancy_emu_emtf->Fill(EMTF_subsector, fill_occupancy); 
+            //bx occupancy 
+            bx_occupancy_emtf->Fill(EMTF_bx, fill_occupancy_emtf);
+            bx_occupancy_emu_emtf->Fill(EMTF_bx, fill_occupancy);
+            //bx
+            bx_sector_emtf->Fill(fill_bx_emtf,EMTF_bx);
+            bx_sector_emu_emtf->Fill(fill_bx,EMTF_bx);
 	  }	    
         }
 	
@@ -302,6 +322,10 @@ void DQM_CPPF::beginJob(){
   theta_emu_unpacker_int=fs->make<TH2D>("theta_emu_unpacker_int", "theta_emu_unpacker_int",  32, 0., 32., 32, 0., 32.);
   occupancy_unpacker = fs->make<TH2D>("occupancy_unpacker", "CPPFDigis occupancy_unpacker", 36, 0.5, 36.5, 12, 0.5,12.5); 
   occupancy_emu_unpacker = fs->make<TH2D>("occupancy_emu_unpacker", "CPPFDigis occupancy_emu_unpacker", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  bx_occupancy_unpacker = fs->make<TH2D>("bx_occupancy_unpacker","CPPFDigis Bx_Occupancy_unpacker", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  bx_occupancy_emu_unpacker = fs->make<TH2D>("bx_occupancy_emu_unpacker","CPPFDigis Bx_Occupancy_emu_unpacker", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  bx_sector_unpacker = fs->make<TH2D>("bx_sector_unpacker","CPPFDigis Bx_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
+  bx_sector_emu_unpacker = fs->make<TH2D>("bx_sector_emu_unpacker","CPPFDigis Bx_emu_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
 
 
   Matches_emtf = fs->make<TH1D>("Matches_emtf", "CPPFDigis_Matches_emtf" , 5, 0. , 5.);
@@ -325,9 +349,13 @@ void DQM_CPPF::beginJob(){
   occupancy_emu_emtf = fs->make<TH2D>("occupancy_emu_emtf", "CPPFDigis occupancy_emu_emtf", 36, 0.5, 36.5, 12, 0.5,12.5); 
   
   
-  bx = fs->make<TH2D>("bx","CPPFDigis Bx", 12, 0.5, 12.5, 8,-3.5,4.5);
-  bx_occupancy = fs->make<TH2D>("bx_occupancy","CPPFDigis Bx_Occupancy", 8, -3.5, 4.5, 12, 0.5, 12.5);
-  
+  bx_occupancy_emtf = fs->make<TH2D>("bx_occupancy_emtf","CPPFDigis Bx_Occupancy_emtf", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  bx_occupancy_emu_emtf = fs->make<TH2D>("bx_occupancy_emu_emtf","CPPFDigis Bx_Occupancy_emu_emtf", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  bx_sector_emtf = fs->make<TH2D>("bx_sector_emtf","CPPFDigis Bx_emtf", 12, 0.5, 12.5, 8,-3.5,4.5);
+  bx_sector_emu_emtf = fs->make<TH2D>("bx_sector_emu_emtf","CPPFDigis Bx_emu_emtf", 12, 0.5, 12.5, 8,-3.5,4.5);
+ 
+                                    
+ 
   return;
 }
 //define this as a plug-in
