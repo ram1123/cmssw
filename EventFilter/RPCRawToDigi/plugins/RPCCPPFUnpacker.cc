@@ -268,7 +268,7 @@ void RPCCPPFUnpacker::processTXRecord(RPCAMCLink link
     RPCDetId rpc_id(region
                     , ring[word] // ring
                     , station[word] // station
-                    , (endcap_sector / 6) + 1 // sector
+                    , ((endcap_sector-1) / 6) + 1 // sector
                     , 1 // layer
                     , (endcap_sector - 1) % 6 + 1 // subsector
                     , 0); // roll
