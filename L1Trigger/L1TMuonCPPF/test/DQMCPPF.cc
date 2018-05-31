@@ -132,8 +132,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 	    phi_emu_unpacker_int->Fill(phi_int, phi_int_unpacker);
 	    theta_emu_unpacker_int->Fill(theta_int, theta_int_unpacker); 
             //Occupancy 
-	    //occupancy_unpacker->Fill(EMTF_subsector_u, fill_occupancy_unpacker);
-	    occupancy_unpacker->Fill(EMTF_subsector, fill_occupancy);
+	    occupancy_unpacker->Fill(EMTF_subsector_u, fill_occupancy_unpacker);
+	    //occupancy_unpacker->Fill(EMTF_subsector, fill_occupancy);
 	    occupancy_emu_unpacker->Fill(EMTF_subsector, fill_occupancy);
             //bx occupancy 
             bx_occupancy_unpacker->Fill(EMTF_bx, fill_occupancy_unpacker);
