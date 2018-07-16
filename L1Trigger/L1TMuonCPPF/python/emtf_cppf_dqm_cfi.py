@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-DQM_CPPF = cms.EDAnalyzer('DQM_CPPF',
+EMTF_CPPF_DQM = cms.EDAnalyzer('EMTF_CPPF_DQM',
                       cppfdigiLabel1 = cms.InputTag("emulatorCppfDigis","recHit"),   
 		                  cppfdigiLabel2 = cms.InputTag("rpcCPPFRawToDigi"),
 		                  cppfdigiLabel3 = cms.InputTag("emtfStage2Digis"),
