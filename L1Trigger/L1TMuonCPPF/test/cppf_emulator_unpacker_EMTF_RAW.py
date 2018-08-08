@@ -82,6 +82,7 @@ process.rpcRecHits.rpcDigiLabel = 'rpcunpacker'
 process.load('L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi')
 from L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi import *
 process.emulatorCppfDigis.recHitLabel = 'rpcRecHits'
+#process.emulatorCppfDigis.recHitLabel = 'rawDataCollector'
 
 process.load('EventFilter.L1TRawToDigi.emtfStage2Digis_cfi')
 process.load('L1Trigger.L1TMuonEndCap.simEmtfDigis_cfi')
@@ -129,7 +130,7 @@ for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitl
     iFile += 1
     readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
 '''
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 #process.maxLuminosityBlocks = cms.untracked.PSet(input = cms.untracked.int32(10))
 
 process.p = cms.Path( process.rpcUnpackingModule 
