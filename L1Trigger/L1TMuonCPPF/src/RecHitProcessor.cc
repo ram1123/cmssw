@@ -21,6 +21,7 @@ void RecHitProcessor::processLook(
   edm::ESHandle<RPCGeometry> rpcGeom;
   iSetup.get<MuonGeometryRecord>().get(rpcGeom);
   
+
   // The loop is over the detector container in the rpc geometry collection. We are interested in the RPDdetID (inside of RPCChamber vectors), specifically, the RPCrechits. to assignment the CPPFDigis.
   for ( TrackingGeometry::DetContainer::const_iterator iDet = rpcGeom->dets().begin(); iDet < rpcGeom->dets().end(); iDet++ ) {
    

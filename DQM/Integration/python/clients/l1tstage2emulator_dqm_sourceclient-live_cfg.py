@@ -11,6 +11,20 @@ process.load("DQM.Integration.config.inputsource_cfi")
 
 # Testing in lxplus
 #process.load("DQM.Integration.config.fileinputsource_cfi")
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
+process.MessageLogger = cms.Service("MessageLogger",
+                                    destinations = cms.untracked.vstring('cout'),
+                                    threshold = cms.untracked.string('INFO'),
+                                    #threshold = cms.untracked.string('DEBUG'),
+                                    categories = cms.untracked.vstring(
+                                            'L1TdeStage2CPPF'
+                                    ),
+                                    debugModules = cms.untracked.vstring(
+                                            'L1TdeStage2CPPF',
+                                    )
+                                   )
+
+cms.options.SkipEvent = cms.untracked.vstring('ProductNotFound')
 
 # Required to load Global Tag
 process.load("DQM.Integration.config.FrontierCondition_GT_cfi")
@@ -133,6 +147,7 @@ if (process.runType.getRunType() == process.runType.hi_run):
     process.twinMuxStage2Digis.DTTM7_FED_Source = cms.InputTag("rawDataRepacker")
     process.bmtfDigis.InputLabel = cms.InputTag("rawDataRepacker")
     process.emtfStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
+    process.cppfStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.gmtStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.caloStage1Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.caloStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
