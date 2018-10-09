@@ -62,6 +62,7 @@ DEFINE_FWK_MODULE(L1TStage2EMTF);
 
 #include <DQM/L1TMonitor/interface/L1TStage2CPPF.h>
 DEFINE_FWK_MODULE(L1TStage2CPPF);
+
 #include <DQM/L1TMonitor/interface/L1TdeStage2CPPF.h>
 DEFINE_FWK_MODULE(L1TdeStage2CPPF);
 
