@@ -6,6 +6,6 @@ l1tdeStage2Cppf = DQMEDAnalyzer(
     dataSource = cms.InputTag("rpcCPPFRawToDigi"),
     emulSource = cms.InputTag("valCppfStage2Digis","recHit"),
     monitorDir = cms.untracked.string("L1TEMU/L1TdeStage2CPPF"),
-    verbose = cms.untracked.bool(True),
+    verbose = cms.untracked.bool(False),
 )
 

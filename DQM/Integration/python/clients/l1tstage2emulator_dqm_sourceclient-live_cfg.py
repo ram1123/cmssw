@@ -14,8 +14,8 @@ process.load("DQM.Integration.config.inputsource_cfi")
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.MessageLogger = cms.Service("MessageLogger",
                                     destinations = cms.untracked.vstring('cout'),
-                                    threshold = cms.untracked.string('INFO'),
-                                    #threshold = cms.untracked.string('DEBUG'),
+                                    #threshold = cms.untracked.string('INFO'),
+                                    threshold = cms.untracked.string('DEBUG'),
                                     categories = cms.untracked.vstring(
                                             'L1TdeStage2CPPF'
                                     ),
