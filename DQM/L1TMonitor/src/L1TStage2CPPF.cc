@@ -34,7 +34,6 @@ void L1TStage2CPPF::beginLuminosityBlock(const edm::LuminosityBlock& iLumi, cons
 
 void L1TStage2CPPF::bookHistograms(DQMStore::IBooker &ibooker, const edm::Run& iRun, const edm::EventSetup& eveSetup)
 {
- std::cout<<"TOBEDELETED L1TStage2CPPF::bookHistograms"<<std::endl;
   ibooker.setCurrentFolder(monitorDir);
   
   Occupancy_EMTFSector = ibooker.book2D("Occupancy_EMTFSector", "Occupancy_EMTFSector", 36, 1., 37., 12, 1.,13.);
@@ -48,15 +47,12 @@ void L1TStage2CPPF::bookHistograms(DQMStore::IBooker &ibooker, const edm::Run& i
 
 void L1TStage2CPPF::analyze(const edm::Event & eve, const edm::EventSetup & eveSetup)
 {
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze 1"<<std::endl;
   if (verbose) {
     edm::LogInfo("L1TStage2CPPF") << "L1TStage2CPPF: analyze...." << std::endl;
   }
 
   edm::Handle<l1t::CPPFDigiCollection> CppfDigis;
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze 2"<<std::endl;
   eve.getByToken(cppfDigiToken_, CppfDigis);
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze 3"<<std::endl;
 
 //  for(int itBX=cppfMuon->getFirstBX(); itBX<=cppfMuon->getLastBX(); ++itBX)
 //    {
@@ -80,7 +76,6 @@ void L1TStage2CPPF::analyze(const edm::Event & eve, const edm::EventSetup & eveS
     EMTFsector6bins.push_back(i+30);
   }
   //FIll the map for each EMTF sector 
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze 4"<<std::endl;
   fill_info[1] = EMTFsector1bins;
   fill_info[2] = EMTFsector2bins;
   fill_info[3] = EMTFsector3bins;
@@ -90,9 +85,7 @@ void L1TStage2CPPF::analyze(const edm::Event & eve, const edm::EventSetup & eveS
 
   for(auto& cppf_digis : *CppfDigis){
 
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis "<<std::endl;
     RPCDetId rpcId = cppf_digis.rpcId();
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis 1"<<std::endl;
     int ring = rpcId.ring();
     int station = rpcId.station();
     int region = rpcId.region();
@@ -103,7 +96,6 @@ void L1TStage2CPPF::analyze(const edm::Event & eve, const edm::EventSetup & eveS
 if(cppf_digis.emtf_sector()!=-99) {std::cout<<" L1TStage2CPPF::analyze cppf_digis.emtf_sector="<<cppf_digis.emtf_sector()<<std::endl;}
 if(rpcId.sector()>=7 or rpcId.sector()<1) { std::cout<<" L1TStage2CPPF::analyze rpcId.sector="<<rpcId.sector()<<" emtf_sector="<<cppf_digis.emtf_sector()<<std::endl; continue;}  
 
-std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" station="<<station<<" region="<<region<<" subsector="<<subsector<<" sector="<<rpcId.sector()<<std::endl;
     //Region -  
     if(region == -1){
   
@@ -111,7 +103,6 @@ std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" st
       //EMTF_sector = cppf_digis.emtf_sector();   // TOBECHECKED it returns -99, seems not filled
       EMTF_sector = rpcId.sector();
 
- //std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis region=-1"<<" emtfsector="<<EMTF_sector<<std::endl;
       EMTF_subsector = fill_info[EMTF_sector][subsector-1];
     
       if((station == 4) && (ring == 3))
@@ -125,11 +116,9 @@ std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" st
       else if((station == 2) && (ring == 2))
     	  Occupancy_EMTFSector->Fill(EMTF_subsector, 5);
       else if((station == 1) && (ring == 2))
-    	  Occupancy_EMTFSector->Fill(EMTF_subsector, 6);
     
       //for Track_Bx
       EMTF_bx = cppf_digis.bx();
- std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis bx="<<EMTF_bx<<std::endl;
       if(EMTF_sector==1)
     	  Track_Bx->Fill(6,EMTF_bx);
       else if(EMTF_sector==2)
@@ -142,7 +131,6 @@ std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" st
     	  Track_Bx->Fill(2,EMTF_bx);
       else if(EMTF_sector==6)
           Track_Bx->Fill(1,EMTF_bx);
-// std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis x4"<<std::endl;
     
     }
     //Region +  
@@ -151,7 +139,6 @@ std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" st
       //for Occupancy
       //EMTF_sector = cppf_digis.emtf_sector();   // TOBECHECKED it returns -99, seems not filled
       EMTF_sector = rpcId.sector();
- std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis region=+1"<<std::endl;
       EMTF_subsector = fill_info[EMTF_sector][subsector-1];
     
       if((station == 1) && (ring == 2))
@@ -182,7 +169,6 @@ std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis ring="<<ring<<" st
       else if(EMTF_sector==6)
     	  Track_Bx->Fill(12,EMTF_bx);
     }
-std::cout<<"TOBEDELETED L1TStage2CPPF::analyze loop cppfdigis x4"<<std::endl;
 } //loop over CPPFDigis
 
 

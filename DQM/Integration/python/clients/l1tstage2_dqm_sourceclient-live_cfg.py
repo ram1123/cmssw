@@ -113,7 +113,6 @@ process.l1tStage2MonitorClientPath = cms.Path(process.l1tStage2MonitorClient)
 
 # Cosmic run
 if (process.runType.getRunType() == process.runType.cosmic_run):
-    print 'DELETEME runType=cosmic'
     process.DQMStore.referenceFileName = "/dqmdata/dqm/reference/l1t_reference_cosmic.root"
     # Remove Quality Tests for L1T Muon Subsystems since they are not optimized yet for cosmics
     process.l1tStage2MonitorClient.remove(process.l1TStage2uGMTQualityTests)
@@ -125,7 +124,6 @@ if (process.runType.getRunType() == process.runType.cosmic_run):
 
 # Heavy-Ion run
 if (process.runType.getRunType() == process.runType.hi_run):
-    print 'DELETEME runType=HI'
     process.DQMStore.referenceFileName = "/dqmdata/dqm/reference/l1t_reference_hi.root"
     process.castorDigis.InputLabel = cms.InputTag("rawDataRepacker")
     process.ctppsDiamondRawToDigi.rawDataTag = cms.InputTag("rawDataRepacker")
