@@ -45,7 +45,7 @@ valOmtfDigis.srcRPC = cms.InputTag('omtfStage2Digis')
 # CPPF emulator's input is rpcRecHits
 from RecoLocalMuon.RPCRecHit.rpcRecHits_cfi import *
 valRpcRecHits = rpcRecHits.clone()
-valRpcRecHits.rpcDigiLabel = cms.InputTag('rpcCPPFRawToDigi')
+valRpcRecHits.rpcDigiLabel = cms.InputTag('rpcunpacker')
 from L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi import *
 valCppfStage2Digis = emulatorCppfDigis.clone()
 valCppfStage2Digis.recHitLabel = cms.InputTag('valRpcRecHits')
