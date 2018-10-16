@@ -23,17 +23,6 @@ void L1TdeStage2CPPF::bookHistograms(DQMStore::IBooker& ibooker, const edm::Run&
 
   ibooker.setCurrentFolder(monitorDir);
 
-//  cppfDataBX = ibooker.book1D("cppfDataBX", "CPPF data BX", 7, -3, 4);
-//  cppfDataBX->setAxisTitle("BX", 1);
-//
-//  cppfEmulBX = ibooker.book1D("cppfEmulBX", "CPPF emulator BX", 7, -3, 4);
-//  cppfEmulBX->setAxisTitle("BX", 1);
-//
-//  for (int bin = 1, bin_label = -3; bin <= 7; ++bin, ++bin_label) {
-//    cppfDataBX->setBinLabel(bin, std::to_string(bin_label), 1);
-//    cppfEmulBX->setBinLabel(bin, std::to_string(bin_label), 1);
-//  }
-
 	//from Gabriel'code
   Matches_unpacker     =    ibooker.book1D("Matches_unpacker", "CPPFDigis_Matches_unpacker" , 5, 0. , 5.);
   
