@@ -11,10 +11,12 @@ EmulateCPPF::EmulateCPPF(const edm::ParameterSet& iConfig, edm::ConsumesCollecto
   // rpcDigiToken_( iConsumes.consumes<RPCTag::digi_collection>(iConfig.getParameter<edm::InputTag>("recHitLabel")) ),
   recHitToken_(iConsumes.consumes<RPCRecHitCollection>(iConfig.getParameter<edm::InputTag>("recHitLabel"))),
   cppfSource_(CppfSource::EventSetup),
-  MaxClusterSize_(0)
+  MaxClusterSize_(0),
+  BxCut_(0)
 {
    MaxClusterSize_ = iConfig.getParameter<int>("MaxClusterSize");
-  
+   BxCut_ = iConfig.getParameter<std::vector<int>>("BxCut");
+ 
   const std::string cppfSource = iConfig.getParameter<std::string>("cppfSource");
   //Look up table
   if (cppfSource == "File"){
@@ -58,7 +60,7 @@ void EmulateCPPF::process(
     //Using the look up table to fill the information
     cppf_recHit.clear();
     for (auto& recHit_processor : recHit_processors_) {
-      recHit_processor.processLook( iEvent, iSetup, recHitToken_, CppfVec_1, cppf_recHit, MaxClusterSize_);
+      recHit_processor.processLook( iEvent, iSetup, recHitToken_, CppfVec_1, cppf_recHit, MaxClusterSize_, BxCut_);
     //  recHit_processors_.at(recHit_processor).processLook( iEvent, iSetup, recHitToken_, CppfVec_1, cppf_recHit );
     }
   }
@@ -81,7 +83,7 @@ void EmulateCPPF::process(
     // rpcDigi_processors_.at(iBoard).process( iSetup, rpcDigis, cppf_rpcDigi );
     // }
     for (auto& recHit_processor : recHit_processors_) {
-      recHit_processor.process( iEvent, iSetup, recHitToken_, cppf_recHit );
+      recHit_processor.process( iEvent, iSetup, recHitToken_, cppf_recHit, MaxClusterSize_, BxCut_);
       //recHit_processors_.at(recHit_processor).process( iEvent, iSetup, recHitToken_, cppf_recHit );
     } 
   }
