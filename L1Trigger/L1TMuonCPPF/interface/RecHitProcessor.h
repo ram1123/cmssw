@@ -26,6 +26,9 @@
 #include<sstream>
 #include<string> 
 #include<memory>
+#include<utility>
+#include <algorithm>
+#include <map>
 
 class RecHitProcessor {
  public:
@@ -56,7 +59,8 @@ class RecHitProcessor {
 		   std::vector<RecHitProcessor::CppfItem>& CppfVec1, 
 		   // Output
 		   l1t::CPPFDigiCollection& cppfDigis,
-		   const int MaxClusterSize
+		   const int MaxClusterSize,
+		   std::vector<int> BxCut
 		   ) const;
   
   void process(
@@ -65,7 +69,9 @@ class RecHitProcessor {
 	       const edm::EventSetup& iSetup,
 	       const edm::EDGetToken& recHitToken,
 	       // Output
-	       l1t::CPPFDigiCollection& cppfDigis
+	       l1t::CPPFDigiCollection& cppfDigis,
+	       const int MaxClusterSize,
+	       std::vector<int> BxCut
 	       ) const;
   
   void print(int a, int b, float c, float d) const {std::cout << a << " " << b << " " << c << " " << d << std::endl;};
@@ -73,6 +79,9 @@ class RecHitProcessor {
   COND_SERIALIZABLE;
   
  private:
+
+  std::shared_ptr<l1t::CPPFDigi> MainVariables1; 
+  std::shared_ptr<l1t::CPPFDigi> MainVariables2; 
   
 };
 

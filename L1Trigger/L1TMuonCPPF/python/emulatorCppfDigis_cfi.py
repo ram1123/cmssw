@@ -5,6 +5,8 @@ emulatorCppfDigis = cms.EDProducer("L1TMuonCPPFDigiProducer",
                                    ## Input collection
                                    recHitLabel = cms.InputTag("rpcRecHits"),
 				   MaxClusterSize = cms.int32(3),
+ 				   BxCut = cms.vint32(-3,-2,-1,0,1,2,3),
+ 				   #BxCut = cms.vint32(0),
                                    #  cppfSource = cms.string('Geo'), #'File' for Look up table and 'Geo' for CMSSW Geometry 
                                    cppfSource = cms.string('File'), #'File' for Look up table and 'Geo' for CMSSW Geometry 
                                    
