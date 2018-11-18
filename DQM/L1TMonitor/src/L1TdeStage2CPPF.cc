@@ -31,7 +31,16 @@ void L1TdeStage2CPPF::bookHistograms(DQMStore::IBooker& ibooker, const edm::Run&
   phi_emu_unpacker     =    ibooker.book2D("phi_emu_unpacker", "phi_emu_unpacker",  124, 0., 1240., 124, 0., 1240.);
   theta_emu_unpacker   =    ibooker.book2D("theta_emu_unpacker", "theta_emu_unpacker",  32, 0., 32., 32, 0., 32.);
   bx_emu_unpacker      =    ibooker.book2D("bx_emu_unpacker","bx_emu_unpacker", 8, -3.5,4.5, 8, -3.5, 4.5);
+
+	phi_emu_unpacker->setAxisTitle("Binned Phi for emulator",1);
+	phi_emu_unpacker->setAxisTitle("Binned Phi for unpacker",2);
+	
+	theta_emu_unpacker->setAxisTitle("Binned Phi for emulator",1);
+	theta_emu_unpacker->setAxisTitle("Binned Phi for unpacker",2);
   
+	chamber_emu_unpacker->setAxisTitle("Chamber for emulator",1);
+	chamber_emu_unpacker->setAxisTitle("Chamber for unpacker",2);
+
   Matches_unpacker_bx  =    ibooker.book1D("Matches_unpacker_bx", "CPPFDigis_Matches_bx" , 5, 0. , 5.);
   phi_emu_unpacker_bx  =    ibooker.book2D("phi_emu_unpacker_bx", "phi_emu_unpacker_bx",  124, 0., 1240., 124, 0., 1240.);
   theta_emu_unpacker_bx=    ibooker.book2D("theta_emu_unpacker_bx", "theta_emu_unpacker_bx",  32, 0., 32., 32, 0., 32.);
@@ -72,6 +81,32 @@ void L1TdeStage2CPPF::bookHistograms(DQMStore::IBooker& ibooker, const edm::Run&
 		not_agree[i]->setAxisTitle("Roll",2);
 		well_agree[i]->setAxisTitle("Roll",2);
 		almost_agree[i]->setAxisTitle("Roll",2);
+		
+		occ_unp_theta_phi[i]    =ibooker.book2D("occ_unp_theta_phi"    +suffix_name[i], "Occ theta phi SR_"             +suffix_label[i], 36, 0.5, 36.5, 1200, 0.5, 1200.5);
+		occ_unp_ring_theta[i]      =ibooker.book2D("occ_unp_ring_theta"      +suffix_name[i], "Occ ring theta SR_"               +suffix_label[i], 2, 1.5, 3.5, 36, 0.5, 36.5);
+  	occ_unp_sector_phi[i]=ibooker.book2D("occ_unp_sector_phi"+suffix_name[i], "Occ ring Phi SR_"+suffix_label[i], 36, 0.5, 36.5, 1200,0.5, 1200.5);
+
+		occ_unp_theta_phi[i]->setAxisTitle("Binned Theta",1);
+		occ_unp_theta_phi[i]->setAxisTitle("Binned Phi",2);
+		
+		occ_unp_ring_theta[i]->setAxisTitle("Ring",1);
+		occ_unp_ring_theta[i]->setAxisTitle("Binned Theta",2);
+		
+		occ_unp_sector_phi[i]->setAxisTitle("Sector",1);
+		occ_unp_sector_phi[i]->setAxisTitle("Binned Phi",2);
+		
+		occ_emu_theta_phi[i]    =ibooker.book2D("occ_emu_theta_phi"    +suffix_name[i], "Occ theta phi SR_"             +suffix_label[i], 36, 0.5, 36.5, 1200, 0.5, 1200.5);
+		occ_emu_ring_theta[i]      =ibooker.book2D("occ_emu_ring_theta"      +suffix_name[i], "Occ ring theta SR_"               +suffix_label[i], 2, 1.5, 3.5, 36, 0.5, 36.5);
+  	occ_emu_sector_phi[i]=ibooker.book2D("occ_emu_sector_phi"+suffix_name[i], "Occ ring Phi SR_"+suffix_label[i], 36, 0.5, 36.5, 1200,0.5, 1200.5);
+
+		occ_emu_theta_phi[i]->setAxisTitle("Binned Theta",1);
+		occ_emu_theta_phi[i]->setAxisTitle("Binned Phi",2);
+		
+		occ_emu_ring_theta[i]->setAxisTitle("Ring",1);
+		occ_emu_ring_theta[i]->setAxisTitle("Binned Theta",2);
+		
+		occ_emu_sector_phi[i]->setAxisTitle("Sector",1);
+		occ_emu_sector_phi[i]->setAxisTitle("Binned Phi",2);
 	}
 
 }
@@ -251,9 +286,12 @@ void L1TdeStage2CPPF::analyze(const edm::Event& e, const edm::EventSetup& c) {
 		int subsector = rpcId.subsector();
 		int phi_int = cppf_digis.phi_int();
 		int theta_int =  cppf_digis.theta_int();
+
+		unsigned int flagcount=0;
 		
 		for(auto& cppf_digis_unpacker : *dataCPPFs){
 			RPCDetId rpcId_unpacker = cppf_digis_unpacker.rpcId();
+			flagcount+=1;
 			int region_unpacker = rpcId_unpacker.region();
 			int station_unpacker = rpcId_unpacker.station();
 			int ring_unpacker = rpcId_unpacker.ring();
@@ -278,8 +316,7 @@ void L1TdeStage2CPPF::analyze(const edm::Event& e, const edm::EventSetup& c) {
 					phi_shift[order]->Fill(secnum,rpcId.roll());
 					almost_agree[order]->Fill(secnum,rpcId.roll());
 				}else{
-					//if(ihit==(nhits-1)) in python
-					not_agree[order]->Fill(secnum,rpcId.roll());
+					if(flagcount==(*dataCPPFs).size()-1)	not_agree[order]->Fill(secnum,rpcId.roll());
 				}
 			}else if((region == region_unpacker) &&
 						(station == station_unpacker) &&
@@ -293,15 +330,57 @@ void L1TdeStage2CPPF::analyze(const edm::Event& e, const edm::EventSetup& c) {
 					phi_shift[order]->Fill(secnum,rpcId.roll());
 					almost_agree[order]->Fill(secnum,rpcId.roll());
 				}else{
-					//if(ihit==(nhits-1))
-					not_agree[order]->Fill(secnum,rpcId.roll());
+					if(flagcount==(*dataCPPFs).size()-1) not_agree[order]->Fill(secnum,rpcId.roll());
 				}
 			}else{
-				//if(ihit==(nhits-1))
-				not_agree[order]->Fill(secnum,rpcId.roll());
+				if(flagcount==(*dataCPPFs).size()-1) not_agree[order]->Fill(secnum,rpcId.roll());
 		  }//if is over
-		}//loop emulator
-	}//loop data
+		}//loop unpacker
+	}//loop emulator
+
+	for(auto& cppf_digis : *emulCPPFs){
+		RPCDetId rpcId = cppf_digis.rpcId();
+		int station = rpcId.station();
+		int ring = rpcId.ring();
+		//int roll = rpcId.roll();
+		int sector = rpcId.sector();
+		int subsector = rpcId.subsector();
+		// "station ring"
+		//{{"12", "22", "32", "33", "42", "43"}}
+		//    0     1     2     3     4     5
+		//f = station-1 + ring-2 +i/4
+		int phi_int = cppf_digis.phi_int();
+		int theta_int =  cppf_digis.theta_int();
+		int order=station-1+ring-2+station/4;
+		int secnum=(sector-1)*6+subsector;
+		if(order<0 ||order>5) std::cout<<"deStage2CPPF: wrong order  "<<order<<" "<<station<<" "<<ring<<std::endl;
+		if(secnum<0 ||secnum>36) std::cout<<"deStage2CPPF: wrong secnum  "<<secnum<<std::endl;
+		occ_emu_theta_phi[order]->Fill(theta_int,phi_int);
+		occ_emu_ring_theta[order]->Fill(ring,theta_int);
+		occ_emu_sector_phi[order]->Fill(secnum,phi_int);
+	}
+
+	for(auto& cppf_digis : *dataCPPFs){
+		RPCDetId rpcId = cppf_digis.rpcId();
+		int station = rpcId.station();
+		int ring = rpcId.ring();
+		//int roll = rpcId.roll();
+		int sector = rpcId.sector();
+		int subsector = rpcId.subsector();
+		// "station ring"
+		//{{"12", "22", "32", "33", "42", "43"}}
+		//    0     1     2     3     4     5
+		//f = station-1 + ring-2 +i/4
+		int phi_int = cppf_digis.phi_int();
+		int theta_int =  cppf_digis.theta_int();
+		int order=station-1+ring-2+station/4;
+		int secnum=(sector-1)*6+subsector;
+		if(order<0 ||order>5) std::cout<<"deStage2CPPF: wrong order  "<<order<<" "<<station<<" "<<ring<<std::endl;
+		if(secnum<0 ||secnum>36) std::cout<<"deStage2CPPF: wrong secnum  "<<secnum<<std::endl;
+		occ_unp_theta_phi[order]->Fill(theta_int,phi_int);
+		occ_unp_ring_theta[order]->Fill(ring,theta_int);
+		occ_unp_sector_phi[order]->Fill(secnum,phi_int);
+	}
 
 }
 

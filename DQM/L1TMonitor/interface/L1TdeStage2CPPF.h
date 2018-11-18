@@ -90,6 +90,13 @@ class L1TdeStage2CPPF : public DQMEDAnalyzer {
 	MonitorElement* well_agree[6];
 	MonitorElement* almost_agree[6];
 
+	MonitorElement* occ_emu_theta_phi[6];
+	MonitorElement* occ_emu_ring_theta[6];
+  MonitorElement* occ_emu_sector_phi[6];
+	MonitorElement* occ_unp_theta_phi[6];
+	MonitorElement* occ_unp_ring_theta[6];
+  MonitorElement* occ_unp_sector_phi[6];
+
 };
 
 #endif
