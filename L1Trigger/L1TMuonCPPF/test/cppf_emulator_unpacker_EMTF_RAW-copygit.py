@@ -5,9 +5,7 @@ import sys, os
 
 from FWCore.PythonUtilities.LumiList import LumiList
 from FWCore.ParameterSet.VarParsing import VarParsing
-#mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles2.txt');
-#mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles_2018.txt');
-mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles_2017.txt');
+mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles2.txt');
 options = VarParsing("analysis")
 options.register("runList"
                  , []
@@ -84,7 +82,6 @@ process.rpcRecHits.rpcDigiLabel = 'rpcunpacker'
 process.load('L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi')
 from L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi import *
 process.emulatorCppfDigis.recHitLabel = 'rpcRecHits'
-#process.emulatorCppfDigis.recHitLabel = 'rawDataCollector'
 
 process.load('EventFilter.L1TRawToDigi.emtfStage2Digis_cfi')
 process.load('L1Trigger.L1TMuonEndCap.simEmtfDigis_cfi')
@@ -132,7 +129,7 @@ for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitl
     iFile += 1
     readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
 '''
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(200000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(2000) )
 #process.maxLuminosityBlocks = cms.untracked.PSet(input = cms.untracked.int32(10))
 
 process.p = cms.Path( process.rpcUnpackingModule 
@@ -152,7 +149,7 @@ process.out = cms.OutputModule("PoolOutputModule"
 									                                                      "keep *_emtfStage2Digis_*_*",
 									                                                      "keep *_simEmtfDigisData_*_*")
                                #, fileName = cms.untracked.string(options.outputFile)
-                               , fileName = cms.untracked.string("test_cppf_unpacker_emulator-2017-200k.root")
+                               , fileName = cms.untracked.string("test_cppf_unpacker_emulator.root")
                                , SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("p"))
 )
 

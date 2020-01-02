@@ -95,16 +95,18 @@ process.source = cms.Source("PoolSource",
 #in_dir_name = '/eos/cms/store/data/Commissioning2018/ZeroBias/RAW/v1/000/314/663/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2018A/ZeroBias/RAW/v1/000/315/420/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2018A/SingleMuon/RAW/v1/000/315/764/00000/'
-in_dir_name = '/eos/cms/store/data/Run2018A/SingleMuon/RAW-RECO/ZMu-PromptReco-v1/000/315/800/00000/'
+#in_dir_name = '/eos/cms/store/data/Run2018A/SingleMuon/RAW-RECO/ZMu-PromptReco-v1/000/315/800/00000/'
+in_dir_name = '/eos/cms/store/data/Run2017F/SingleMuon/RAW/v1/000/306/125/00000/'
 
+readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4EDD5765-B3C0-E711-B906-02163E01A2D5.root') )
 #readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4CD446F8-8643-E811-ADE1-FA163E24B9CF.root') )
 #readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'AADB01BE-474C-E811-A57C-02163E013D6F.root') )
 
-iFile = 0
-for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitlines():
-    if not ('.root' in in_file_name): continue
-    iFile += 1
-    readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
+#iFile = 0
+#for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitlines():
+#    if not ('.root' in in_file_name): continue
+#    iFile += 1
+#    readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
 
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
