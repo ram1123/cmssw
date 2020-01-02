@@ -1,38 +1,38 @@
-%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@ctor  23-May-2018 14:34:12 CEST pre-events
+%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@ctor  02-Jan-2020 04:25:01 CET pre-events
 This is PopCon (Populator of Condition) v5.0.
 Please report any problem and feature request through the JIRA project CMSCONDDB.
 
 %MSG
-%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@ctor  23-May-2018 14:34:12 CEST pre-events
+%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@ctor  02-Jan-2020 04:25:01 CET pre-events
 Configuring Input Connection
 %MSG
-Begin processing the 1st record. Run 1, Event 1, LumiSection 1 on stream 0 at 23-May-2018 14:34:12.666 CEST
-%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+Begin processing the 1st record. Run 1, Event 1, LumiSection 1 on stream 0 at 02-Jan-2020 04:25:01.321 CET
+%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 payload name 
 %MSG
-%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 destination DB: sqlite_file:data/RPCLinkMap.db, target DB: sqlite_file:data/RPCLinkMap.db
 TAG: RPCLBLinkMap_v1, last since/till: 1/18446744073709551615, size: 1
 
 %MSG
-%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 getNewObjects
 %MSG
-%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 Opening read-only Input Session
 %MSG
-%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+%MSG-i RPCDCCLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 Started Input Transaction
 %MSG
-%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:12 CEST PostGlobalEndRun
+%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:01 CET PostGlobalEndRun
 Execute query
 %MSG
-%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:17 CEST PostGlobalEndRun
+%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:04 CET PostGlobalEndRun
 Fill txtFile
 %MSG
-%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:17 CEST PostGlobalEndRun
+%MSG-i RPCLBLinkMapHandler:   RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:05 CET PostGlobalEndRun
 Add to transfer list
 %MSG
-%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:17 CEST PostGlobalEndRun
+%MSG-i PopCon:  RPCLBLinkMapPopConAnalyzer:RPCLBLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:05 CET PostGlobalEndRun
 Since 1
 %MSG

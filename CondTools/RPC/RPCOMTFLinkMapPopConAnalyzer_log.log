@@ -1,26 +1,26 @@
-%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@ctor  23-May-2018 14:34:18 CEST pre-events
+%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@ctor  02-Jan-2020 04:25:06 CET pre-events
 This is PopCon (Populator of Condition) v5.0.
 Please report any problem and feature request through the JIRA project CMSCONDDB.
 
 %MSG
-Begin processing the 1st record. Run 1, Event 1, LumiSection 1 on stream 0 at 23-May-2018 14:34:18.989 CEST
-%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+Begin processing the 1st record. Run 1, Event 1, LumiSection 1 on stream 0 at 02-Jan-2020 04:25:06.901 CET
+%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 payload name 
 %MSG
-%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 destination DB: sqlite_file:data/RPCLinkMap.db, target DB: sqlite_file:data/RPCLinkMap.db
 TAG: RPCOMTFLinkMap_v1, last since/till: 1/18446744073709551615, size: 1
 
 %MSG
-%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 getNewObjects
 %MSG
-%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 Fill txtFile
 %MSG
-%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+%MSG-i RPCAMCLinkMapHandler:   RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 Add to transfer list
 %MSG
-%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  23-May-2018 14:34:18 CEST PostGlobalEndRun
+%MSG-i PopCon:  RPCAMCLinkMapPopConAnalyzer:RPCOMTFLinkMapPopConAnalyzer@endJob  02-Jan-2020 04:25:06 CET PostGlobalEndRun
 Since 1
 %MSG

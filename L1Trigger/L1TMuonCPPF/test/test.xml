@@ -1,0 +1,12 @@
+<FrameworkJobReport>
+<FrameworkError ExitStatus="7002" Type="Fatal Exception" >
+<![CDATA[
+An exception of category 'ConfigFileReadError' occurred while
+   [0] Processing the python configuration file named cppf_emulator_unpacker_RAW.py
+Exception Message:
+python encountered the error: <type 'exceptions.OSError'>
+[Errno 2] No such file or directory
+
+]]>
+</FrameworkError>
+</FrameworkJobReport>

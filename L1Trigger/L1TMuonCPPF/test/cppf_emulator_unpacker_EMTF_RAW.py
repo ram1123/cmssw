@@ -5,7 +5,7 @@ import sys, os
 
 from FWCore.PythonUtilities.LumiList import LumiList
 from FWCore.ParameterSet.VarParsing import VarParsing
-mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/g/garamire/work/private/RPCserviceWork/trigger/CMSSW_10_1_1_patch1_test/src/L1Trigger/L1TMuonCPPF/test/inputFiles2.txt');
+mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles2.txt');
 options = VarParsing("analysis")
 options.register("runList"
                  , []
