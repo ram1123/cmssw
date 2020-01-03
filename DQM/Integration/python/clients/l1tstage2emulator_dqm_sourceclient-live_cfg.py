@@ -7,10 +7,17 @@ process = cms.Process("L1TStage2EmulatorDQM", eras.Run2_2018)
 # Event Source and Condition
 
 # Live Online DQM in P5
-process.load("DQM.Integration.config.inputsource_cfi")
+#process.load("DQM.Integration.config.inputsource_cfi")
 
 # Testing in lxplus
-#process.load("DQM.Integration.config.fileinputsource_cfi")
+process.load("DQM.Integration.config.fileinputsource_cfi")
+process.load("FWCore.MessageLogger.MessageLogger_cfi")
+#process.MessageLogger.cerr.threshold = 'INFO'
+#process.MessageLogger.categories.append('L1TdeStage2CPPF')
+#process.MessageLogger.cerr.INFO = cms.untracked.PSet(
+#	limit = cms.untracked.int32(-1)
+#)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(100)
 
 # Required to load Global Tag
 process.load("DQM.Integration.config.FrontierCondition_GT_cfi")
@@ -133,11 +140,11 @@ if (process.runType.getRunType() == process.runType.hi_run):
     process.twinMuxStage2Digis.DTTM7_FED_Source = cms.InputTag("rawDataRepacker")
     process.bmtfDigis.InputLabel = cms.InputTag("rawDataRepacker")
     process.emtfStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
+    process.cppfStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.gmtStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.caloStage1Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.caloStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.simHcalTriggerPrimitiveDigis.InputTagFEDRaw = cms.InputTag("rawDataRepacker")
-    process.l1tdeStage2CaloLayer1.fedRawDataLabel = cms.InputTag("rawDataRepacker")
     process.gtStage2Digis.InputLabel = cms.InputTag("rawDataRepacker")
     process.selfFatEventFilter.rawInput = cms.InputTag("rawDataRepacker")
 

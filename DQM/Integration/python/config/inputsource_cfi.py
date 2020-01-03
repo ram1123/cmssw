@@ -7,6 +7,7 @@ from dqmPythonTypes import *
 options = VarParsing.VarParsing('analysis')
 
 # options.inputFiles are inherited from 'analysis'
+
 options.register('runNumber',
                  111,
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -14,7 +15,7 @@ options.register('runNumber',
                  "Run number.")
 
 options.register('runInputDir',
-                 '/tmp',
+                 '/fff/BU0/output/lookarea',
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Directory where the DQM files will appear.")
@@ -66,7 +67,8 @@ if not options.inputFiles:
         SelectEvents = cms.untracked.vstring('*'),
         streamLabel = cms.untracked.string('streamDQM'),
         scanOnce = cms.untracked.bool(options.scanOnce),
-        minEventsPerLumi = cms.untracked.int32(1),
+        minEventsPerLumi = cms.untracked.int32(100),
+#        minEventsPerLumi = cms.untracked.int32(-1),
         delayMillis = cms.untracked.uint32(500),
         nextLumiTimeoutMillis = cms.untracked.int32(nextLumiTimeoutMillis),
         skipFirstLumis = cms.untracked.bool(options.skipFirstLumis),
