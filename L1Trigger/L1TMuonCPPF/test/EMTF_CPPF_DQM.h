@@ -65,6 +65,8 @@ class EMTF_CPPF_DQM : public edm::EDAnalyzer {
   TH1D* h1CeVsCuMatches_ch;
   TH2D* h2CeVsCuChamberCeChamberCu;
   TH2D* h2CeVsCuPhiCePhiCu;
+  TH2D* h2CeVsCuPhiCePhiCu_InDiagonal;
+  TH2D* h2CeVsCuPhiCePhiCu_OffDiagonal;
   TH1D* h1CeVsCuPhiCePhiCuDiff;
   TH2D* h2CeVsCuThetaCeThetaCu;
   TH2D* h2CeVsCuBxCeBxCu;

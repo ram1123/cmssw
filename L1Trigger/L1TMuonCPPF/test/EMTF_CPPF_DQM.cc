@@ -423,6 +423,8 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
         h2CeVsCuPhiCePhiCu->Fill(phiIntCe, phiIntCu);
         h1CeVsCuPhiCePhiCuDiff->Fill(phiIntCe - phiIntCu);
         h2CeVsCuThetaCeThetaCu->Fill(thetaIntCe, thetaIntCu);
+        if (phiIntCe == phiIntCu) h2CeVsCuPhiCePhiCu_InDiagonal->Fill(phiIntCe, phiIntCu);
+        else h2CeVsCuPhiCePhiCu_OffDiagonal->Fill(phiIntCe, phiIntCu);
 	      if((phiIntCe == phiIntCu) && (thetaIntCe == thetaIntCu)){
           h2CeVsCuBxCeBxCu->Fill(bxCe, bxCu);
           h1CeVsCuBxCeBxCuDiff->Fill(bxCe - bxCu);
@@ -888,6 +890,8 @@ void EMTF_CPPF_DQM::beginJob(){
   h1CeVsCuMatches_ch = fs->make<TH1D>("h1CeVsCuMatches_ch", "CPPFDigis_h1CeVsCuMatches_ch" , 5, 0. , 5.);
   h2CeVsCuChamberCeChamberCu = fs->make<TH2D>("h2CeVsCuChamberCeChamberCu","h2CeVsCuChamberCeChamberCu", 36, 1.,37.,36,1.,37.);
   h2CeVsCuPhiCePhiCu=fs->make<TH2D>("h2CeVsCuPhiCePhiCu", "h2CeVsCuPhiCePhiCu",  124, 0., 1240., 124, 0., 1240.);
+  h2CeVsCuPhiCePhiCu_InDiagonal=fs->make<TH2D>("h2CeVsCuPhiCePhiCu_InDiagonal", "h2CeVsCuPhiCePhiCu_InDiagonal",  124, 0., 1240., 124, 0., 1240.);
+  h2CeVsCuPhiCePhiCu_OffDiagonal=fs->make<TH2D>("h2CeVsCuPhiCePhiCu_OffDiagonal", "h2CeVsCuPhiCePhiCu_OffDiagonal",  124, 0., 1240., 124, 0., 1240.);
   h1CeVsCuPhiCePhiCuDiff=fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff", "h1CeVsCuPhiCePhiCuDiff",  200, -100., 100.);
   h2CeVsCuThetaCeThetaCu=fs->make<TH2D>("h2CeVsCuThetaCeThetaCu", "h2CeVsCuThetaCeThetaCu",  32, 0., 32., 32, 0., 32.);
   h2CeVsCuBxCeBxCu = fs->make<TH2D>("h2CeVsCuBxCeBxCu","h2CeVsCuBxCeBxCu", 8, -3.5,4.5, 8, -3.5, 4.5);
