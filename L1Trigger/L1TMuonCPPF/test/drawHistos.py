@@ -6,7 +6,8 @@ from ROOT import TCanvas, TH1
 gROOT.SetBatch()
 TGaxis.SetMaxDigits(3)
 gStyle.SetOptStat(0)
-f = TFile.Open('DQM_CPPF_EMTF.root','read')
+#f = TFile.Open('DQM_CPPF_EMTF.root','read')
+f = TFile.Open('DQM_CPPF_EMTF-2018-200k-BugFixTanggy.root','read')
 c1 = TCanvas('c1', '',1100,1000)
 
 h = []

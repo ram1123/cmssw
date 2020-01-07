@@ -263,8 +263,8 @@ void RPCCPPFUnpacker::processTXRecord(RPCAMCLink link
     static int const station[6] = {1, 2, 3, 3, 4, 4};
     int region(link.getAMCNumber() < 7 ? 1 : -1);
     unsigned int endcap_sector((35 + (link.getAMCNumber() - (region > 0 ? 3 : 7)) * 9 + (block >> 1)) % 36 + 1);
-    unsigned int emtf_link(((34+(link.getAMCNumber() - (region > 0 ? 3 : 7)) * 9 + (block >> 1))%36)/6 +1);
-    unsigned int emtf_sector(((34+(link.getAMCNumber() - (region > 0 ? 3 : 7)) * 9 + (block >> 1))%36)%6 + 1);
+    unsigned int emtf_link(((34+(link.getAMCNumber() - (region > 0 ? 3 : 7)) * 9 + (block >> 1))%36)%6 +1);
+    unsigned int emtf_sector(((34+(link.getAMCNumber() - (region > 0 ? 3 : 7)) * 9 + (block >> 1))%36)/6 + 1);
     RPCDetId rpc_id(region
                     , ring[word] // ring
                     , station[word] // station
