@@ -1,4 +1,7 @@
 __init__.py
+*.log
+*.txt
+RPCLinkMap.db
 *.pyc
 .*.swp
 .#*
