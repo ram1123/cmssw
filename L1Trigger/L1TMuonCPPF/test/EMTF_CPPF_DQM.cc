@@ -87,6 +87,21 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     int emtfSectorCe = (int)cppf_digis.emtf_sector();
     int emtfSubsectorCe = GetSubsector(emtfSectorCe, subsectorCe);
     int fillOccupancyCe = occupancy_value(regionCe, stationCe, ringCe);
+
+    //std::cout << "==================================" << std::endl;
+    //std::cout << "=         DEBUG: 1               =" << std::endl;
+    //std::cout << "regionCe = " << regionCe << std::endl;
+    //std::cout << "stationCe = " << stationCe << std::endl;
+    //std::cout << "ringCe = " << ringCe << std::endl;
+    //std::cout << "sectorCe = " << sectorCe << std::endl;
+    //std::cout << "subsectorCe = " << subsectorCe << std::endl;
+    //std::cout << "phiIntCe = " << phiIntCe << std::endl;
+    //std::cout << "thetaIntCe = " << thetaIntCe << std::endl;
+    //std::cout << "bxCe = " << bxCe << std::endl;
+    //std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
+    //std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
+    //std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
+    //std::cout << "==================================" << std::endl;
     //int fillBxCe = bx_value(regionCe, emtfSectorCe); 
     
     //Chamber ID
@@ -158,13 +173,17 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   for (auto const& it : _nHit_Ce){
       int key = it.first;
       if (_nHit_Cu.find(key) != _nHit_Cu.end()){
+        //std::cout << "DEBUG:1: Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
         if (it.second == 1 && _nHit_Cu.at(key) == 1) {
+          //std::cout << "Entered in one hit condition" << std::endl;
           h2CeVsCuChamberCeChamberCuOneHit->Fill(_ID_Ce.at(key), _ID_Cu.at(key)); 
 	        h2CeVsCuPhiCePhiCuOneHit->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
 	        h2CeVsCuThetaCeThetaCuOneHit->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
           // Occupancy 
+          if (_bx_Ce.at(key) == 0 && _bx_Cu.at(key) == 0){
 	        h2CeVsCuChamberCuZoneCuOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
 	        h2CeVsCuChamberCeZoneCeOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+          }
           // Bx by zone
           h2CeVsCuBxCuZoneCuOccupancyOneHit->Fill(_bx_Cu.at(key), _zone_Cu.at(key));
           h2CeVsCuBxCeZoneCeOccupancyOneHit->Fill(_bx_Ce.at(key), _zone_Ce.at(key));
@@ -188,7 +207,11 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
             h1CeVsCuThetaCeThetaCuDiffOneHit_bx->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
 	          h2CeVsCuPhiCePhiCuOneHit_bx->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
 	          h2CeVsCuThetaCeThetaCuOneHit_bx->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
-            if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) h1CeVsCuPhiInDiagonalOneHit_bx->Fill(0.);
+            if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
+              h1CeVsCuPhiInDiagonalOneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+            }
             else {
               h1CeVsCuPhiOffDiagonalOneHit_bx->Fill(0.);
               h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
@@ -201,6 +224,23 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
               h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
             }
             if ((_theta_Ce.at(key) == _theta_Cu.at(key)) && (_phi_Ce.at(key) != _phi_Cu.at(key))) h1CeVsCuThetaPhiCeThetaPhiCuDiffOneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
+          }
+        }
+        else {
+          // Occupancy 
+          h2CeVsCuChamberCuZoneCuNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+          h2CeVsCuChamberCeZoneCeNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+          //std::cout << "Entered in more than one hit condition" << std::endl;
+
+          if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
+              h1CeVsCuPhiInDiagonalOneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+          }
+          else {
+              h1CeVsCuPhiOffDiagonalOneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
           }
         }
       }
@@ -1046,11 +1086,19 @@ void EMTF_CPPF_DQM::beginJob(){
   h2CeVsCuPhiCePhiCuOneHit_int=fs->make<TH2D>("h2CeVsCuPhiCePhiCuOneHit_int", "h2CeVsCuPhiCePhiCu_intOneHit",  124, 0., 1240., 124, 0., 1240.);
   h2CeVsCuThetaCeThetaCuOneHit_int=fs->make<TH2D>("h2CeVsCuThetaCeThetaCuOneHit_int", "h2CeVsCuThetaCeThetaCuOneHit_int",  32, 0., 32., 32, 0., 32.);
   h2CeVsCuChamberCuZoneCuOneHit = fs->make<TH2D>("h2CeVsCuChamberCuZoneCuOneHit", "CPPFDigis h2CeVsCuChamberCuZoneCuOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuChamberCuZoneCuNotOneHit = fs->make<TH2D>("h2CeVsCuChamberCuZoneCuNotOneHit", "CPPFDigis h2CeVsCuChamberCuZoneCuNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
   h2CeVsCuChamberCeZoneCeOneHit = fs->make<TH2D>("h2CeVsCuChamberCeZoneCeOneHit", "CPPFDigis h2CeVsCuChamberCeZoneCeOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuChamberCeZoneCeNotOneHit = fs->make<TH2D>("h2CeVsCuChamberCeZoneCeNotOneHit", "CPPFDigis h2CeVsCuChamberCeZoneCeNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
   h2CeVsCuBxCuZoneCuOccupancyOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
   h2CeVsCuBxCeZoneCeOccupancyOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
   h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_emu_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_emu_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOffThetaDiagonalOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOffThetaDiagonalOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCuZoneCuOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOneHit","CPPFDigis Bx_unpackerOneHit", 12, 0.5, 12.5, 8,-3.5,4.5);
