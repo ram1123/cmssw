@@ -25,7 +25,9 @@ process.source = cms.Source("PoolSource",
         fileNames = readFiles,
 )
 in_dir_name = './'
-readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator.root') )
+#readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator.root') )
+readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
+#readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator-2017-200k.root') )
 
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')
