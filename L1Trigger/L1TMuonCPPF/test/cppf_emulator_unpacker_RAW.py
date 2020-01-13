@@ -1,8 +1,11 @@
 import FWCore.ParameterSet.Config as cms
+import FWCore.Utilities.FileUtils as FileUtils
 import subprocess
 
 from FWCore.PythonUtilities.LumiList import LumiList
 from FWCore.ParameterSet.VarParsing import VarParsing
+
+mylist = FileUtils.loadListFromFile('/afs/cern.ch/user/r/rasharma/work/CPPF/garrasmelos/CMSSW_10_1_11/src/L1Trigger/L1TMuonCPPF/test/inputFiles_2018D.txt');
 
 options = VarParsing("analysis")
 options.register("runList"
@@ -11,16 +14,26 @@ options.register("runList"
                  , VarParsing.varType.int
                  , "Run selection")
 options.register("lumiList"
-                 #, "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/DCSOnly/json_DCSONLY.txt"
-                 , "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/DCSOnly/json_DCSONLY.txt"
+                 , "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/DCSOnly/json_DCSONLY.txt"
+                 #, "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/DCSOnly/json_DCSONLY.txt"
                  , VarParsing.multiplicity.singleton
                  , VarParsing.varType.string
                  , "JSON file")
 options.parseArguments()
 
 lumilist = LumiList(filename = options.lumiList)
+#print "\n\n\n","="*50,"\n\n\n"
+#print lumilist
+#print "\n\n\n","="*50,"\n\n\n"
+#print "runlist\n\n"
+#print options.runList
+#print "\n\n\n","="*50,"\n\n\n"
 if len(options.runList) :
     runlist = LumiList(runs = options.runList)
+    #print "\n\n\n===================\n\n\n"
+    #print "\trunlist=\n"
+    #print runlist
+    #print "=========="
     lumilist = lumilist & runlist
     if not len(lumilist) :
         raise RuntimeError, "The resulting LumiList is empty"
@@ -85,31 +98,28 @@ process.options = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 
 # Input source
-eos_cmd = '/afs/cern.ch/project/eos/installation/ams/bin/eos.select'
-readFiles = cms.untracked.vstring()
-process.source = cms.Source("PoolSource",
-        fileNames = readFiles,
-)
+#eos_cmd = '/afs/cern.ch/project/eos/installation/ams/bin/eos.select'
+#readFiles = cms.untracked.vstring()
+#process.source = cms.Source("PoolSource",
+#        fileNames = readFiles,
+#)
 #in_dir_name = '/eos/cms/store/express/Commissioning2018/ExpressPhysics/FEVT/Express-v1/000/314/574/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2017F/SingleMuon/RAW/v1/000/306/121/00000/'
 #in_dir_name = '/eos/cms/store/data/Commissioning2018/ZeroBias/RAW/v1/000/314/663/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2018A/ZeroBias/RAW/v1/000/315/420/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2018A/SingleMuon/RAW/v1/000/315/764/00000/'
 #in_dir_name = '/eos/cms/store/data/Run2018A/SingleMuon/RAW-RECO/ZMu-PromptReco-v1/000/315/800/00000/'
-in_dir_name = '/eos/cms/store/data/Run2017F/SingleMuon/RAW/v1/000/306/125/00000/'
+#in_dir_name = '/eos/cms/store/data/Run2017F/SingleMuon/RAW/v1/000/306/125/00000/'
 
-readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4EDD5765-B3C0-E711-B906-02163E01A2D5.root') )
+#readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4EDD5765-B3C0-E711-B906-02163E01A2D5.root') )
 #readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4CD446F8-8643-E811-ADE1-FA163E24B9CF.root') )
 #readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'AADB01BE-474C-E811-A57C-02163E013D6F.root') )
 
-#iFile = 0
-#for in_file_name in subprocess.check_output([eos_cmd, 'ls', in_dir_name]).splitlines():
-#    if not ('.root' in in_file_name): continue
-#    iFile += 1
-#    readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
+process.source = cms.Source("PoolSource",
+            fileNames = cms.untracked.vstring(*mylist)
+            )
 
-
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(200) )
 #process.maxLuminosityBlocks = cms.untracked.PSet(input = cms.untracked.int32(10))
 
 process.p = cms.Path( process.rpcUnpackingModule 
@@ -126,7 +136,7 @@ process.out = cms.OutputModule("PoolOutputModule"
                                                                         "keep *_rpcRecHits_*_*",
                                                                         "keep *_rpcCPPFRawToDigi_*_*")
                                #, fileName = cms.untracked.string(options.outputFile)
-                               , fileName = cms.untracked.string("test_cppf_unpacker_emulator.root")
+                               , fileName = cms.untracked.string("output_cppf_unpacker_emulator-2018D-testing.root")
                                , SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("p"))
 )
 

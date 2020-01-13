@@ -14,8 +14,8 @@ options.register("runList"
                  , VarParsing.varType.int
                  , "Run selection")
 options.register("lumiList"
-                 #, "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/DCSOnly/json_DCSONLY.txt"
-                 , "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/DCSOnly/json_DCSONLY.txt"
+                 , "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions18/13TeV/DCSOnly/json_DCSONLY.txt"
+                 #, "/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions17/13TeV/DCSOnly/json_DCSONLY.txt"
                  , VarParsing.multiplicity.singleton
                  , VarParsing.varType.string
                  , "JSON file")
@@ -86,8 +86,8 @@ process.source = cms.Source("PoolSource",
             fileNames = cms.untracked.vstring(*mylist)
             )
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(200000) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(200000) )
+#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 #process.maxLuminosityBlocks = cms.untracked.PSet(input = cms.untracked.int32(10))
 
 process.p = cms.Path( process.rpcUnpackingModule 
@@ -107,7 +107,7 @@ process.out = cms.OutputModule("PoolOutputModule"
 									                                                      "keep *_emtfStage2Digis_*_*",
 									                                                      "keep *_simEmtfDigisData_*_*")
                                #, fileName = cms.untracked.string(options.outputFile)
-                               , fileName = cms.untracked.string("test_cppf_unpacker_emulator-2018-allEvents-BugFixTanggy.root")
+                               , fileName = cms.untracked.string("test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root")
                                , SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("p"))
 )
 

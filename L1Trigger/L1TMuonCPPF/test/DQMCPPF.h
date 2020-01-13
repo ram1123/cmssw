@@ -97,31 +97,31 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* bx_sector_emu_unpacker;
 
 
-  TH1D* Matches_emtf;
+  //TH1D* Matches_emtf;
 
-  TH1D* Matches_emtf_ch;
-  TH2D* chamber_emu_emtf_test;
-  TH2D* chamber_emu_emtf;
-  TH2D* phi_emu_emtf;
-  TH2D* theta_emu_emtf;
-  TH2D* bx_emu_emtf;
+  //TH1D* Matches_emtf_ch;
+  //TH2D* chamber_emu_emtf_test;
+  //TH2D* chamber_emu_emtf;
+  //TH2D* phi_emu_emtf;
+  //TH2D* theta_emu_emtf;
+  //TH2D* bx_emu_emtf;
 
-  TH1D* Matches_emtf_bx;
-  TH2D* phi_emu_emtf_bx;
-  TH2D* theta_emu_emtf_bx;
-  TH2D* bx_emu_emtf_bx;
+  ////TH1D* Matches_emtf_bx;
+  //TH2D* phi_emu_emtf_bx;
+  //TH2D* theta_emu_emtf_bx;
+  //TH2D* bx_emu_emtf_bx;
 
-  
-  TH1D* Matches_emtf_int;
-  TH2D* phi_emu_emtf_int;
-  TH2D* theta_emu_emtf_int;
-  TH2D* occupancy_emtf;
-  TH2D* occupancy_emu_emtf;
+  //
+  ////TH1D* Matches_emtf_int;
+  //TH2D* phi_emu_emtf_int;
+  //TH2D* theta_emu_emtf_int;
+  //TH2D* occupancy_emtf;
+  //TH2D* occupancy_emu_emtf;
 
-  TH2D* bx_occupancy_emtf;
-  TH2D* bx_occupancy_emu_emtf;
-  TH2D* bx_sector_emtf; 
-  TH2D* bx_sector_emu_emtf;
+  //TH2D* bx_occupancy_emtf;
+  //TH2D* bx_occupancy_emu_emtf;
+  //TH2D* bx_sector_emtf; 
+  //TH2D* bx_sector_emu_emtf;
  
   TH2D* bx;
   TH2D* bx_occupancy;
