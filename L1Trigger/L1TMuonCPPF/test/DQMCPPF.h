@@ -119,40 +119,40 @@ class DQM_CPPF : public edm::EDAnalyzer {
 
 
   // NEW HISTOS
+  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit;
+  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit_bx;
+  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit;
+  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit_bx;
+  TH1D*  h1CeVsCuBxCeBxCuDiff_OneHit;
+  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit;
+  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit_bx;
+  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit;
+  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit_bx;
+  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit;
+  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit_bx;
+  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit;
+  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit_bx;
+  TH1D*  h1CeVsCuPhi_InDiagonal_NotOneHit_bx;
+  TH1D*  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx;
+  TH1D*  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx;
 
   TH2D*  h2CeVsCuChamberCuChamberCe_OneHit;
   TH2D*  h2CeVsCuPhiCePhiCu_OneHit;
   TH2D*  h2CeVsCuPhiCePhiCu_OneHit_bx;
-  TH2D*  h2CeVsCuThetaCeThetaCu_OneHit;
   TH2D*  h2CeVsCuChamberCuZoneCu_OneHit_bx;
   TH2D*  h2CeVsCuChamberCeZoneCe_OneHit_bx;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancy_OneHit;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancy_OneHit;
   TH2D*  h2CeVsCuBxCuZoneCu_OneHit;
   TH2D*  h2CeVsCuBxCeZoneCe_OneHit;
-  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit;
-  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit;
-  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit_bx;
-  TH1D*  h1CeVsCuBxCeBxCuDiff_OneHit;
-  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit;
-  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit;
-  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit;
-  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit_bx;
+  TH2D*  h2CeVsCuThetaCeThetaCu_OneHit;
   TH2D*  h2CeVsCuThetaCeThetaCu_OneHit_bx;
-  TH1D*  h1CeVsCuPhi_InDiagonal_NotOneHit_bx;
-  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit_bx;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit_bx;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx;
   TH2D*  h2CeVsCuChamberCuZoneCu_NotOneHit;
   TH2D*  h2CeVsCuChamberCeZoneCe_NotOneHit;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit;
