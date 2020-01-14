@@ -181,68 +181,68 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         //std::cout << "DEBUG:1: Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
         if (it.second == 1 && _nHit_Cu.at(key) == 1) {
           //std::cout << "Entered in one hit condition" << std::endl;
-          h2CeVsCuChamberCuChamberCeOneHit->Fill(_ID_Cu.at(key), _ID_Ce.at(key)); 
-	  h2CeVsCuPhiCePhiCuOneHit->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
-	  h2CeVsCuThetaCeThetaCuOneHit->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
+          h2CeVsCuChamberCuChamberCe_OneHit->Fill(_ID_Cu.at(key), _ID_Ce.at(key)); 
+	  h2CeVsCuPhiCePhiCu_OneHit->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
+	  h2CeVsCuThetaCeThetaCu_OneHit->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
           // Occupancy 
           if (_bx_Ce.at(key) == 0 && _bx_Cu.at(key) == 0){
-	        h2CeVsCuChamberCuZoneCuOneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-	        h2CeVsCuChamberCeZoneCeOneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+	        h2CeVsCuChamberCuZoneCu_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+	        h2CeVsCuChamberCeZoneCe_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
           }
           // Bx by zone
-          h2CeVsCuBxCuZoneCuOccupancyOneHit->Fill(_bx_Cu.at(key), _zone_Cu.at(key));
-          h2CeVsCuBxCeZoneCeOccupancyOneHit->Fill(_bx_Ce.at(key), _zone_Ce.at(key));
+          h2CeVsCuBxCuZoneCuOccupancy_OneHit->Fill(_bx_Cu.at(key), _zone_Cu.at(key));
+          h2CeVsCuBxCeZoneCeOccupancy_OneHit->Fill(_bx_Ce.at(key), _zone_Ce.at(key));
           // Bx by EMTF sector
-          h2CeVsCuBxCuZoneCuOneHit->Fill(_emtfSector_Cu.at(key), _bx_Cu.at(key));
-          h2CeVsCuBxCeZoneCeOneHit->Fill(_emtfSector_Ce.at(key), _bx_Ce.at(key));
+          h2CeVsCuBxCuZoneCu_OneHit->Fill(_emtfSector_Cu.at(key), _bx_Cu.at(key));
+          h2CeVsCuBxCeZoneCe_OneHit->Fill(_emtfSector_Ce.at(key), _bx_Ce.at(key));
           //Difference between variables
-          h1CeVsCuPhiCePhiCuDiffOneHit->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
-          h1CeVsCuThetaCeThetaCuDiffOneHit->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
-          h1CeVsCuBxCeBxCuDiffOneHit->Fill(_bx_Ce.at(key) - _bx_Cu.at(key));
+          h1CeVsCuPhiCePhiCuDiff_OneHit->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
+          h1CeVsCuThetaCeThetaCuDiff_OneHit->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
+          h1CeVsCuBxCeBxCuDiff_OneHit->Fill(_bx_Ce.at(key) - _bx_Cu.at(key));
 
-          if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) h1CeVsCuPhiInDiagonalOneHit->Fill(0.);
-          else h1CeVsCuPhiOffDiagonalOneHit->Fill(0.);
-          if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuThetaInDiagonalOneHit->Fill(0.);
-          else h1CeVsCuThetaOffDiagonalOneHit->Fill(0.);
+          if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) h1CeVsCuPhi_InDiagonal_OneHit->Fill(0.);
+          else h1CeVsCuPhi_OffDiagonal_OneHit->Fill(0.);
+          if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuTheta_InDiagonal_OneHit->Fill(0.);
+          else h1CeVsCuTheta_OffDiagonal_OneHit->Fill(0.);
           if (_bx_Ce.at(key) == 0 && _bx_Cu.at(key) == 0){
-            h1CeVsCuPhiCePhiCuDiffOneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
-            h1CeVsCuThetaCeThetaCuDiffOneHit_bx->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
-	    h2CeVsCuPhiCePhiCuOneHit_bx->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
-	    h2CeVsCuThetaCeThetaCuOneHit_bx->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
+            h1CeVsCuPhiCePhiCuDiff_OneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
+            h1CeVsCuThetaCeThetaCuDiff_OneHit_bx->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
+	    h2CeVsCuPhiCePhiCu_OneHit_bx->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
+	    h2CeVsCuThetaCeThetaCu_OneHit_bx->Fill(_theta_Cu.at(key), _theta_Ce.at(key)); 
             if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
-              h1CeVsCuPhiInDiagonalOneHit_bx->Fill(0.);
-              h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-              h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+              h1CeVsCuPhi_InDiagonal_OneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
             }
             else {
-              h1CeVsCuPhiOffDiagonalOneHit_bx->Fill(0.);
-              h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-              h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+              h1CeVsCuPhi_OffDiagonal_OneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
             }
-            if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuThetaInDiagonalOneHit_bx->Fill(0.);
+            if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuTheta_InDiagonal_OneHit_bx->Fill(0.);
             else {
-              h1CeVsCuThetaOffDiagonalOneHit_bx->Fill(0.);
-              h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonalOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-              h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+              h1CeVsCuTheta_OffDiagonal_OneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
             }
-            if ((_theta_Ce.at(key) == _theta_Cu.at(key)) && (_phi_Ce.at(key) != _phi_Cu.at(key))) h1CeVsCuThetaPhiCeThetaPhiCuDiffOneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
+            if ((_theta_Ce.at(key) == _theta_Cu.at(key)) && (_phi_Ce.at(key) != _phi_Cu.at(key))) h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
           }
         }
         else {
           // Occupancy 
-          h2CeVsCuChamberCuZoneCuNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-          h2CeVsCuChamberCeZoneCeNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+          h2CeVsCuChamberCuZoneCu_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+          h2CeVsCuChamberCeZoneCe_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
           //std::cout << "Entered in more than one hit condition" << std::endl;
 
           if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
-              h1CeVsCuPhiInDiagonalNotOneHit_bx->Fill(0.);
-              h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-              h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+              h1CeVsCuPhi_InDiagonal_NotOneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
           }
           else {
-              h1CeVsCuPhiOffDiagonalNotOneHit_bx->Fill(0.);
-              h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-              h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+              h1CeVsCuPhi_OffDiagonal_NotOneHit_bx->Fill(0.);
+              h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+              h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
           }
         }
       }
@@ -530,45 +530,47 @@ void DQM_CPPF::beginJob(){
 
   /// NEW HISTO FROM ANOTHER CODDEp
 
-  h1CeVsCuPhiCePhiCuDiffOneHit = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiffOneHit", "h1CeVsCuPhiCePhiCuDiffOneHit",  200, -100., 100.);
-  h1CeVsCuThetaCeThetaCuDiffOneHit = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiffOneHit", "h1CeVsCuThetaCeThetaCuDiffOneHit",  200, -100., 100.);
-  h1CeVsCuBxCeBxCuDiffOneHit = fs->make<TH1D>("h1CeVsCuBxCeBxCuDiffOneHit","h1CeVsCuBxCeBxCuDiffOneHit", 8, -3.5, 4.5);
-  h1CeVsCuPhiInDiagonalOneHit = fs->make<TH1D>("h1CeVsCuPhiInDiagonalOneHit", "CPPFDigis_h1CeVsCuPhiInDiagonalOneHit" , 2, 0. , 2.);
-  h1CeVsCuPhiOffDiagonalOneHit = fs->make<TH1D>("h1CeVsCuPhiOffDiagonalOneHit", "CPPFDigis_h1CeVsCuPhiOffDiagonalOneHit" , 2, 0. , 2.);
-  h1CeVsCuThetaInDiagonalOneHit = fs->make<TH1D>("h1CeVsCuThetaInDiagonalOneHit", "CPPFDigis_h1CeVsCuThetaInDiagonalOneHit" , 2, 0. , 2.);
-  h1CeVsCuThetaOffDiagonalOneHit = fs->make<TH1D>("h1CeVsCuThetaOffDiagonalOneHit", "CPPFDigis_h1CeVsCuThetaOffDiagonalOneHit" , 2, 0. , 2.);
-  h1CeVsCuPhiCePhiCuDiffOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiffOneHit_bx", "h1CeVsCuPhiCePhiCuDiffOneHit_bx",  200, -100., 100.);
-  h1CeVsCuThetaCeThetaCuDiffOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiffOneHit_bx", "h1CeVsCuThetaCeThetaCuDiffOneHit_bx",  200, -100., 100.);
-  h2CeVsCuThetaCeThetaCuOneHit_bx = fs->make<TH2D>("h2CeVsCuThetaCeThetaCuOneHit_bx", "h2CeVsCuThetaCeThetaCuOneHit_bx",  32, 0., 32., 32, 0., 32.);
-  h1CeVsCuPhiInDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiInDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuPhiInDiagonalOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuPhiInDiagonalNotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiInDiagonalNotOneHit_bx", "CPPFDigis_h1CeVsCuPhiInDiagonalNotOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuThetaInDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaInDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuThetaInDiagonalOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuThetaOffDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaOffDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuThetaOffDiagonalOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuThetaPhiCeThetaPhiCuDiffOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaPhiCeThetaPhiCuDiffOneHit_bx", "h1CeVsCuThetaPhiCeThetaPhiCuDiffOneHit_bx",  200, -100., 100.);
-  h1CeVsCuPhiOffDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiOffDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuPhiOffDiagonalOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuPhiOffDiagonalNotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiOffDiagonalNotOneHit_bx", "CPPFDigis_h1CeVsCuPhiOffDiagonalNotOneHit_bx" , 2, 0. , 2.);
-  h2CeVsCuChamberCuChamberCeOneHit = fs->make<TH2D>("h2CeVsCuChamberCuChamberCeOneHit","h2CeVsCuChamberCuChamberCeOneHit", 36, 1.,37.,36,1.,37.);
-  h2CeVsCuPhiCePhiCuOneHit = fs->make<TH2D>("h2CeVsCuPhiCePhiCuOneHit", "h2CeVsCuPhiCePhiCuOneHit",  124, 0., 1240., 124, 0., 1240.);
-  h2CeVsCuPhiCePhiCuOneHit_bx = fs->make<TH2D>("h2CeVsCuPhiCePhiCuOneHit_bx", "h2CeVsCuPhiCePhiCuOneHit_bx",  124, 0., 1240., 124, 0., 1240.);
-  h2CeVsCuThetaCeThetaCuOneHit = fs->make<TH2D>("h2CeVsCuThetaCeThetaCuOneHit", "h2CeVsCuThetaCeThetaCuOneHit",  32, 0., 32., 32, 0., 32.);
-  h2CeVsCuChamberCuZoneCuOneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCuZoneCuOneHit_bx", "CPPFDigis h2CeVsCuChamberCuZoneCuOneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  h2CeVsCuChamberCeZoneCeOneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCeZoneCeOneHit_bx", "CPPFDigis h2CeVsCuChamberCeZoneCeOneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  h2CeVsCuBxCuZoneCuOccupancyOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
-  h2CeVsCuBxCeZoneCeOccupancyOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
-  h2CeVsCuBxCuZoneCuOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOneHit","CPPFDigis Bx_unpackerOneHit", 12, 0.5, 12.5, 8,-3.5,4.5);
-  h2CeVsCuBxCeZoneCeOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOneHit","CPPFDigis Bx_emu_unpackerOneHit", 12, 0.5, 12.5, 8,-3.5,4.5);
-  h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonalOneHit","CPPFDigis Bx_Occupancy_emu_unpackerOffThetaDiagonalOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonalOneHit","CPPFDigis Bx_Occupancy_unpackerOffThetaDiagonalOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuChamberCuZoneCuNotOneHit = fs->make<TH2D>("h2CeVsCuChamberCuZoneCuNotOneHit", "CPPFDigis h2CeVsCuChamberCuZoneCuNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  h2CeVsCuChamberCeZoneCeNotOneHit = fs->make<TH2D>("h2CeVsCuChamberCeZoneCeNotOneHit", "CPPFDigis h2CeVsCuChamberCeZoneCeNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyInPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_emu_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyInPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_emu_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
-  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalNotOneHit","CPPFDigis Bx_Occupancy_unpackerNotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h1CeVsCuPhiCePhiCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff_OneHit", "h1CeVsCuPhiCePhiCuDiff_OneHit",  200, -100., 100.);
+  h1CeVsCuThetaCeThetaCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiff_OneHit", "h1CeVsCuThetaCeThetaCuDiff_OneHit",  200, -100., 100.);
+  h1CeVsCuThetaCeThetaCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiff_OneHit_bx", "h1CeVsCuThetaCeThetaCuDiff_OneHit_bx",  200, -100., 100.);
+  h1CeVsCuBxCeBxCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuBxCeBxCuDiff_OneHit","h1CeVsCuBxCeBxCuDiff_OneHit", 8, -3.5, 4.5);
+  h1CeVsCuPhi_InDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_OneHit", "CPPFDigis_h1CeVsCuPhi_InDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuPhi_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuTheta_InDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuTheta_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuPhiCePhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff_OneHit_bx", "h1CeVsCuPhiCePhiCuDiff_OneHit_bx",  200, -100., 100.);
+  h2CeVsCuThetaCeThetaCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuThetaCeThetaCu_OneHit_bx", "h2CeVsCuThetaCeThetaCu_OneHit_bx",  32, 0., 32., 32, 0., 32.);
+  h1CeVsCuPhi_InDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuPhi_InDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuPhi_InDiagonal_NotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_NotOneHit_bx", "CPPFDigis_h1CeVsCuPhi_InDiagonal_NotOneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuTheta_InDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuTheta_OffDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx", "h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx",  200, -100., 100.);
+  h1CeVsCuPhi_OffDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_NotOneHit_bx", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_NotOneHit_bx" , 2, 0. , 2.);
+
+
+  h2CeVsCuChamberCuChamberCe_OneHit = fs->make<TH2D>("h2CeVsCuChamberCuChamberCe_OneHit","h2CeVsCuChamberCuChamberCe_OneHit", 36, 1.,37.,36,1.,37.);
+  h2CeVsCuPhiCePhiCu_OneHit = fs->make<TH2D>("h2CeVsCuPhiCePhiCu_OneHit", "h2CeVsCuPhiCePhiCu_OneHit",  124, 0., 1240., 124, 0., 1240.);
+  h2CeVsCuPhiCePhiCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuPhiCePhiCu_OneHit_bx", "h2CeVsCuPhiCePhiCu_OneHit_bx",  124, 0., 1240., 124, 0., 1240.);
+  h2CeVsCuThetaCeThetaCu_OneHit = fs->make<TH2D>("h2CeVsCuThetaCeThetaCu_OneHit", "h2CeVsCuThetaCeThetaCu_OneHit",  32, 0., 32., 32, 0., 32.);
+  h2CeVsCuChamberCuZoneCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCuZoneCu_OneHit_bx", "CPPFDigis h2CeVsCuChamberCuZoneCu_OneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuChamberCeZoneCe_OneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCeZoneCe_OneHit_bx", "CPPFDigis h2CeVsCuChamberCeZoneCe_OneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuBxCuZoneCuOccupancy_OneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancy_OneHit","CPPFDigis Bx_Occupancy_unpacker_OneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  h2CeVsCuBxCeZoneCeOccupancy_OneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancy_OneHit","CPPFDigis Bx_Occupancy_emu_unpacker_OneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  h2CeVsCuBxCuZoneCu_OneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCu_OneHit","CPPFDigis Bx_unpacker_OneHit", 12, 0.5, 12.5, 8,-3.5,4.5);
+  h2CeVsCuBxCeZoneCe_OneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCe_OneHit","CPPFDigis Bx_emu_unpacker_OneHit", 12, 0.5, 12.5, 8,-3.5,4.5);
+  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_emu_unpacker_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_unpacker_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_emu_unpacker_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_unpacker_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_emu_unpackerOffThetaDiagonal_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx","CPPFDigis Bx_Occupancy_unpackerOffThetaDiagonal_OneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuChamberCuZoneCu_NotOneHit = fs->make<TH2D>("h2CeVsCuChamberCuZoneCu_NotOneHit", "CPPFDigis h2CeVsCuChamberCuZoneCu_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuChamberCeZoneCe_NotOneHit = fs->make<TH2D>("h2CeVsCuChamberCeZoneCe_NotOneHit", "CPPFDigis h2CeVsCuChamberCeZoneCe_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5); 
+  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_emu_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_emu_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   return;
 }
 //define this as a plug-in
