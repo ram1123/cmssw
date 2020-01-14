@@ -493,7 +493,7 @@ void DQM_CPPF::beginJob(){
 
   h1_bx_emulated = fs->make<TH1D>("h1_bx_emulated","Emulated bunch crossing",8, -4., 4.);
   h1_bx_unpacker = fs->make<TH1D>("h1_bx_unpacker","Unpacked bunch crossing",8, -4., 4.);
-  h1_bx_diff_emu_unpacker = fs->make<TH1D>("h1_bx_diff_emu_unpacker","Difference of Bunch crossing emulator and unpacker",8,0,8.);
+  h1_bx_diff_emu_unpacker = fs->make<TH1D>("h1_bx_diff_emu_unpacker","Difference of Bunch crossing emulator and unpacker",500,0,100.);
   h1_phi_diff_emu_unpacker = fs->make<TH1D>("h1_phi_diff_emu_unpacker","Difference of phi emulator and unpacker",32,0.,8.);
   
   h2_chamber_emu_unpacker = fs->make<TH2D>("h2_chamber_emu_unpacker","h2_chamber_emu_unpacker", 36, 1.,37.,36,1.,37.);
@@ -531,28 +531,28 @@ void DQM_CPPF::beginJob(){
   /// NEW HISTO FROM ANOTHER CODDEp
 
   h1CeVsCuPhiCePhiCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff_OneHit", "h1CeVsCuPhiCePhiCuDiff_OneHit",  200, -100., 100.);
+  h1CeVsCuPhiCePhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff_OneHit_bx", "h1CeVsCuPhiCePhiCuDiff_OneHit_bx",  200, -100., 100.);
   h1CeVsCuThetaCeThetaCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiff_OneHit", "h1CeVsCuThetaCeThetaCuDiff_OneHit",  200, -100., 100.);
   h1CeVsCuThetaCeThetaCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiff_OneHit_bx", "h1CeVsCuThetaCeThetaCuDiff_OneHit_bx",  200, -100., 100.);
   h1CeVsCuBxCeBxCuDiff_OneHit = fs->make<TH1D>("h1CeVsCuBxCeBxCuDiff_OneHit","h1CeVsCuBxCeBxCuDiff_OneHit", 8, -3.5, 4.5);
   h1CeVsCuPhi_InDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_OneHit", "CPPFDigis_h1CeVsCuPhi_InDiagonal_OneHit" , 2, 0. , 2.);
-  h1CeVsCuPhi_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_OneHit" , 2, 0. , 2.);
-  h1CeVsCuTheta_InDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit" , 2, 0. , 2.);
-  h1CeVsCuTheta_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit" , 2, 0. , 2.);
-  h1CeVsCuPhiCePhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiff_OneHit_bx", "h1CeVsCuPhiCePhiCuDiff_OneHit_bx",  200, -100., 100.);
-  h2CeVsCuThetaCeThetaCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuThetaCeThetaCu_OneHit_bx", "h2CeVsCuThetaCeThetaCu_OneHit_bx",  32, 0., 32., 32, 0., 32.);
   h1CeVsCuPhi_InDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuPhi_InDiagonal_OneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuPhi_InDiagonal_NotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_NotOneHit_bx", "CPPFDigis_h1CeVsCuPhi_InDiagonal_NotOneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuTheta_InDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuTheta_OffDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit_bx" , 2, 0. , 2.);
-  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx", "h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx",  200, -100., 100.);
+  h1CeVsCuPhi_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_OneHit" , 2, 0. , 2.);
   h1CeVsCuPhi_OffDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuTheta_InDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuTheta_InDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_InDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_InDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuTheta_OffDiagonal_OneHit = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit" , 2, 0. , 2.);
+  h1CeVsCuTheta_OffDiagonal_OneHit_bx = fs->make<TH1D>("h1CeVsCuTheta_OffDiagonal_OneHit_bx", "CPPFDigis_h1CeVsCuTheta_OffDiagonal_OneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuPhi_InDiagonal_NotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_InDiagonal_NotOneHit_bx", "CPPFDigis_h1CeVsCuPhi_InDiagonal_NotOneHit_bx" , 2, 0. , 2.);
   h1CeVsCuPhi_OffDiagonal_NotOneHit_bx = fs->make<TH1D>("h1CeVsCuPhi_OffDiagonal_NotOneHit_bx", "CPPFDigis_h1CeVsCuPhi_OffDiagonal_NotOneHit_bx" , 2, 0. , 2.);
+  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx = fs->make<TH1D>("h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx", "h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx",  200, -100., 100.);
 
 
   h2CeVsCuChamberCuChamberCe_OneHit = fs->make<TH2D>("h2CeVsCuChamberCuChamberCe_OneHit","h2CeVsCuChamberCuChamberCe_OneHit", 36, 1.,37.,36,1.,37.);
   h2CeVsCuPhiCePhiCu_OneHit = fs->make<TH2D>("h2CeVsCuPhiCePhiCu_OneHit", "h2CeVsCuPhiCePhiCu_OneHit",  124, 0., 1240., 124, 0., 1240.);
   h2CeVsCuPhiCePhiCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuPhiCePhiCu_OneHit_bx", "h2CeVsCuPhiCePhiCu_OneHit_bx",  124, 0., 1240., 124, 0., 1240.);
   h2CeVsCuThetaCeThetaCu_OneHit = fs->make<TH2D>("h2CeVsCuThetaCeThetaCu_OneHit", "h2CeVsCuThetaCeThetaCu_OneHit",  32, 0., 32., 32, 0., 32.);
+  h2CeVsCuThetaCeThetaCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuThetaCeThetaCu_OneHit_bx", "h2CeVsCuThetaCeThetaCu_OneHit_bx",  32, 0., 32., 32, 0., 32.);
   h2CeVsCuChamberCuZoneCu_OneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCuZoneCu_OneHit_bx", "CPPFDigis h2CeVsCuChamberCuZoneCu_OneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
   h2CeVsCuChamberCeZoneCe_OneHit_bx = fs->make<TH2D>("h2CeVsCuChamberCeZoneCe_OneHit_bx", "CPPFDigis h2CeVsCuChamberCeZoneCe_OneHit_bx", 36, 0.5, 36.5, 12, 0.5,12.5); 
   h2CeVsCuBxCuZoneCuOccupancy_OneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancy_OneHit","CPPFDigis Bx_Occupancy_unpacker_OneHit", 8, -3.5, 4.5, 12, 0.5, 12.5);

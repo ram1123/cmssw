@@ -3,6 +3,7 @@ import ROOT
 from ROOT import gSystem, TFile, gROOT, gStyle, TGaxis
 from ROOT import TCanvas, TH1, TColor
 from array import array
+import os
 
 gROOT.SetBatch()
 TGaxis.SetMaxDigits(3)
@@ -33,13 +34,30 @@ hdir = "DQM_CPPF"
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
 hnames     = [ 
-               ["h1_matches_unpacker", "Inclusive total #hits", ""],
-               ["h1_matches_unpacker_bx", "#hits (same bunch crossing)", ""], 
-               ["h1_matches_unpacker_bx_phi", "#hits (same bunch && same phi)", ""],
-               ["h1_bx_emulated", "Emulated Bunch crossing", ""],
-               ["h1_bx_unpacker", "Unpacker Bunch crossing", ""],
-               ["h1_bx_diff_emu_unpacker", "BX_{emulator} - BX_{unpacker}", ""],
-               ["h1_phi_diff_emu_unpacker", "#phi_{emulator}-#phi_{unpacker}", ""],
+               ["h1_matches_unpacker", "Inclusive total #hits", "", "Basic Cuts"],
+               ["h1_matches_unpacker_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
+               ["h1_matches_unpacker_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_bx_emulated", "Emulated Bunch crossing", "", "Basic Cuts"],
+               ["h1_bx_unpacker", "Unpacker Bunch crossing", "", "Basic Cuts"],
+               ["h1_bx_diff_emu_unpacker", "BX_{emulator} - BX_{unpacker}", "", "Basic Cuts"],
+               ["h1_phi_diff_emu_unpacker", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts"],
+
+               ["h1CeVsCuPhiCePhiCuDiff_OneHit", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts && One hit"],
+               ["h1CeVsCuPhiCePhiCuDiff_OneHit_bx", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts && Same Bx && One hit"],
+               ["h1CeVsCuThetaCeThetaCuDiff_OneHit", "#theta_{emulator}-#theta_{unpacker}", "", "Basic Cuts && One hit"],
+               ["h1CeVsCuThetaCeThetaCuDiff_OneHit_bx", "#theta_{emulator}-#theta_{unpacker}", "", "Basic Cuts && Same Bx && One hit"],
+               ["h1CeVsCuBxCeBxCuDiff_OneHit", "BX_{emulator} - BX_{unpacker}", "", "Basic Cuts && One hit"],
+               ["h1CeVsCuPhi_InDiagonal_OneHit", " ", "", "Basic Cut && One hit && Same Phi"],
+               ["h1CeVsCuPhi_InDiagonal_OneHit_bx", " ", "", "Basic Cut && One hit && Same Phi && Same BX"],
+               ["h1CeVsCuPhi_OffDiagonal_OneHit", "", "", "Basic Cut && One hit && !(Same Phi)"],
+               ["h1CeVsCuPhi_OffDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && !(Same Phi) && Same BX"],
+               ["h1CeVsCuTheta_InDiagonal_OneHit", "", "", "Basic Cut && One hit && Same Theta"],
+               ["h1CeVsCuTheta_InDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && Same Theta && Same BX"],
+               ["h1CeVsCuTheta_OffDiagonal_OneHit", "", "", "Basic Cut && One hit && !(Same Theta)"],
+               ["h1CeVsCuTheta_OffDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && !(Same Theta) && Same BX"],
+               ["h1CeVsCuPhi_InDiagonal_NotOneHit_bx", "", "", "Basic Cut && (> 1 hit) && Same Phi && Same BX"],
+               ["h1CeVsCuPhi_OffDiagonal_NotOneHit_bx", "", "", "Basic Cut && (> 1 hit) && !(Same Phi) && Same BX"],
+               ["h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cut && (#theta_{emulator} == #theta_{unpacker}) && (#phi_{emulator} != #phi_{unpacker}) && One Hit && Same BX"],
              ]
 
 h2dnames = [
@@ -97,6 +115,54 @@ h2dnames = [
               "Bunch crossing emulator", "Bunch crossing unpacker"],
             ["h2_bx_emu_unpacker_bx", "Basic Cuts && Same Bx", 
               "Bunch crossing emulator", "Bunch crossing unpacker"],
+            
+            # One hit histograms
+            ["h2CeVsCuChamberCuChamberCe_OneHit", "Basic Cuts && One hit",
+              "Chamber ID (Unpacker)", "Chamber ID (Emulator)"],
+            ["h2CeVsCuPhiCePhiCu_OneHit", "Basic Cuts && One hit",
+              "#phi_{unpacker}", "#phi_{emulator}"],
+            ["h2CeVsCuPhiCePhiCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
+              "#phi_{unpacker}", "#phi_{emulator}"], 
+            ["h2CeVsCuThetaCeThetaCu_OneHit", "Basic Cuts && One hit",
+              "#theta_{unpacker}", "#theta_{emulator}"],
+            ["h2CeVsCuThetaCeThetaCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
+              "#theta_{unpacker}", "#theta_{emulator}"],
+            ["h2CeVsCuChamberCuZoneCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuChamberCeZoneCe_OneHit_bx", "Basic Cuts && One hit && Same BX",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancy_OneHit", "Basic Cuts && One hit",
+              "Bunch crossing unpacker",  "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuBxCeZoneCeOccupancy_OneHit", "Basic Cuts && One hit", 
+              "Bunch crossing emulator",  "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCu_OneHit", "Basic Cuts && One hit",
+              "RPC sub-sectors unpacker", "Bunch crossing unpacker"],
+            ["h2CeVsCuBxCeZoneCe_OneHit", "Basic Cuts && One hit", 
+              "RPC sub-sectors emulator", "Bunch crossing emulator"],
+            ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e==#phi_u && Same BX",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e==#phi_u && Same BX",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e!=#phi_u && Same BX",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e!=#phi_u && Same BX",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx", "Basic Cuts && One hit && #theta_e!=#theta_u && Same BX",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx", "Basic Cuts && One hit && #theta_e!=#theta_u && Same BX",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuChamberCeZoneCe_NotOneHit", "Basic Cuts && (> 1 hit) ",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuChamberCuZoneCu_NotOneHit", "Basic Cuts && (> 1 hit)",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e==#phi_u",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e==#phi_u",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e!=#phi_u",
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e!=#phi_u",
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
            ]
 
 RatioHistNames = [
@@ -107,11 +173,13 @@ RatioHistNames = [
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
 
+Table_Histo_Details = []
+
 #Drawing 1D histograms
 for i in range(0,len(hnames)):
   h.append(f.Get(hdir+"/"+hnames[i][0]))
   h[i].SetLineWidth(6)
-  h[i].SetTitle('')
+  h[i].SetTitle(str(hnames[i][3]))
   h[i].GetXaxis().SetTitle(str(hnames[i][1]))
   h[i].GetYaxis().SetTitle(str(hnames[i][2]))
   h[i].GetXaxis().SetTitleSize(0.05)
@@ -119,10 +187,28 @@ for i in range(0,len(hnames)):
   h[i].GetXaxis().SetTitleOffset(0.9)
   h[i].GetYaxis().SetTitleOffset(0.9)
   h[i].Draw()
-  c1.SaveAs(hnames[i][0]+".png")
+  c1.SaveAs("plots/"+hnames[i][0]+".png")
+  #c1.SaveAs("plots/"+hnames[i][0]+".txt")
+  #print h[i]
+  #h[i].Print("all")
+  #print "===\n",output
+  #file = open("plots/"+hnames[i][0]+".txt", 'w')
+  #file.write(h[i].Print("all"))
+  #file.write(output)
+  #file.close()
+  c1.SaveAs("plots/"+hnames[i][0]+".root")
   c1.SetLogy(1)
-  c1.SaveAs(hnames[i][0]+"Log.png")
+  c1.SaveAs("plots/"+hnames[i][0]+"Log.png")
+  c1.SaveAs("plots/"+hnames[i][0]+"Log.root")
   c1.SetLogy(0)
+  TH1_histo_details = []
+  TH1_histo_details.append(hnames[i][0])
+  TH1_histo_details.append("TH1F")
+  TH1_histo_details.append(hnames[i][1])
+  TH1_histo_details.append(hnames[i][2])
+  TH1_histo_details.append(hnames[i][3])
+  TH1_histo_details.append(h[i].Integral())
+  Table_Histo_Details.append(TH1_histo_details)
   
 #Drawing 2D histograms
 c1.SetRightMargin(0.15)
@@ -140,7 +226,16 @@ for i in range(0,len(h2dnames)):
   #  for j in range(0,12):
   #    h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
   h2d[i].Draw("COLZ")
-  c1.SaveAs(h2dnames[i][0]+".png")
+  c1.SaveAs("plots/"+h2dnames[i][0]+".png")
+  c1.SaveAs("plots/"+h2dnames[i][0]+".root")
+  TH1_histo_details = []
+  TH1_histo_details.append(h2dnames[i][0])
+  TH1_histo_details.append("TH2F")
+  TH1_histo_details.append(h2dnames[i][2])
+  TH1_histo_details.append(h2dnames[i][3])
+  TH1_histo_details.append(h2dnames[i][1])
+  TH1_histo_details.append(h2d[i].Integral())
+  Table_Histo_Details.append(TH1_histo_details)
 
 # for i in [0,2,4,6]:
 #   h2d1 = f.Get(hdir+"/"+h2dnames[i])
@@ -197,4 +292,15 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleOffset(0.9)
    Numerator.GetZaxis().SetRangeUser(0,5);
    Numerator.Draw("COLZ")
-   c1.SaveAs("Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
+   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
+
+# Markdown table generation
+
+file = open("plots/yield-info.md", 'w')
+file.write("|Hist-Name | Hist-type | X-axis | Y-Axis | Title | GetEntries() |\n")
+file.write("|---       |---        |---     |---     |---    |---           |\n")
+for info in Table_Histo_Details:
+   file.write("| "+str(info[0])+str(" | ")+str(info[1])+str(" | ")+str(info[2])+str(" | ")+str(info[3])+str(" | ")+str(info[4])+str(" | ")+str(info[5])+str(" | \n"))
+file.close()
+os.system("pandoc -t html -o plots/yield-info.html plots/yield-info.md")
+os.system("sed -i 's/<table>/<table border=\"1\">/' plots/yield-info.html")
