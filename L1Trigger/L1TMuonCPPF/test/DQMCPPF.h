@@ -73,9 +73,13 @@ class DQM_CPPF : public edm::EDAnalyzer {
   
   std::map<int , std::vector<int>> fill_info;
   
-  TH1D* h1_matches_unpacker;
-  TH1D* h1_matches_unpacker_bx;
-  TH1D* h1_matches_unpacker_bx_phi;
+  TH1D* h1_total_hits_unpacker;
+  TH1D* h1_total_hits_unpacker_bx;
+  TH1D* h1_total_hits_unpacker_bx_phi;
+
+  TH1D* h1_total_hits_emulator;
+  TH1D* h1_total_hits_emulator_bx;
+  TH1D* h1_total_hits_emulator_bx_phi;
 
   TH1D* h1_bx_emulated;
   TH1D* h1_bx_unpacker;
@@ -109,10 +113,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* h2_occupancy_unpacker_bx_phi;
   TH2D* h2_occupancy_emu_unpacker_bx_phi;
 
-  TH2D* h2_bx_occupancy_unpacker_bx_phi;
-  TH2D* h2_bx_occupancy_emu_unpacker_bx_phi;
-  TH2D* h2_bx_sector_unpacker_bx_phi; 
-  TH2D* h2_bx_sector_emu_unpacker_bx_phi;
+  //TH2D* h2_bx_occupancy_unpacker_bx_phi;
+  //TH2D* h2_bx_occupancy_emu_unpacker_bx_phi;
+  //TH2D* h2_bx_sector_unpacker_bx_phi; 
+  //TH2D* h2_bx_sector_emu_unpacker_bx_phi;
 
   TH2D* h2_bx;
   TH2D* h2_bx_occupancy;

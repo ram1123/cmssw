@@ -65,6 +65,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   std::map<int,int> _bx_Ee;
   std::map<int,int> _bx_Eu;
 
+  //std::cout << "DEBUG: Start..... " << std::endl;
   for(auto& cppf_digis : *CppfDigis1){
 
     RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
@@ -175,10 +176,95 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       _nHit_Cu.at(unique_id) += 1;
     }
   }
+
+  int total_hits_unpacker = 0;
+  int total_hits_unpacker_bx = 0;
+  int total_hits_unpacker_bx_phi = 0;
+
+  int total_hits_emulator = 0;
+  int total_hits_emulator_bx = 0;
+  int total_hits_emulator_bx_phi = 0;
+
   for (auto const& it : _nHit_Ce){
       int key = it.first;
       if (_nHit_Cu.find(key) != _nHit_Cu.end()){
-        //std::cout << "DEBUG:1: Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
+        //std::cout << "DEBUG:1: key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
+        int region = 0;
+        int station = 0;
+        int ring = 0;
+        //int sector = 0;
+        //int subsector = 0;
+        if (key < 0) {
+           int splitter_temp = -1*key;
+           region = -1*(splitter_temp/10000)%10;
+           station = (splitter_temp/1000)%10;
+           ring = (splitter_temp/100)%10;
+           //sector = (splitter_temp/10)%10;
+           //subsector = splitter_temp%10;
+        } else {
+           region = (key/10000)%10;
+           station = (key/1000)%10;
+           ring = (key/100)%10;
+           //sector = (key/10)%10;
+           //subsector = key%10;
+	}
+        //std::cout << "====> " << region << "\t" << station << "\t" << ring << std::endl;
+	total_hits_unpacker += _nHit_Cu.at(key);
+	total_hits_emulator += _nHit_Ce.at(key);
+	
+        h2_chamber_emu_unpacker->Fill(_ID_Ce.at(key), _ID_Cu.at(key)); 
+        if (region==-1 && station==4 &&  ring==3 )  h2_chamber_emu_unpacker_REm43->Fill(_ID_Ce.at(key), _ID_Cu.at(key)); 
+        else if (region==-1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REm42->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==-1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REm33->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==-1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REm32->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==-1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REm22->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==-1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REm12->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REp12->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REp22->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REp32->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REp33->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REp42->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else if (region==+1 && station==4 &&  ring==3 ) h2_chamber_emu_unpacker_REp43->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
+        else {
+           std::cout << "Region or Station or ring number does not have physical meaning!!!" << std::endl;
+           std::cout << "Check below output and debug the code..." << std::endl;
+           std::cout << "region = " << region << "\nstation = " << station << "\nring = " << ring << std::endl;
+           std::cout << "Terminating the program." << std::endl;
+           std::exit(0);
+        }
+
+        h2_phi_emu_unpacker->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
+        h2_theta_emu_unpacker->Fill(_theta_Ce.at(key), _theta_Cu.at(key));
+        h2_bx_emu_unpacker->Fill(_bx_Ce.at(key),_bx_Cu.at(key));
+        h1_bx_emulated->Fill(_bx_Ce.at(key));
+        h1_bx_unpacker->Fill(_bx_Cu.at(key));
+        h1_bx_diff_emu_unpacker->Fill(std::abs(_bx_Cu.at(key)-_bx_Ce.at(key)));
+        h1_phi_diff_emu_unpacker->Fill(std::abs(_phi_Ce.at(key)-_phi_Cu.at(key)));
+	
+        if(_bx_Ce.at(key) ==  _bx_Cu.at(key)){
+	  total_hits_unpacker_bx += _nHit_Cu.at(key);
+	  total_hits_emulator_bx += _nHit_Ce.at(key);
+	  h2_phi_emu_unpacker_bx->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
+	  h2_theta_emu_unpacker_bx->Fill(_theta_Ce.at(key), _theta_Cu.at(key)); 
+	  h2_bx_emu_unpacker_bx->Fill(_bx_Ce.at(key),_bx_Cu.at(key));
+	  
+	  if((_phi_Ce.at(key) == _phi_Cu.at(key)) && (_theta_Ce.at(key) == _theta_Cu.at(key))){
+	    total_hits_unpacker_bx_phi += _nHit_Cu.at(key);
+	    total_hits_emulator_bx_phi += _nHit_Ce.at(key);
+	    h2_phi_emu_unpacker_bx_phi->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
+	    h2_theta_emu_unpacker_bx_phi->Fill(_theta_Ce.at(key), _theta_Cu.at(key)); 
+            //Occupancy 
+	    h2_occupancy_unpacker_bx_phi->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
+	    h2_occupancy_emu_unpacker_bx_phi->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
+            //bx occupancy 
+            //h2_bx_occupancy_unpacker_bx_phi->Fill(EMTF_bx, _zone_Cu.at(key));
+            //h2_bx_occupancy_emu_unpacker_bx_phi->Fill(EMTF_bx, _zone_Ce.at(key));
+            //bx
+            //h2_bx_sector_unpacker_bx_phi->Fill(fill_bx_unpacker,EMTF_bx);
+            //h2_bx_sector_emu_unpacker_bx_phi->Fill(fill_bx,EMTF_bx);
+	  } 
+	}
+
         if (it.second == 1 && _nHit_Cu.at(key) == 1) {
           //std::cout << "Entered in one hit condition" << std::endl;
           h2CeVsCuChamberCuChamberCe_OneHit->Fill(_ID_Cu.at(key), _ID_Ce.at(key)); 
@@ -247,171 +333,14 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
         }
       }
   }
+ 
+  h1_total_hits_unpacker->Fill(total_hits_unpacker);
+  h1_total_hits_unpacker_bx->Fill(total_hits_unpacker_bx);
+  h1_total_hits_unpacker_bx_phi->Fill(total_hits_unpacker_bx_phi);	
 
-
-  //   OLD CODE
-  
-  //Fill the specific bin for each EMTF sector 
-  for(int i = 1; i < 7; i++ ){
-    EMTFsector0bins.push_back(0);
-    EMTFsector1bins.push_back(i);
-    EMTFsector2bins.push_back(i+6);
-    EMTFsector3bins.push_back(i+12);
-    EMTFsector4bins.push_back(i+18);
-    EMTFsector5bins.push_back(i+24);
-    EMTFsector6bins.push_back(i+30);
-  }
-  //FIll the map for each EMTF sector 
-  fill_info[1] = EMTFsector1bins;
-  fill_info[2] = EMTFsector2bins;
-  fill_info[3] = EMTFsector3bins;
-  fill_info[4] = EMTFsector4bins;
-  fill_info[5] = EMTFsector5bins;
-  fill_info[6] = EMTFsector6bins;
-  fill_info[-99] = EMTFsector0bins;
-  
-  
-  int matches_unpacker = 0;
-  int matches_unpacker_bx = 0;
-  int matches_unpacker_bx_phi = 0;
-  
-  for(auto& cppf_digis : *CppfDigis1){
-    
-    RPCDetId rpcId = cppf_digis.rpcId();
-    int region = rpcId.region();
-    int station = rpcId.station();
-    int ring = rpcId.ring();
-    int sector = rpcId.sector();
-    int subsector = rpcId.subsector();
-    int phi_int = cppf_digis.phi_int();
-    float phi_global = cppf_digis.phi_glob()*TMath::Pi()/180.;
-    int board = cppf_digis.board();
-    int cluster_size = cppf_digis.cluster_size();
-    int theta_int =  cppf_digis.theta_int();
-    float theta_global = cppf_digis.theta_glob()*TMath::Pi()/180.; 
-    
-    EMTF_sector = cppf_digis.emtf_sector();
-    EMTF_subsector = fill_info[EMTF_sector][subsector-1];
-    
-    EMTF_bx = cppf_digis.bx();
-    if(EMTF_bx >= 0) EMTF_bx = EMTF_bx+0.5;  
-    else if(EMTF_bx < 0) EMTF_bx = EMTF_bx-0.5;  
-    
-    int fill_occupancy = occupancy_value(region, station, ring);
-    int fill_bx = bx_value(region, EMTF_sector); 
-    
-    //Chamber ID
-    int nsub_e = 6;
-    (ring == 1 && station > 1) ? nsub_e = 3 : nsub_e = 6;
-    int chamberID = subsector + nsub_e * ( sector - 1);
-    
-    
-    matches_unpacker = 0;  
-    matches_unpacker_bx = 0;
-    matches_unpacker_bx_phi = 0;
-    for(auto& cppf_digis_unpacker : *CppfDigis2){
-      
-      RPCDetId rpcId_unpacker = cppf_digis_unpacker.rpcId();
-      int region_unpacker = rpcId_unpacker.region();
-      int station_unpacker = rpcId_unpacker.station();
-      int ring_unpacker = rpcId_unpacker.ring();
-      int sector_unpacker = rpcId_unpacker.sector();
-      int subsector_unpacker = rpcId_unpacker.subsector();
-      int phi_int_unpacker = cppf_digis_unpacker.phi_int();
-      double phi_global_unpacker = cppf_digis_unpacker.phi_glob()*TMath::Pi()/180.;
-      int theta_int_unpacker =  cppf_digis_unpacker.theta_int();
-      double theta_global_unpacker = cppf_digis_unpacker.theta_glob()*TMath::Pi()/180.;
-      int bx_unpacker = cppf_digis_unpacker.bx();
-      
-      int EMTF_sector_u = cppf_digis_unpacker.emtf_sector();
-      int EMTF_subsector_u = fill_info[EMTF_sector_u][subsector_unpacker-1];
-
-      //Chamber ID
-      int nsub_un = 6;
-      (ring_unpacker == 1 && station_unpacker > 1) ? nsub_un = 3 : nsub_un = 6;
-      int chamberID_unpacker = subsector_unpacker + nsub_un * ( sector_unpacker - 1);
-      
-      int fill_occupancy_unpacker = occupancy_value(region_unpacker, station_unpacker, ring_unpacker);
-      int fill_bx_unpacker = bx_value(region_unpacker, EMTF_sector_u);
-      
-      if((region == region_unpacker) && 
-	 (station == station_unpacker) &&
-	 (ring == ring_unpacker) &&
-	 (sector == sector_unpacker) &&
-	 (subsector == subsector_unpacker)){
-	
-	matches_unpacker++;
-	
-        h2_chamber_emu_unpacker->Fill(chamberID, chamberID_unpacker); 
-        if (region==-1 && station==4 &&  ring==3 )  h2_chamber_emu_unpacker_REm43->Fill(chamberID, chamberID_unpacker); 
-        else if (region==-1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REm42->Fill(chamberID, chamberID_unpacker);
-        else if (region==-1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REm33->Fill(chamberID, chamberID_unpacker);
-        else if (region==-1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REm32->Fill(chamberID, chamberID_unpacker);
-        else if (region==-1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REm22->Fill(chamberID, chamberID_unpacker);
-        else if (region==-1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REm12->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REp12->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REp22->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REp32->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REp33->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REp42->Fill(chamberID, chamberID_unpacker);
-        else if (region==+1 && station==4 &&  ring==3 ) h2_chamber_emu_unpacker_REp43->Fill(chamberID, chamberID_unpacker);
-        else {
-           std::cout << "Region or Station or ring number does not have physical meaning!!!" << std::endl;
-           std::cout << "Check below output and debug the code..." << std::endl;
-           std::cout << "region = " << region << "\nstation = " << station << "\nring = " << ring << std::endl;
-           std::cout << "Terminating the program." << std::endl;
-           std::exit(0);
-        }
-        #if 0
-        std::cout << "\n\n===========================" << std::endl;
-        std::cout << "region_unpacker = " << region_unpacker << "\n";
-        std::cout << "station_unpacker = " << station_unpacker << "\n";
-        std::cout << "ring_unpacker = " << ring_unpacker << "\n";
-        std::cout << "sector_unpacker = " << sector_unpacker << "\n";
-        std::cout << "subsector_unpacker = " << subsector_unpacker << "\n" << std::endl;
-        #endif
-	
-        h2_phi_emu_unpacker->Fill(phi_int, phi_int_unpacker);
-        h2_theta_emu_unpacker->Fill(theta_int, theta_int_unpacker);
-        h2_bx_emu_unpacker->Fill(cppf_digis.bx(),bx_unpacker);
-        h1_bx_emulated->Fill(cppf_digis.bx());
-        h1_bx_unpacker->Fill(bx_unpacker);
-        h1_bx_diff_emu_unpacker->Fill(std::abs(bx_unpacker-cppf_digis.bx()));
-        h1_phi_diff_emu_unpacker->Fill(std::abs(phi_int-phi_int_unpacker));
-	
-        if(cppf_digis.bx() ==  bx_unpacker){
-	  matches_unpacker_bx++;
-	  h2_phi_emu_unpacker_bx->Fill(phi_int, phi_int_unpacker);
-	  h2_theta_emu_unpacker_bx->Fill(theta_int, theta_int_unpacker); 
-	  h2_bx_emu_unpacker_bx->Fill(cppf_digis.bx(),bx_unpacker);
-	  
-	  if((phi_int == phi_int_unpacker) && (theta_int == theta_int_unpacker)){
-	    matches_unpacker_bx_phi++;
-	    h2_phi_emu_unpacker_bx_phi->Fill(phi_int, phi_int_unpacker);
-	    h2_theta_emu_unpacker_bx_phi->Fill(theta_int, theta_int_unpacker); 
-            //Occupancy 
-	    h2_occupancy_unpacker_bx_phi->Fill(EMTF_subsector_u, fill_occupancy_unpacker);
-	    //h2_occupancy_unpacker_bx_phi->Fill(EMTF_subsector, fill_occupancy);
-	    h2_occupancy_emu_unpacker_bx_phi->Fill(EMTF_subsector, fill_occupancy);
-            //bx occupancy 
-            h2_bx_occupancy_unpacker_bx_phi->Fill(EMTF_bx, fill_occupancy_unpacker);
-            h2_bx_occupancy_emu_unpacker_bx_phi->Fill(EMTF_bx, fill_occupancy);
-            //bx
-            h2_bx_sector_unpacker_bx_phi->Fill(fill_bx_unpacker,EMTF_bx);
-            h2_bx_sector_emu_unpacker_bx_phi->Fill(fill_bx,EMTF_bx);
-	  } 
-	}
-	
-      }
-      
-    } // END: loop over CppfDigis2
-    //Matching information
-    
-  } // END: loop over CPPFDigis1
-  
-  h1_matches_unpacker->Fill(matches_unpacker);
-  h1_matches_unpacker_bx->Fill(matches_unpacker_bx);
-  h1_matches_unpacker_bx_phi->Fill(matches_unpacker_bx_phi);	
+  h1_total_hits_emulator->Fill(total_hits_emulator);
+  h1_total_hits_emulator_bx->Fill(total_hits_emulator_bx);
+  h1_total_hits_emulator_bx_phi->Fill(total_hits_emulator_bx_phi);	
   
 } //End class
 
@@ -485,9 +414,13 @@ void DQM_CPPF::beginRun(const edm::Run& run, const edm::EventSetup& iSetup){
 void DQM_CPPF::beginJob(){
   edm::Service<TFileService> fs;
   
-  h1_matches_unpacker = fs->make<TH1D>("h1_matches_unpacker", "CPPFDigis_matches_unpacker" , 5, 0. , 5.);
-  h1_matches_unpacker_bx = fs->make<TH1D>("h1_matches_unpacker_bx", "CPPFDigis_Matches_bx" , 5, 0. , 5.);
-  h1_matches_unpacker_bx_phi = fs->make<TH1D>("h1_matches_unpacker_bx_phi", "CPPFDigis_Matches_int" , 5, 0. , 5.);
+  h1_total_hits_unpacker = fs->make<TH1D>("h1_total_hits_unpacker", "CPPFDigis_total_hits_unpacker" , 25, 0. , 25.);
+  h1_total_hits_unpacker_bx = fs->make<TH1D>("h1_total_hits_unpacker_bx", "CPPFDigis_Matches_bx" , 25, 0. , 25.);
+  h1_total_hits_unpacker_bx_phi = fs->make<TH1D>("h1_total_hits_unpacker_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
+
+  h1_total_hits_emulator = fs->make<TH1D>("h1_total_hits_emulator", "CPPFDigis_total_hits_emulator" , 25, 0. , 25.);
+  h1_total_hits_emulator_bx = fs->make<TH1D>("h1_total_hits_emulator_bx", "CPPFDigis_Matches_bx" , 25, 0. , 25.);
+  h1_total_hits_emulator_bx_phi = fs->make<TH1D>("h1_total_hits_emulator_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
 
   h1_bx_emulated = fs->make<TH1D>("h1_bx_emulated","Emulated bunch crossing",8, -4., 4.);
   h1_bx_unpacker = fs->make<TH1D>("h1_bx_unpacker","Unpacked bunch crossing",8, -4., 4.);
@@ -520,10 +453,10 @@ void DQM_CPPF::beginJob(){
   h2_theta_emu_unpacker_bx_phi=fs->make<TH2D>("h2_theta_emu_unpacker_bx_phi", "h2_theta_emu_unpacker_bx_phi",  32, 0., 32., 32, 0., 32.);
   h2_occupancy_unpacker_bx_phi = fs->make<TH2D>("h2_occupancy_unpacker_bx_phi", "CPPFDigis h2_occupancy_unpacker_bx_phi", 36, 0.5, 36.5, 12, 0.5,12.5); 
   h2_occupancy_emu_unpacker_bx_phi = fs->make<TH2D>("h2_occupancy_emu_unpacker_bx_phi", "CPPFDigis h2_occupancy_emu_unpacker_bx_phi", 36, 0.5, 36.5, 12, 0.5,12.5); 
-  h2_bx_occupancy_unpacker_bx_phi = fs->make<TH2D>("h2_bx_occupancy_unpacker_bx_phi","CPPFDigis h2_bx_occupancy_unpacker_bx_phi", 8, -3.5, 4.5, 12, 0.5, 12.5);
-  h2_bx_occupancy_emu_unpacker_bx_phi = fs->make<TH2D>("h2_bx_occupancy_emu_unpacker_bx_phi","CPPFDigis h2_bx_occupancy_emu_unpacker_bx_phi", 8, -3.5, 4.5, 12, 0.5, 12.5);
-  h2_bx_sector_unpacker_bx_phi = fs->make<TH2D>("h2_bx_sector_unpacker_bx_phi","CPPFDigis Bx_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
-  h2_bx_sector_emu_unpacker_bx_phi = fs->make<TH2D>("h2_bx_sector_emu_unpacker_bx_phi","CPPFDigis Bx_emu_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
+  //h2_bx_occupancy_unpacker_bx_phi = fs->make<TH2D>("h2_bx_occupancy_unpacker_bx_phi","CPPFDigis h2_bx_occupancy_unpacker_bx_phi", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  //h2_bx_occupancy_emu_unpacker_bx_phi = fs->make<TH2D>("h2_bx_occupancy_emu_unpacker_bx_phi","CPPFDigis h2_bx_occupancy_emu_unpacker_bx_phi", 8, -3.5, 4.5, 12, 0.5, 12.5);
+  //h2_bx_sector_unpacker_bx_phi = fs->make<TH2D>("h2_bx_sector_unpacker_bx_phi","CPPFDigis Bx_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
+  //h2_bx_sector_emu_unpacker_bx_phi = fs->make<TH2D>("h2_bx_sector_emu_unpacker_bx_phi","CPPFDigis Bx_emu_unpacker", 12, 0.5, 12.5, 8,-3.5,4.5);
 
 
   /// NEW HISTO FROM ANOTHER CODDEp

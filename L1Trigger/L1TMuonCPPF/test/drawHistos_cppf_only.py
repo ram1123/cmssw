@@ -34,9 +34,12 @@ hdir = "DQM_CPPF"
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
 hnames     = [ 
-               ["h1_matches_unpacker", "Inclusive total #hits", "", "Basic Cuts"],
-               ["h1_matches_unpacker_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
-               ["h1_matches_unpacker_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_total_hits_unpacker", "Inclusive total #hits", "", "Basic Cuts"],
+               ["h1_total_hits_unpacker_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
+               ["h1_total_hits_unpacker_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_total_hits_emulator", "Inclusive total #hits", "", "Basic Cuts"],
+               ["h1_total_hits_emulator_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
+               ["h1_total_hits_emulator_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
                ["h1_bx_emulated", "Emulated Bunch crossing", "", "Basic Cuts"],
                ["h1_bx_unpacker", "Unpacker Bunch crossing", "", "Basic Cuts"],
                ["h1_bx_diff_emu_unpacker", "BX_{emulator} - BX_{unpacker}", "", "Basic Cuts"],
@@ -61,10 +64,10 @@ hnames     = [
              ]
 
 h2dnames = [
-            ["h2_bx_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations unpacker"],
-            ["h2_bx_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations emulator"],
+            #["h2_bx_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+            #  "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations unpacker"],
+            #["h2_bx_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+            #  "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations emulator"],
             ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
               "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
             ["h2_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
@@ -95,10 +98,10 @@ h2dnames = [
               "Number of Sub-Sectors of RE+42 (emulator)", "Number of Sub-Sectors  of RE+42 (unpacker)"],
             ["h2_chamber_emu_unpacker_REp43", "Basic Cuts", 
               "Number of Sub-Sectors of RE+43 (emulator)", "Number of Sub-Sectors  of RE+43 (unpacker)"],
-            ["h2_bx_sector_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "EMTF sector (unpacker)", "EMTF Bunch crossing (Emulator)"],
-            ["h2_bx_sector_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "EMTF sector (emulator)", "EMTF Bunch crossing (Emulator)"],
+            #["h2_bx_sector_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+            #  "EMTF sector (unpacker)", "EMTF Bunch crossing (Emulator)"],
+            #["h2_bx_sector_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+            #  "EMTF sector (emulator)", "EMTF Bunch crossing (Emulator)"],
             ["h2_phi_emu_unpacker", "Basic Cuts", 
               "#phi emulator", "#phi unpacker"],
             ["h2_phi_emu_unpacker_bx", "Basic Cuts && Same Bx", 
@@ -166,9 +169,9 @@ h2dnames = [
            ]
 
 RatioHistNames = [
-                  ["h2_bx_occupancy_unpacker_bx_phi", "h2_bx_occupancy_emu_unpacker_bx_phi"],
+                  #["h2_bx_occupancy_unpacker_bx_phi", "h2_bx_occupancy_emu_unpacker_bx_phi"],
                   ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emu_unpacker_bx_phi"],
-                  ["h2_bx_sector_unpacker_bx_phi", "h2_bx_sector_emu_unpacker_bx_phi"],
+                  #["h2_bx_sector_unpacker_bx_phi", "h2_bx_sector_emu_unpacker_bx_phi"],
                  ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
@@ -199,7 +202,7 @@ for i in range(0,len(hnames)):
   c1.SaveAs("plots/"+hnames[i][0]+".root")
   c1.SetLogy(1)
   c1.SaveAs("plots/"+hnames[i][0]+"Log.png")
-  c1.SaveAs("plots/"+hnames[i][0]+"Log.root")
+  #c1.SaveAs("plots/"+hnames[i][0]+"Log.root")
   c1.SetLogy(0)
   TH1_histo_details = []
   TH1_histo_details.append(hnames[i][0])
@@ -207,7 +210,8 @@ for i in range(0,len(hnames)):
   TH1_histo_details.append(hnames[i][1])
   TH1_histo_details.append(hnames[i][2])
   TH1_histo_details.append(hnames[i][3])
-  TH1_histo_details.append(h[i].Integral())
+  #TH1_histo_details.append(h[i].Integral())
+  TH1_histo_details.append(h[i].GetEntries())
   Table_Histo_Details.append(TH1_histo_details)
   
 #Drawing 2D histograms
