@@ -33,49 +33,76 @@ hdir = "DQM_CPPF"
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
 hnames     = [ 
-               ["Matches_unpacker", "Inclusive total #hits", ""],
-               ["Matches_unpacker_ch", "Inclusive #hits", ""],
-               ["Matches_unpacker_bx", "#hits (same bunch crossing)", ""], 
-               ["Matches_unpacker_int", "#hits (same bunch && same phi)", ""]
+               ["h1_matches_unpacker", "Inclusive total #hits", ""],
+               ["h1_matches_unpacker_bx", "#hits (same bunch crossing)", ""], 
+               ["h1_matches_unpacker_bx_phi", "#hits (same bunch && same phi)", ""],
+               ["h1_bx_emulated", "Emulated Bunch crossing", ""],
+               ["h1_bx_unpacker", "Unpacker Bunch crossing", ""],
+               ["h1_bx_diff_emu_unpacker", "BX_{emulator} - BX_{unpacker}", ""],
+               ["h1_phi_diff_emu_unpacker", "#phi_{emulator}-#phi_{unpacker}", ""],
              ]
 
 h2dnames = [
-            ["bx_occupancy_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "Bunch crossing", "Number of Sub-Stations unpacker"],
-            ["bx_occupancy_emu_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "Bunch crossing", "Number of Sub-Stations emulator"],
-            ["occupancy_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["occupancy_emu_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["chamber_emu_unpacker", "Basic Cuts", 
-                "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
-            ["bx_sector_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "Number of Sub-Stations (unpacker)", "Emulator Bunch crossing"],
-            ["bx_sector_emu_unpacker", "Basic Cuts && Same Bx && Same Phi", 
-                "Number of Sub-Stations (emulator)", "Emulator Bunch crossing"],
-            ["phi_emu_unpacker", "Basic Cuts", 
-                "#phi emulator", "#phi unpacker"],
-            ["phi_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-                "#phi emulator", "#phi unpacker"],
-            ["phi_emu_unpacker_int", "Basic Cuts && Same Bx && Same Phi", 
-                "#phi emulator", "#phi unpacker"],
-            ["theta_emu_unpacker", "Basic Cuts", 
-                "#theta emulator", "#theta unpacker"],
-            ["theta_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-                "#theta emulator", "#theta unpacker"],
-            ["theta_emu_unpacker_int", "Basic Cuts && Same Bx && Same Phi", 
-                "#theta emulator", "#theta unpacker"],
-            ["bx_emu_unpacker", "Basic Cuts", 
-                "Bunch crossing emulator", "Bunch crossing unpacker"],
-            ["bx_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-                "Bunch crossing emulator", "Bunch crossing unpacker"],
+            ["h2_bx_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations unpacker"],
+            ["h2_bx_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations emulator"],
+            ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
+            ["h2_chamber_emu_unpacker", "Basic Cuts", 
+              "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm43", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-43 (emulator)", "Number of Sub-Sectors  of RE-43 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm42", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-42 (emulator)", "Number of Sub-Sectors  of RE-42 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm33", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-33 (emulator)", "Number of Sub-Sectors  of RE-33 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm32", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-32 (emulator)", "Number of Sub-Sectors  of RE-32 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm22", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-22 (emulator)", "Number of Sub-Sectors  of RE-22 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REm12", "Basic Cuts", 
+              "Number of Sub-Sectors of RE-12 (emulator)", "Number of Sub-Sectors  of RE-12 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp12", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+12 (emulator)", "Number of Sub-Sectors  of RE+12 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp22", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+22 (emulator)", "Number of Sub-Sectors  of RE+22 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp32", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+32 (emulator)", "Number of Sub-Sectors  of RE+32 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp33", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+33 (emulator)", "Number of Sub-Sectors  of RE+33 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp42", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+42 (emulator)", "Number of Sub-Sectors  of RE+42 (unpacker)"],
+            ["h2_chamber_emu_unpacker_REp43", "Basic Cuts", 
+              "Number of Sub-Sectors of RE+43 (emulator)", "Number of Sub-Sectors  of RE+43 (unpacker)"],
+            ["h2_bx_sector_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "EMTF sector (unpacker)", "EMTF Bunch crossing (Emulator)"],
+            ["h2_bx_sector_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "EMTF sector (emulator)", "EMTF Bunch crossing (Emulator)"],
+            ["h2_phi_emu_unpacker", "Basic Cuts", 
+              "#phi emulator", "#phi unpacker"],
+            ["h2_phi_emu_unpacker_bx", "Basic Cuts && Same Bx", 
+              "#phi emulator", "#phi unpacker"],
+            ["h2_phi_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "#phi emulator", "#phi unpacker"],
+            ["h2_theta_emu_unpacker", "Basic Cuts", 
+              "#theta emulator", "#theta unpacker"],
+            ["h2_theta_emu_unpacker_bx", "Basic Cuts && Same Bx", 
+              "#theta emulator", "#theta unpacker"],
+            ["h2_theta_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+              "#theta emulator", "#theta unpacker"],
+            ["h2_bx_emu_unpacker", "Basic Cuts", 
+              "Bunch crossing emulator", "Bunch crossing unpacker"],
+            ["h2_bx_emu_unpacker_bx", "Basic Cuts && Same Bx", 
+              "Bunch crossing emulator", "Bunch crossing unpacker"],
            ]
 
 RatioHistNames = [
-                  ["bx_occupancy_unpacker", "bx_occupancy_emu_unpacker"],
-                  ["occupancy_unpacker", "occupancy_emu_unpacker"],
-                  ["bx_sector_unpacker", "bx_sector_emu_unpacker"],
+                  ["h2_bx_occupancy_unpacker_bx_phi", "h2_bx_occupancy_emu_unpacker_bx_phi"],
+                  ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emu_unpacker_bx_phi"],
+                  ["h2_bx_sector_unpacker_bx_phi", "h2_bx_sector_emu_unpacker_bx_phi"],
                  ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
@@ -155,10 +182,10 @@ for i in range(0,len(h2dnames)):
 #c1.SaveAs("Ratio_OneHit_Inclusive.png")
 
 for i in range(0,len(RatioHistNames)):
-   Numerator = f.Get(hdir+"/"+RatioHistNames[i][0])
-   Denomenator = f.Get(hdir+"/"+RatioHistNames[i][1])
-   print "Entries in ",RatioHistNames[i][0]," = ",Numerator.GetEntries()
-   print "Entries in ",RatioHistNames[i][1]," = ",Denomenator.GetEntries()
+   Numerator = f.Get(hdir+"/"+RatioHistNames[i][1])
+   Denomenator = f.Get(hdir+"/"+RatioHistNames[i][0])
+   print "Entries in ",RatioHistNames[i][1]," = ",Numerator.GetEntries()
+   print "Entries in ",RatioHistNames[i][0]," = ",Denomenator.GetEntries()
    
    Numerator.Divide(Denomenator)
    Numerator.SetTitle('')
@@ -170,4 +197,4 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleOffset(0.9)
    Numerator.GetZaxis().SetRangeUser(0,5);
    Numerator.Draw("COLZ")
-   c1.SaveAs("Ratio_"+RatioHistNames[i][0]+"_"+RatioHistNames[i][1]+".png")
+   c1.SaveAs("Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
