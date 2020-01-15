@@ -189,24 +189,31 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       int key = it.first;
       if (_nHit_Cu.find(key) != _nHit_Cu.end()){
         //std::cout << "DEBUG:1: key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
+        //std::cout << "key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
         int region = 0;
         int station = 0;
         int ring = 0;
-        //int sector = 0;
-        //int subsector = 0;
+        int sector = 0;
+        int subsector = 0;
         if (key < 0) {
            int splitter_temp = -1*key;
            region = -1*(splitter_temp/10000)%10;
            station = (splitter_temp/1000)%10;
            ring = (splitter_temp/100)%10;
-           //sector = (splitter_temp/10)%10;
-           //subsector = splitter_temp%10;
+           sector = (splitter_temp/10)%10;
+           subsector = splitter_temp%10;
+           //std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
+           h1_nHits_each_chamber_unpacker[0][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
+           h1_nHits_each_chamber_emulator[0][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
         } else {
            region = (key/10000)%10;
            station = (key/1000)%10;
            ring = (key/100)%10;
-           //sector = (key/10)%10;
-           //subsector = key%10;
+           sector = (key/10)%10;
+           subsector = key%10;
+           //std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
+           h1_nHits_each_chamber_unpacker[1][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
+           h1_nHits_each_chamber_emulator[1][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
 	}
         //std::cout << "====> " << region << "\t" << station << "\t" << ring << std::endl;
 	total_hits_unpacker += _nHit_Cu.at(key);
@@ -426,6 +433,8 @@ void DQM_CPPF::beginJob(){
   h1_bx_unpacker = fs->make<TH1D>("h1_bx_unpacker","Unpacked bunch crossing",8, -4., 4.);
   h1_bx_diff_emu_unpacker = fs->make<TH1D>("h1_bx_diff_emu_unpacker","Difference of Bunch crossing emulator and unpacker",500,0,100.);
   h1_phi_diff_emu_unpacker = fs->make<TH1D>("h1_phi_diff_emu_unpacker","Difference of phi emulator and unpacker",32,0.,8.);
+
+
   
   h2_chamber_emu_unpacker = fs->make<TH2D>("h2_chamber_emu_unpacker","h2_chamber_emu_unpacker", 36, 1.,37.,36,1.,37.);
   h2_chamber_emu_unpacker_REm43 = fs->make<TH2D>("h2_chamber_emu_unpacker_REm43","h2_chamber_emu_unpacker_REm43", 36, 1.,37.,36,1.,37.);
@@ -502,6 +511,21 @@ void DQM_CPPF::beginJob(){
   h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_emu_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
   h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit = fs->make<TH2D>("h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit","CPPFDigis Bx_Occupancy_unpacker_NotOneHit", 36, 0.5, 36.5, 12, 0.5,12.5);
+
+
+  // for (int ii=0; ii<432; ii++)
+  //   h1_nHits_each_chamber_unpacker[ii] = fs->make<TH1F>(Form("h1%d",ii), Form("h1%d",ii), 25, 0, 25);
+  //   
+  for (int region=0; region<2; region++)
+    for (int station=0; station<5; station++)
+      for (int ring=0; ring<4; ring++)
+        for (int sector=0; sector<7; sector++)
+          for (int subsector=0; subsector<7; subsector++) {
+            h1_nHits_each_chamber_unpacker[region][station][ring][sector][subsector] = fs->make<TH1F>("h1_nHits_each_chamber_unpacker", Form("h1_nHits_region%d_station%d_ring%d_sector%d_subsector%d_unpacker",region, station, ring, sector, subsector), 10, 0, 10);
+            h1_nHits_each_chamber_emulator[region][station][ring][sector][subsector] = fs->make<TH1F>("h1_nHits_each_chamber_emulator", Form("h1_nHits_region%d_station%d_ring%d_sector%d_subsector%d_emulator",region, station, ring, sector, subsector), 10, 0, 10);
+          }
+
+
   return;
 }
 //define this as a plug-in

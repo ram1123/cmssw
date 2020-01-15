@@ -30,6 +30,7 @@ c1 = TCanvas('c1', '',1100,1000)
 h = []
 h2d = []
 hdir = "DQM_CPPF"
+
 #Declaration of the list of the different setting of the histograms
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
@@ -172,6 +173,15 @@ RatioHistNames = [
                   #["h2_bx_occupancy_unpacker_bx_phi", "h2_bx_occupancy_emu_unpacker_bx_phi"],
                   ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emu_unpacker_bx_phi"],
                   #["h2_bx_sector_unpacker_bx_phi", "h2_bx_sector_emu_unpacker_bx_phi"],
+                  ["h2CeVsCuChamberCuZoneCu_OneHit_bx", "h2CeVsCuChamberCeZoneCe_OneHit_bx"],
+                  ["h2CeVsCuBxCuZoneCuOccupancy_OneHit", "h2CeVsCuBxCeZoneCeOccupancy_OneHit"],
+                  ["h2CeVsCuBxCuZoneCu_OneHit", "h2CeVsCuBxCeZoneCe_OneHit"],
+                  ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx"],
+                  ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx"],
+                  ["h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx"],
+                  ["h2CeVsCuChamberCuZoneCu_NotOneHit", "h2CeVsCuChamberCeZoneCe_NotOneHit"],
+                  ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit", "h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit"],
+                  ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit", "h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit"],
                  ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
@@ -283,8 +293,8 @@ for i in range(0,len(h2dnames)):
 for i in range(0,len(RatioHistNames)):
    Numerator = f.Get(hdir+"/"+RatioHistNames[i][1])
    Denomenator = f.Get(hdir+"/"+RatioHistNames[i][0])
-   print "Entries in ",RatioHistNames[i][1]," = ",Numerator.GetEntries()
-   print "Entries in ",RatioHistNames[i][0]," = ",Denomenator.GetEntries()
+   print "Entries in ",RatioHistNames[i][1]," = ",Numerator.GetEntries(), "\t", Numerator.Integral()
+   print "Entries in ",RatioHistNames[i][0]," = ",Denomenator.GetEntries(), "\t", Denomenator.Integral()
    
    Numerator.Divide(Denomenator)
    Numerator.SetTitle('')
@@ -296,10 +306,10 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleOffset(0.9)
    Numerator.GetZaxis().SetRangeUser(0,5);
    Numerator.Draw("COLZ")
+   print "integral = ",Numerator.Integral()
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
 
 # Markdown table generation
-
 file = open("plots/yield-info.md", 'w')
 file.write("|Hist-Name | Hist-type | X-axis | Y-Axis | Title | GetEntries() |\n")
 file.write("|---       |---        |---     |---     |---    |---           |\n")
@@ -308,3 +318,4 @@ for info in Table_Histo_Details:
 file.close()
 os.system("pandoc -t html -o plots/yield-info.html plots/yield-info.md")
 os.system("sed -i 's/<table>/<table border=\"1\">/' plots/yield-info.html")
+
