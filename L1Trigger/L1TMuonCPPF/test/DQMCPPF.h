@@ -164,6 +164,12 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit;
 
+  //std::map<int, TH1F*> h1_nHits_each_chamber_unpacker;
+  //
+
+  TH1F* h1_nHits_each_chamber_unpacker[2][5][4][7][7];
+  TH1F* h1_nHits_each_chamber_emulator[2][5][4][7][7];
+
 };
 
 
