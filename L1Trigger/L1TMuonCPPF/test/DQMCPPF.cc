@@ -31,10 +31,14 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   std::map<int,int> _nHit_Cu;
   std::map<int,int> _phi_Ce;
   std::map<int,int> _phi_Cu;
+  std::map<int,int> _phi_glob_Ce;
+  std::map<int,int> _phi_glob_Cu;
   std::map<int,int> _theta_Ce;
   std::map<int,int> _theta_Cu;
-  std::map<int,int> _occupancy_Ce;
-  std::map<int,int> _occupancy_Cu;
+  std::map<int,int> _theta_glob_Ce;
+  std::map<int,int> _theta_glob_Cu;
+  std::map<int,int> _roll_Ce;
+  std::map<int,int> _roll_Cu;
   std::map<int,int> _zone_Ce;
   std::map<int,int> _zone_Cu;
   std::map<int,int> _ID_Ce;
@@ -45,37 +49,24 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   std::map<int,int> _emtfSector_Cu;
   std::map<int,int> _bx_Ce;
   std::map<int,int> _bx_Cu;
+  std::map<int,int> _cluster_size_Ce;
+  std::map<int,int> _cluster_size_Cu;
   
-  std::map<int,int> _nHit_Ee;
-  std::map<int,int> _nHit_Eu;
-  std::map<int,int> _phi_Ee;
-  std::map<int,int> _phi_Eu;
-  std::map<int,int> _theta_Ee;
-  std::map<int,int> _theta_Eu;
-  std::map<int,int> _occupancy_Ee;
-  std::map<int,int> _occupancy_Eu;
-  std::map<int,int> _zone_Ee;
-  std::map<int,int> _zone_Eu;
-  std::map<int,int> _ID_Ee;
-  std::map<int,int> _ID_Eu;
-  std::map<int,int> _emtfSubsector_Ee;
-  std::map<int,int> _emtfSubsector_Eu;
-  std::map<int,int> _emtfSector_Ee;
-  std::map<int,int> _emtfSector_Eu;
-  std::map<int,int> _bx_Ee;
-  std::map<int,int> _bx_Eu;
-
   //std::cout << "DEBUG: Start..... " << std::endl;
   for(auto& cppf_digis : *CppfDigis1){
 
     RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
     int regionCe = (int)rpcIdCe.region();
     int stationCe = (int)rpcIdCe.station();
-    int ringCe = (int)rpcIdCe.ring();
     int sectorCe = (int)rpcIdCe.sector();
     int subsectorCe = (int)rpcIdCe.subsector();
+    int ringCe = (int)rpcIdCe.ring();
+    int rollCe = (int)(rpcIdCe.roll());
     int phiIntCe = (int)cppf_digis.phi_int();
     int thetaIntCe =  (int)cppf_digis.theta_int();
+    int phiGlobalCe = (int)cppf_digis.phi_glob();
+    int thetaGlobalCe =  (int)cppf_digis.theta_glob();
+    int cluster_sizeCe = (int)cppf_digis.cluster_size();
     int bxCe = cppf_digis.bx();
     
     int emtfSectorCe = (int)cppf_digis.emtf_sector();
@@ -84,6 +75,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     //std::cout << "==================================" << std::endl;
     //std::cout << "=         DEBUG: 1               =" << std::endl;
+    //std::cout << "roll = " << rollCe << std::endl;
     //std::cout << "regionCe = " << regionCe << std::endl;
     //std::cout << "stationCe = " << stationCe << std::endl;
     //std::cout << "ringCe = " << ringCe << std::endl;
@@ -95,7 +87,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
     ////std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
     //std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
-    ////std::cout << "==================================" << std::endl;
+    //std::cout << "==================================" << std::endl;
     ////int fillBxCe = bx_value(regionCe, emtfSectorCe); 
     
     //Chamber ID
@@ -104,7 +96,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     int chamberIDCe = subsectorCe + nsubCe * ( sectorCe - 1);
 
     std::ostringstream oss;
-    oss << regionCe << stationCe << ringCe << sectorCe << subsectorCe;
+    oss << regionCe << stationCe << ringCe << sectorCe << subsectorCe << rollCe;
     std::istringstream iss(oss.str());
     int unique_id;
     iss >> unique_id;
@@ -114,43 +106,55 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     //std::cout << "unique_id = " << unique_id << "\n";
     //std::cout << "_nHit_Ce.find(unique_id) = " << _nHit_Ce.find(unique_id) << "\n";
     //for (auto& t : _nHit_Ce)
-    //   std::cout << t.first << "\t" << t.second << std::endl;
+    //   std::cout << "before: " << t.first << "\t" << t.second << std::endl;
     //std::cout << "_nHit_Ce.end() = " << _nHit_Ce.end() << std::endl;
     if ( _nHit_Ce.find(unique_id) == _nHit_Ce.end() ) { // chamber had no hit so far
       _nHit_Ce.insert({unique_id, 1});
       _phi_Ce.insert({unique_id,phiIntCe});
+      _phi_glob_Ce.insert({unique_id,phiGlobalCe});
       _theta_Ce.insert({unique_id,thetaIntCe});
+      _theta_glob_Ce.insert({unique_id,thetaGlobalCe});
+      _roll_Ce.insert({unique_id,rollCe});
       _ID_Ce.insert({unique_id, chamberIDCe});
       _zone_Ce.insert({unique_id,fillOccupancyCe});
       _emtfSubsector_Ce.insert({unique_id,emtfSubsectorCe});
       _emtfSector_Ce.insert({unique_id,emtfSectorCe});
       _bx_Ce.insert({unique_id,bxCe});
+      _cluster_size_Ce.insert({unique_id,cluster_sizeCe});
       //std::cout << "***" << std::endl;
     }
     else {
       _nHit_Ce.at(unique_id) += 1;
     }
-    //std::cout << "\n\nprinting nHit_Ce after if condition" << std::endl;
-    //for (auto& t : _nHit_Ce)
-    //   std::cout << t.first << "\t" << t.second << std::endl;
   }
+    std::cout << "\n\nprinting nHit_Ce after if condition" << std::endl;
+    for (auto& t : _nHit_Ce)
+       std::cout << t.first << "\t" << t.second << std::endl;
 
   for(auto& cppf_digis2 : *CppfDigis2){
 
     RPCDetId rpcIdCu = cppf_digis2.rpcId();
     int regionCu = rpcIdCu.region();
     int stationCu = rpcIdCu.station();
-    int ringCu = rpcIdCu.ring();
     int sectorCu = rpcIdCu.sector();
     int subsectorCu = rpcIdCu.subsector();
+    int ringCu = rpcIdCu.ring();
+    int rollCu = (int)(rpcIdCu.roll());
     int phiIntCu = cppf_digis2.phi_int();
     int thetaIntCu =  cppf_digis2.theta_int();
+    int phiGlobalCu = (int)cppf_digis2.phi_glob();
+    int thetaGlobalCu =  (int)cppf_digis2.theta_glob();
+    int cluster_sizeCu = (int)cppf_digis2.cluster_size();
     int bxCu = cppf_digis2.bx();
     
     int emtfSectorCu = (int)cppf_digis2.emtf_sector();
     int emtfSubsectorCu = GetSubsector(emtfSectorCu, subsectorCu);
     int fillOccupancyCu = occupancy_value(regionCu, stationCu, ringCu);
     //int fillBxCu = bx_value(regionCu, emtfSectorCu); 
+    //std::cout << "==================================" << std::endl;
+    //std::cout << "=         DEBUG: 1               =" << std::endl;
+    //std::cout << "roll Unpack = " << rollCu << std::endl;
+    //std::cout << "==================================" << std::endl;
     
     //Chamber ID
     int nsubCu = 6;
@@ -158,24 +162,34 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     int chamberIDCu = subsectorCu + nsubCu * ( sectorCu - 1);
 
     std::ostringstream oss2;
-    oss2 << regionCu << stationCu << ringCu << sectorCu << subsectorCu;
+    oss2 << regionCu << stationCu << ringCu << sectorCu << subsectorCu << rollCu ;
     std::istringstream iss2(oss2.str());
     int unique_id;
     iss2 >> unique_id;
+    //for (auto& t : _nHit_Cu)
+    //   std::cout << "Unpacker - before: " << t.first << "\t" << t.second << std::endl;
     if ( _nHit_Cu.find(unique_id) == _nHit_Cu.end() ) { // chamber had no hit so far
       _nHit_Cu.insert({unique_id, 1});
       _phi_Cu.insert({unique_id,phiIntCu});
       _theta_Cu.insert({unique_id,thetaIntCu});
+      _phi_glob_Cu.insert({unique_id,phiGlobalCu});
+      _theta_glob_Cu.insert({unique_id,thetaGlobalCu});
       _ID_Cu.insert({unique_id, chamberIDCu});
       _zone_Cu.insert({unique_id,fillOccupancyCu});
+      _roll_Cu.insert({unique_id,rollCu});
       _emtfSubsector_Cu.insert({unique_id,emtfSubsectorCu});
       _emtfSector_Cu.insert({unique_id,emtfSectorCu});
       _bx_Cu.insert({unique_id,bxCu});
+      _cluster_size_Cu.insert({unique_id,cluster_sizeCu});
+      //std::cout << "***" << std::endl;
     }
     else {
       _nHit_Cu.at(unique_id) += 1;
     }
   }
+    std::cout << "\n\nprinting nHit_Cu after if condition" << std::endl;
+    for (auto& t : _nHit_Cu)
+       std::cout << t.first << "\t" << t.second << std::endl;
 
   int total_hits_unpacker = 0;
   int total_hits_unpacker_bx = 0;
@@ -187,31 +201,35 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
   for (auto const& it : _nHit_Ce){
       int key = it.first;
+      std::cout << "Main for loop starts..." << key << std::endl;
       if (_nHit_Cu.find(key) != _nHit_Cu.end()){
         //std::cout << "DEBUG:1: key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
-        //std::cout << "key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
+        std::cout << "key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl; 
         int region = 0;
         int station = 0;
         int ring = 0;
         int sector = 0;
         int subsector = 0;
+        //int roll = 0;
         if (key < 0) {
            int splitter_temp = -1*key;
-           region = -1*(splitter_temp/10000)%10;
-           station = (splitter_temp/1000)%10;
-           ring = (splitter_temp/100)%10;
-           sector = (splitter_temp/10)%10;
-           subsector = splitter_temp%10;
-           //std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
+           region = -1*(splitter_temp/100000)%10;
+           station = (splitter_temp/10000)%10;
+           ring = (splitter_temp/1000)%10;
+           sector = (splitter_temp/100)%10;
+           subsector = (splitter_temp/10)%10;
+           //roll = splitter_temp%10;
+           std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
            h1_nHits_each_chamber_unpacker[0][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
            h1_nHits_each_chamber_emulator[0][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
         } else {
-           region = (key/10000)%10;
-           station = (key/1000)%10;
-           ring = (key/100)%10;
-           sector = (key/10)%10;
-           subsector = key%10;
-           //std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
+           region = (key/100000)%10;
+           station = (key/10000)%10;
+           ring = (key/1000)%10;
+           sector = (key/100)%10;
+           subsector = (key/10)%10;
+           //roll = key%10;
+           std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
            h1_nHits_each_chamber_unpacker[1][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
            h1_nHits_each_chamber_emulator[1][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
 	}
