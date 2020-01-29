@@ -28,168 +28,172 @@ f = TFile.Open('DQM_CPPF.root','read')
 c1 = TCanvas('c1', '',1100,1000)
 
 h = []
+hOneHit = []
 h2d = []
+h2dOneHit = []
 hdir = "DQM_CPPF"
 
+os.system("rm -rf plots/2D_hist")
+os.system("rm -rf plots/1D_hist")
+os.system("mkdir -p plots/1D_hist")
+os.system("mkdir -p plots/2D_hist")
+os.system("cp index.php plots/1D_hist/")
+os.system("cp index.php plots/2D_hist/")
+os.system("cp index.php plots/")
 #Declaration of the list of the different setting of the histograms
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
 hnames     = [ 
-               ["h1_total_hits_unpacker", "Inclusive total #hits", "", "Basic Cuts"],
-               ["h1_total_hits_unpacker_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
-               ["h1_total_hits_unpacker_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
-               ["h1_total_hits_emulator", "Inclusive total #hits", "", "Basic Cuts"],
-               ["h1_total_hits_emulator_bx", "#hits (same bunch crossing)", "", "Basic Cuts && Same BX"], 
-               ["h1_total_hits_emulator_bx_phi", "#hits (same bunch && same phi)", "", "Basic Cuts && Same BX && Same #phi"],
-               ["h1_bx_emulated", "Emulated Bunch crossing", "", "Basic Cuts"],
-               ["h1_bx_unpacker", "Unpacker Bunch crossing", "", "Basic Cuts"],
-               ["h1_bx_diff_emu_unpacker", "BX_{emulator} - BX_{unpacker}", "", "Basic Cuts"],
-               ["h1_phi_diff_emu_unpacker", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts"],
-
-               ["h1CeVsCuPhiCePhiCuDiff_OneHit", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts && One hit"],
-               ["h1CeVsCuPhiCePhiCuDiff_OneHit_bx", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cuts && Same Bx && One hit"],
-               ["h1CeVsCuThetaCeThetaCuDiff_OneHit", "#theta_{emulator}-#theta_{unpacker}", "", "Basic Cuts && One hit"],
-               ["h1CeVsCuThetaCeThetaCuDiff_OneHit_bx", "#theta_{emulator}-#theta_{unpacker}", "", "Basic Cuts && Same Bx && One hit"],
-               ["h1CeVsCuBxCeBxCuDiff_OneHit", "BX_{emulator} - BX_{unpacker}", "", "Basic Cuts && One hit"],
-               ["h1CeVsCuPhi_InDiagonal_OneHit", " ", "", "Basic Cut && One hit && Same Phi"],
-               ["h1CeVsCuPhi_InDiagonal_OneHit_bx", " ", "", "Basic Cut && One hit && Same Phi && Same BX"],
-               ["h1CeVsCuPhi_OffDiagonal_OneHit", "", "", "Basic Cut && One hit && !(Same Phi)"],
-               ["h1CeVsCuPhi_OffDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && !(Same Phi) && Same BX"],
-               ["h1CeVsCuTheta_InDiagonal_OneHit", "", "", "Basic Cut && One hit && Same Theta"],
-               ["h1CeVsCuTheta_InDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && Same Theta && Same BX"],
-               ["h1CeVsCuTheta_OffDiagonal_OneHit", "", "", "Basic Cut && One hit && !(Same Theta)"],
-               ["h1CeVsCuTheta_OffDiagonal_OneHit_bx", "", "", "Basic Cut && One hit && !(Same Theta) && Same BX"],
-               ["h1CeVsCuPhi_InDiagonal_NotOneHit_bx", "", "", "Basic Cut && (> 1 hit) && Same Phi && Same BX"],
-               ["h1CeVsCuPhi_OffDiagonal_NotOneHit_bx", "", "", "Basic Cut && (> 1 hit) && !(Same Phi) && Same BX"],
-               ["h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx", "#phi_{emulator}-#phi_{unpacker}", "", "Basic Cut && (#theta_{emulator} == #theta_{unpacker}) && (#phi_{emulator} != #phi_{unpacker}) && One Hit && Same BX"],
+               #["h1_matches_unpacker", "Total matched #hits", "", "Basic Cuts"],
+               #["h1_matches_unpacker_bx", "Total matched #hits", "", "Basic Cuts && Same BX"], 
+               #["h1_matches_unpacker_bx_phi", "Total matched #hits", "", "Basic Cuts && Same BX && Same #phi"],
+               #["h1_matches_unpacker_bx_Offphi", "Total matched #hits", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_cluster_sizeCe", "Emulator cluster size", "", "Basic Cuts"], 
+               ["h1_cluster_sizeCe_bx", "Emulator cluster size", "", "Basic Cuts && Same BX"], 
+               ["h1_cluster_sizeCe_bx_phi", "Emulator Cluster size", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_cluster_sizeCe_bx_Offphi", "Emulator cluster size", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_cluster_sizeCu", "Unpacker cluster size", "", "Basic Cuts"], 
+               ["h1_cluster_sizeCu_bx", "Unpacker cluster size", "", "Basic Cuts && Same BX"], 
+               ["h1_cluster_sizeCu_bx_phi", "Unpacker Cluster size", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_cluster_sizeCu_bx_Offphi", "Unpacker cluster size", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_bxCe", "Emulator Bunch Crossing",  "", "Basic Cuts"], 
+               ["h1_bxCe_bx", "Emulator Bunch Crossing", "", "Basic Cuts && Same BX"],
+               ["h1_bxCe_bx_phi", "Emulator Bunch Crossing", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_bxCe_bx_Offphi", "Emulator Bunch Crossing", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_bxCu", "Unpacker Bunch Crossing",  "", "Basic Cuts"], 
+               ["h1_bxCu_bx", "Unpacker Bunch Crossing", "", "Basic Cuts && Same BX"],
+               ["h1_bxCu_bx_phi", "Unpacker Bunch Crossing", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_bxCu_bx_Offphi", "Unpacker Bunch Crossing", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_phiIntCe", "Emulator Phi Int", "", "Basic Cuts"], 
+               ["h1_phiIntCe_bx","Emulator Phi Int", "", "Basic Cuts && Same BX"], 
+               ["h1_phiIntCe_bx_phi", "Emulator Phi Int", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_phiIntCe_bx_Offphi", "Emulator Phi Int", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_phiIntCu", "Unpacker Phi Int", "", "Basic Cuts"], 
+               ["h1_phiIntCu_bx","Unpacker Phi Int", "", "Basic Cuts && Same BX"], 
+               ["h1_phiIntCu_bx_phi", "Unpacker Phi Int", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_phiIntCu_bx_Offphi", "Unpacker Phi Int", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_thetaIntCe", "Emulator Theta Int", "", "Basic Cuts"], 
+               ["h1_thetaIntCe_bx","Emulator Theta Int", "", "Basic Cuts && Same BX"], 
+               ["h1_thetaIntCe_bx_phi", "Emulator Theta Int", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_thetaIntCe_bx_Offphi", "Emulator Theta Int", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_thetaIntCu", "Unpacker Theta Int", "", "Basic Cuts"], 
+               ["h1_thetaIntCu_bx","Unpacker Theta Int", "", "Basic Cuts && Same BX"], 
+               ["h1_thetaIntCu_bx_phi", "Unpacker Theta Int", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_thetaIntCu_bx_Offphi", "Unpacker Theta Int", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_phiGlobalCe", "Emulator Phi Global", "", "Basic Cuts"], 
+               ["h1_phiGlobalCe_bx","Emulator Phi Global", "", "Basic Cuts && Same BX"], 
+               ["h1_phiGlobalCe_bx_phi", "Emulator Phi Global", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_phiGlobalCe_bx_Offphi", "Emulator Phi Global", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_phiGlobalCu", "Unpacker Phi Global", "", "Basic Cuts"], 
+               ["h1_phiGlobalCu_bx","Unpacker Phi Global", "", "Basic Cuts && Same BX"], 
+               ["h1_phiGlobalCu_bx_phi", "Unpacker Phi Global", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_phiGlobalCu_bx_Offphi", "Unpacker Phi Global", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_thetaGlobalCe", "Emulator Theta Global", "", "Basic Cuts"], 
+               ["h1_thetaGlobalCe_bx","Emulator Theta Global", "", "Basic Cuts && Same BX"], 
+               ["h1_thetaGlobalCe_bx_phi", "Emulator Theta Global", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_thetaGlobalCe_bx_Offphi", "Emulator Theta Global", "", "Basic Cuts && Same BX && Off axis #phi"], 
+               ["h1_thetaGlobalCu", "Unpacker Theta Global", "", "Basic Cuts"], 
+               ["h1_thetaGlobalCu_bx","Unpacker Theta Global", "", "Basic Cuts && Same BX"], 
+               ["h1_thetaGlobalCu_bx_phi", "Unpacker Theta Global", "", "Basic Cuts && Same BX && Same #phi"], 
+               ["h1_thetaGlobalCu_bx_Offphi", "Unpacker Theta Global", "", "Basic Cuts && Same BX && Off axis #phi"], 
              ]
 
 h2dnames = [
-            #["h2_bx_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-            #  "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations unpacker"],
-            #["h2_bx_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-            #  "EMTF Bunch crossing (Emulator)", "Number of Sub-Stations emulator"],
-            ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2_occupancy_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2_chamber_emu_unpacker", "Basic Cuts", 
-              "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm43", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-43 (emulator)", "Number of Sub-Sectors  of RE-43 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm42", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-42 (emulator)", "Number of Sub-Sectors  of RE-42 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm33", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-33 (emulator)", "Number of Sub-Sectors  of RE-33 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm32", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-32 (emulator)", "Number of Sub-Sectors  of RE-32 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm22", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-22 (emulator)", "Number of Sub-Sectors  of RE-22 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REm12", "Basic Cuts", 
-              "Number of Sub-Sectors of RE-12 (emulator)", "Number of Sub-Sectors  of RE-12 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp12", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+12 (emulator)", "Number of Sub-Sectors  of RE+12 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp22", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+22 (emulator)", "Number of Sub-Sectors  of RE+22 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp32", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+32 (emulator)", "Number of Sub-Sectors  of RE+32 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp33", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+33 (emulator)", "Number of Sub-Sectors  of RE+33 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp42", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+42 (emulator)", "Number of Sub-Sectors  of RE+42 (unpacker)"],
-            ["h2_chamber_emu_unpacker_REp43", "Basic Cuts", 
-              "Number of Sub-Sectors of RE+43 (emulator)", "Number of Sub-Sectors  of RE+43 (unpacker)"],
-            #["h2_bx_sector_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-            #  "EMTF sector (unpacker)", "EMTF Bunch crossing (Emulator)"],
-            #["h2_bx_sector_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-            #  "EMTF sector (emulator)", "EMTF Bunch crossing (Emulator)"],
-            ["h2_phi_emu_unpacker", "Basic Cuts", 
-              "#phi emulator", "#phi unpacker"],
-            ["h2_phi_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-              "#phi emulator", "#phi unpacker"],
-            ["h2_phi_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "#phi emulator", "#phi unpacker"],
-            ["h2_theta_emu_unpacker", "Basic Cuts", 
-              "#theta emulator", "#theta unpacker"],
-            ["h2_theta_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-              "#theta emulator", "#theta unpacker"],
-            ["h2_theta_emu_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
-              "#theta emulator", "#theta unpacker"],
-            ["h2_bx_emu_unpacker", "Basic Cuts", 
-              "Bunch crossing emulator", "Bunch crossing unpacker"],
-            ["h2_bx_emu_unpacker_bx", "Basic Cuts && Same Bx", 
-              "Bunch crossing emulator", "Bunch crossing unpacker"],
-            
-            # One hit histograms
-            ["h2CeVsCuChamberCuChamberCe_OneHit", "Basic Cuts && One hit",
-              "Chamber ID (Unpacker)", "Chamber ID (Emulator)"],
-            ["h2CeVsCuPhiCePhiCu_OneHit", "Basic Cuts && One hit",
-              "#phi_{unpacker}", "#phi_{emulator}"],
-            ["h2CeVsCuPhiCePhiCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
-              "#phi_{unpacker}", "#phi_{emulator}"], 
-            ["h2CeVsCuThetaCeThetaCu_OneHit", "Basic Cuts && One hit",
-              "#theta_{unpacker}", "#theta_{emulator}"],
-            ["h2CeVsCuThetaCeThetaCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
-              "#theta_{unpacker}", "#theta_{emulator}"],
-            ["h2CeVsCuChamberCuZoneCu_OneHit_bx", "Basic Cuts && One hit && Same BX",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuChamberCeZoneCe_OneHit_bx", "Basic Cuts && One hit && Same BX",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancy_OneHit", "Basic Cuts && One hit",
-              "Bunch crossing unpacker",  "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuBxCeZoneCeOccupancy_OneHit", "Basic Cuts && One hit", 
-              "Bunch crossing emulator",  "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCu_OneHit", "Basic Cuts && One hit",
-              "RPC sub-sectors unpacker", "Bunch crossing unpacker"],
-            ["h2CeVsCuBxCeZoneCe_OneHit", "Basic Cuts && One hit", 
-              "RPC sub-sectors emulator", "Bunch crossing emulator"],
-            ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e==#phi_u && Same BX",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e==#phi_u && Same BX",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e!=#phi_u && Same BX",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx", "Basic Cuts && One hit && #phi_e!=#phi_u && Same BX",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx", "Basic Cuts && One hit && #theta_e!=#theta_u && Same BX",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx", "Basic Cuts && One hit && #theta_e!=#theta_u && Same BX",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuChamberCeZoneCe_NotOneHit", "Basic Cuts && (> 1 hit) ",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuChamberCuZoneCu_NotOneHit", "Basic Cuts && (> 1 hit)",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e==#phi_u",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e==#phi_u",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
-            ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e!=#phi_u",
-              "RPC sub-sectors emulator", "Number of Sub-Stations emulator"],
-            ["h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit", "Basic Cuts && (> 1 hit) && #phi_e!=#phi_u",
-              "RPC sub-sectors unpacker", "Number of Sub-Stations unpacker"],
+            ["h2_bx_emu_unpack", "Basic Cuts",
+               "Bunch crossing (emulator)", "Bunch crossing (unpacker)"],
+            ["h2_bx_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "Bunch crossing (emulator)", "Bunch crossing (unpacker)"],
+            ["h2_bx_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "Bunch crossing (emulator)", "Bunch crossing (unpacker)"], 
+            ["h2_bx_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Bunch crossing (emulator)", "Bunch crossing (unpacker)"], 
+            ["h2_phiInt_emu_unpack", "Basic Cuts",
+               "Phi (Int) emulator", "Phi (Int) unpacker"],
+            ["h2_phiInt_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "Phi (Int) emulator", "Phi (Int) unpacker"],
+            ["h2_phiInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "Phi (Int) emulator", "Phi (Int) unpacker"],
+            ["h2_phiInt_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Phi (Int) emulator", "Phi (Int) unpacker"],
+            ["h2_phiGlobal_emu_unpack", "Basic Cuts",
+               "Phi (Global) emulator", "Phi (Global) unpacker"],
+            ["h2_phiGlobal_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "Phi (Global) emulator", "Phi (Global) unpacker"],
+            ["h2_phiGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "Phi (Global) emulator", "Phi (Global) unpacker"],
+            ["h2_phiGlobal_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Phi (Global) emulator", "Phi (Global) unpacker"],
+            ["h2_thetaInt_emu_unpack", "Basic Cuts",
+               "theta (Int) emulator", "theta (Int) unpacker"],
+            ["h2_thetaInt_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "theta (Int) emulator", "theta (Int) unpacker"],
+            ["h2_thetaInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "theta (Int) emulator", "theta (Int) unpacker"],
+            ["h2_thetaInt_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "theta (Int) emulator", "theta (Int) unpacker"],
+            ["h2_thetaGlobal_emu_unpack", "Basic Cuts",
+               "theta (Global) emulator", "theta (Global) unpacker"],
+            ["h2_thetaGlobal_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "theta (Global) emulator", "theta (Global) unpacker"],
+            ["h2_thetaGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "theta (Global) emulator", "theta (Global) unpacker"],
+            ["h2_thetaGlobal_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "theta (Global) emulator", "theta (Global) unpacker"],
+            ["h2_chamberID_emu_unpack", "Basic Cuts",
+               "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
+            ["h2_chamberID_emu_unpack_bx", "Basic Cuts && Same Bx",
+               "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
+            ["h2_chamberID_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+               "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
+            ["h2_chamberID_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
+            ["h2_chamberID_vs_roll_emu", "Basic Cuts",
+               "Number of Sub-Stations (emulator)", "Roll (emulator)"],
+            ["h2_chamberID_vs_roll_emu_bx", "Basic Cuts && Same Bx",
+               "Number of Sub-Stations (emulator)", "Roll (emulator)"],
+            ["h2_chamberID_vs_roll_emu_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "Number of Sub-Stations (emulator)", "Roll (emulator)"],
+            ["h2_chamberID_vs_roll_emu_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Number of Sub-Stations (emulator)", "Roll (emulator)"],
+            ["h2_chamberID_vs_roll_unpack", "Basic Cuts",
+               "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
+            ["h2_chamberID_vs_roll_unpack_bx", "Basic Cuts && Same Bx",
+               "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
+            ["h2_chamberID_vs_roll_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
+            ["h2_chamberID_vs_roll_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
+            ["h2_occupancy_unpacker", "Basic Cuts", 
+               "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
+            ["h2_occupancy_unpacker_bx", "Basic Cuts && Same Bx",
+               "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
+            ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
+            ["h2_occupancy_unpacker_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
+            ["h2_occupancy_emulator", "Basic Cuts", 
+               "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
+            ["h2_occupancy_emulator_bx", "Basic Cuts && Same Bx",
+               "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
+            ["h2_occupancy_emulator_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+               "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
+            ["h2_occupancy_emulator_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
+               "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
+            #
            ]
 
 RatioHistNames = [
-                  #["h2_bx_occupancy_unpacker_bx_phi", "h2_bx_occupancy_emu_unpacker_bx_phi"],
-                  ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emu_unpacker_bx_phi"],
-                  #["h2_bx_sector_unpacker_bx_phi", "h2_bx_sector_emu_unpacker_bx_phi"],
-                  ["h2CeVsCuChamberCuZoneCu_OneHit_bx", "h2CeVsCuChamberCeZoneCe_OneHit_bx"],
-                  ["h2CeVsCuBxCuZoneCuOccupancy_OneHit", "h2CeVsCuBxCeZoneCeOccupancy_OneHit"],
-                  ["h2CeVsCuBxCuZoneCu_OneHit", "h2CeVsCuBxCeZoneCe_OneHit"],
-                  ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx"],
-                  ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx"],
-                  ["h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx", "h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx"],
-                  ["h2CeVsCuChamberCuZoneCu_NotOneHit", "h2CeVsCuChamberCeZoneCe_NotOneHit"],
-                  ["h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit", "h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit"],
-                  ["h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit", "h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit"],
+
                  ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
 
 Table_Histo_Details = []
+Table_Histo_Details_Th2 = []
 
 #Drawing 1D histograms
 for i in range(0,len(hnames)):
+  print "===> Search hist : ",hdir+"/"+hnames[i][0]
   h.append(f.Get(hdir+"/"+hnames[i][0]))
   h[i].SetLineWidth(6)
   h[i].SetTitle(str(hnames[i][3]))
@@ -200,19 +204,9 @@ for i in range(0,len(hnames)):
   h[i].GetXaxis().SetTitleOffset(0.9)
   h[i].GetYaxis().SetTitleOffset(0.9)
   h[i].Draw()
-  c1.SaveAs("plots/"+hnames[i][0]+".png")
-  #c1.SaveAs("plots/"+hnames[i][0]+".txt")
-  #print h[i]
-  #h[i].Print("all")
-  #print "===\n",output
-  #file = open("plots/"+hnames[i][0]+".txt", 'w')
-  #file.write(h[i].Print("all"))
-  #file.write(output)
-  #file.close()
-  c1.SaveAs("plots/"+hnames[i][0]+".root")
+  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+".png")
   c1.SetLogy(1)
-  c1.SaveAs("plots/"+hnames[i][0]+"Log.png")
-  #c1.SaveAs("plots/"+hnames[i][0]+"Log.root")
+  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"Log.png")
   c1.SetLogy(0)
   TH1_histo_details = []
   TH1_histo_details.append(hnames[i][0])
@@ -222,6 +216,32 @@ for i in range(0,len(hnames)):
   TH1_histo_details.append(hnames[i][3])
   #TH1_histo_details.append(h[i].Integral())
   TH1_histo_details.append(h[i].GetEntries())
+  Table_Histo_Details.append(TH1_histo_details)
+  #
+  # One hit histograms
+  #
+  hOneHit.append(f.Get(hdir+"/"+hnames[i][0]+"_oneHit"))
+  hOneHit[i].SetLineWidth(6)
+  hOneHit[i].SetTitle(str(hnames[i][3]+" && One Hit"))
+  hOneHit[i].GetXaxis().SetTitle(str(hnames[i][1]))
+  hOneHit[i].GetYaxis().SetTitle(str(hnames[i][2]))
+  hOneHit[i].GetXaxis().SetTitleSize(0.05)
+  hOneHit[i].GetYaxis().SetTitleSize(0.05)
+  hOneHit[i].GetXaxis().SetTitleOffset(0.9)
+  hOneHit[i].GetYaxis().SetTitleOffset(0.9)
+  hOneHit[i].Draw()
+  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit.png")
+  c1.SetLogy(1)
+  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit_Log.png")
+  c1.SetLogy(0)
+  TH1_histo_details = []
+  TH1_histo_details.append(hnames[i][0]+"_oneHit")
+  TH1_histo_details.append("TH1F")
+  TH1_histo_details.append(hnames[i][1])
+  TH1_histo_details.append(hnames[i][2])
+  TH1_histo_details.append(hnames[i][3]+" && One Hit")
+  #TH1_histo_details.append(hOneHit[i].Integral())
+  TH1_histo_details.append(hOneHit[i].GetEntries())
   Table_Histo_Details.append(TH1_histo_details)
   
 #Drawing 2D histograms
@@ -240,35 +260,40 @@ for i in range(0,len(h2dnames)):
   #  for j in range(0,12):
   #    h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
   h2d[i].Draw("COLZ")
-  c1.SaveAs("plots/"+h2dnames[i][0]+".png")
-  c1.SaveAs("plots/"+h2dnames[i][0]+".root")
-  TH1_histo_details = []
-  TH1_histo_details.append(h2dnames[i][0])
-  TH1_histo_details.append("TH2F")
-  TH1_histo_details.append(h2dnames[i][2])
-  TH1_histo_details.append(h2dnames[i][3])
-  TH1_histo_details.append(h2dnames[i][1])
-  TH1_histo_details.append(h2d[i].Integral())
-  Table_Histo_Details.append(TH1_histo_details)
-
-# for i in [0,2,4,6]:
-#   h2d1 = f.Get(hdir+"/"+h2dnames[i])
-#   h2d2 = f.Get(hdir+"/"+h2dnames[i+1])
-#   h2d1.Sumw2()
-#   h2d2.Sumw2()
-#   h2d1.Add(h2d2,-1.00000001)
-#   h2d1.SetTitle('')
-#   h2d1.GetXaxis().SetTitle("EMTFSubsector")
-#   h2d1.GetYaxis().SetTitle(str(h2dyaxisnames[i]))
-#   h2d1.GetXaxis().SetTitleSize(0.05)
-#   h2d1.GetYaxis().SetTitleSize(0.05)
-#   h2d1.GetXaxis().SetTitleOffset(0.9)
-#   h2d1.GetYaxis().SetTitleOffset(0.9)
-#   if True: 
-#     for j in range(0,12):
-#       h2d1.GetYaxis().SetBinLabel(j+1,axislabels[j]) 
-#   h2d1.Draw("COLZ")
-#   c1.SaveAs(h2dnames[i]+"Diff.png")
+  c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+".png")
+  TH2_histo_details = []
+  TH2_histo_details.append(h2dnames[i][0])
+  TH2_histo_details.append("TH2F")
+  TH2_histo_details.append(h2dnames[i][2])
+  TH2_histo_details.append(h2dnames[i][3])
+  TH2_histo_details.append(h2dnames[i][1])
+  TH2_histo_details.append(h2d[i].Integral())
+  Table_Histo_Details_Th2.append(TH2_histo_details)
+  #
+  # One hit histograms
+  #
+  h2dOneHit.append(f.Get(hdir+"/"+h2dnames[i][0]+"_oneHit"))
+  h2dOneHit[i].SetTitle(h2dnames[i][1]+" && One Hit")
+  h2dOneHit[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
+  h2dOneHit[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
+  h2dOneHit[i].GetXaxis().SetTitleSize(0.05)
+  h2dOneHit[i].GetYaxis().SetTitleSize(0.05)
+  h2dOneHit[i].GetXaxis().SetTitleOffset(0.9)
+  h2dOneHit[i].GetYaxis().SetTitleOffset(0.9)
+  h2dOneHit[i].GetZaxis().SetRangeUser(0,999);
+  #if i < 2 : 
+  #  for j in range(0,12):
+  #    h2dOneHit[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+  h2dOneHit[i].Draw("COLZ")
+  c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+"_oneHit.png")
+  TH2_histo_details = []
+  TH2_histo_details.append(h2dnames[i][0]+"_oneHit")
+  TH2_histo_details.append("TH2F")
+  TH2_histo_details.append(h2dnames[i][2])
+  TH2_histo_details.append(h2dnames[i][3])
+  TH2_histo_details.append(h2dnames[i][1]+" && One Hit")
+  TH2_histo_details.append(h2dOneHit[i].Integral())
+  Table_Histo_Details_Th2.append(TH2_histo_details)
 
 #RatioHistNum = f.Get(hdir+"/h2CeVsCuChamberCuZoneCuOneHit")
 #RatioHistDeno = f.Get(hdir+"/h2CeVsCuChamberCuZoneCu")
@@ -310,12 +335,21 @@ for i in range(0,len(RatioHistNames)):
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
 
 # Markdown table generation
-file = open("plots/yield-info.md", 'w')
+file = open("plots/1D_hist/yield-info.md", 'w')
 file.write("|Hist-Name | Hist-type | X-axis | Y-Axis | Title | GetEntries() |\n")
 file.write("|---       |---        |---     |---     |---    |---           |\n")
 for info in Table_Histo_Details:
    file.write("| "+str(info[0])+str(" | ")+str(info[1])+str(" | ")+str(info[2])+str(" | ")+str(info[3])+str(" | ")+str(info[4])+str(" | ")+str(info[5])+str(" | \n"))
 file.close()
-os.system("pandoc -t html -o plots/yield-info.html plots/yield-info.md")
-os.system("sed -i 's/<table>/<table border=\"1\">/' plots/yield-info.html")
+os.system("pandoc -t html -o plots/1D_hist/yield-info.html plots/1D_hist/yield-info.md")
+os.system("sed -i 's/<table>/<table border=\"1\">/' plots/1D_hist/yield-info.html")
+
+file = open("plots/2D_hist/yield-info_2d.md", 'w')
+file.write("|Hist-Name | Hist-type | X-axis | Y-Axis | Title | GetEntries() |\n")
+file.write("|---       |---        |---     |---     |---    |---           |\n")
+for info in Table_Histo_Details_Th2:
+   file.write("| "+str(info[0])+str(" | ")+str(info[1])+str(" | ")+str(info[2])+str(" | ")+str(info[3])+str(" | ")+str(info[4])+str(" | ")+str(info[5])+str(" | \n"))
+file.close()
+os.system("pandoc -t html -o plots/2D_hist/yield-info_2d.html plots/2D_hist/yield-info_2d.md")
+os.system("sed -i 's/<table>/<table border=\"1\">/' plots/2D_hist/yield-info_2d.html")
 
