@@ -29,8 +29,12 @@ c1 = TCanvas('c1', '',1100,1000)
 
 h = []
 hOneHit = []
+hbx_theta = []
+hbx_Offtheta = []
 h2d = []
 h2dOneHit = []
+h2d_bx_theta = []
+h2d_bx_Offtheta = []
 hdir = "DQM_CPPF"
 
 os.system("rm -rf plots/2D_hist")
@@ -103,7 +107,7 @@ h2dnames = [
                "Bunch crossing (emulator)", "Bunch crossing (unpacker)"],
             ["h2_bx_emu_unpack_bx", "Basic Cuts && Same Bx",
                "Bunch crossing (emulator)", "Bunch crossing (unpacker)"],
-            ["h2_bx_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_bx_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "Bunch crossing (emulator)", "Bunch crossing (unpacker)"], 
             ["h2_bx_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Bunch crossing (emulator)", "Bunch crossing (unpacker)"], 
@@ -111,7 +115,7 @@ h2dnames = [
                "Phi (Int) emulator", "Phi (Int) unpacker"],
             ["h2_phiInt_emu_unpack_bx", "Basic Cuts && Same Bx",
                "Phi (Int) emulator", "Phi (Int) unpacker"],
-            ["h2_phiInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_phiInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "Phi (Int) emulator", "Phi (Int) unpacker"],
             ["h2_phiInt_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Phi (Int) emulator", "Phi (Int) unpacker"],
@@ -119,7 +123,7 @@ h2dnames = [
                "Phi (Global) emulator", "Phi (Global) unpacker"],
             ["h2_phiGlobal_emu_unpack_bx", "Basic Cuts && Same Bx",
                "Phi (Global) emulator", "Phi (Global) unpacker"],
-            ["h2_phiGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_phiGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "Phi (Global) emulator", "Phi (Global) unpacker"],
             ["h2_phiGlobal_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Phi (Global) emulator", "Phi (Global) unpacker"],
@@ -127,7 +131,7 @@ h2dnames = [
                "theta (Int) emulator", "theta (Int) unpacker"],
             ["h2_thetaInt_emu_unpack_bx", "Basic Cuts && Same Bx",
                "theta (Int) emulator", "theta (Int) unpacker"],
-            ["h2_thetaInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_thetaInt_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "theta (Int) emulator", "theta (Int) unpacker"],
             ["h2_thetaInt_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "theta (Int) emulator", "theta (Int) unpacker"],
@@ -135,7 +139,7 @@ h2dnames = [
                "theta (Global) emulator", "theta (Global) unpacker"],
             ["h2_thetaGlobal_emu_unpack_bx", "Basic Cuts && Same Bx",
                "theta (Global) emulator", "theta (Global) unpacker"],
-            ["h2_thetaGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_thetaGlobal_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "theta (Global) emulator", "theta (Global) unpacker"],
             ["h2_thetaGlobal_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "theta (Global) emulator", "theta (Global) unpacker"],
@@ -143,7 +147,7 @@ h2dnames = [
                "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
             ["h2_chamberID_emu_unpack_bx", "Basic Cuts && Same Bx",
                "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
-            ["h2_chamberID_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi", 
+            ["h2_chamberID_emu_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi", 
                "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
             ["h2_chamberID_emu_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Number of Sub-Stations (emulator)", "Number of Sub-Stations (unpacker)"],
@@ -151,7 +155,7 @@ h2dnames = [
                "Number of Sub-Stations (emulator)", "Roll (emulator)"],
             ["h2_chamberID_vs_roll_emu_bx", "Basic Cuts && Same Bx",
                "Number of Sub-Stations (emulator)", "Roll (emulator)"],
-            ["h2_chamberID_vs_roll_emu_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_chamberID_vs_roll_emu_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "Number of Sub-Stations (emulator)", "Roll (emulator)"],
             ["h2_chamberID_vs_roll_emu_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Number of Sub-Stations (emulator)", "Roll (emulator)"],
@@ -159,7 +163,7 @@ h2dnames = [
                "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
             ["h2_chamberID_vs_roll_unpack_bx", "Basic Cuts && Same Bx",
                "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
-            ["h2_chamberID_vs_roll_unpack_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_chamberID_vs_roll_unpack_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
             ["h2_chamberID_vs_roll_unpack_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "Number of Sub-Stations (unpacker)", "Roll (unpacker)"],
@@ -167,7 +171,7 @@ h2dnames = [
                "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
             ["h2_occupancy_unpacker_bx", "Basic Cuts && Same Bx",
                "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
-            ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_occupancy_unpacker_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
             ["h2_occupancy_unpacker_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "EMTF sub-sector (unpacker)", "Occupancy (unpacker)"],
@@ -175,7 +179,7 @@ h2dnames = [
                "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
             ["h2_occupancy_emulator_bx", "Basic Cuts && Same Bx",
                "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
-            ["h2_occupancy_emulator_bx_phi", "Basic Cuts && Same Bx && Same Phi",
+            ["h2_occupancy_emulator_bx_phi", "Basic Cuts && Same Bx && Same #phi",
                "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
             ["h2_occupancy_emulator_bx_Offphi", "Basic Cuts && Same BX && Off axis #phi",
                "EMTF sub-sector (emulator)", "Occupancy (emulator)"],
@@ -243,6 +247,67 @@ for i in range(0,len(hnames)):
   #TH1_histo_details.append(hOneHit[i].Integral())
   TH1_histo_details.append(hOneHit[i].GetEntries())
   Table_Histo_Details.append(TH1_histo_details)
+  #
+  # thetaCe == thetaCu
+  #
+  if ("bx_phi" in hnames[i][0]):
+     print (hnames[i][0]).replace("bx_phi","bx_theta")
+     print hdir+"/"+(hnames[i][0]).replace("bx_phi","bx_theta")
+     hbx_theta.append(f.Get(hdir+"/"+(hnames[i][0]).replace("bx_phi","bx_theta")))
+     hbx_theta[i].SetLineWidth(6)
+     hbx_theta[i].SetTitle(str((hnames[i][3]).replace("phi","theta")))
+     hbx_theta[i].GetXaxis().SetTitle(str(hnames[i][1]))
+     hbx_theta[i].GetYaxis().SetTitle(str(hnames[i][2]))
+     hbx_theta[i].GetXaxis().SetTitleSize(0.05)
+     hbx_theta[i].GetYaxis().SetTitleSize(0.05)
+     hbx_theta[i].GetXaxis().SetTitleOffset(0.9)
+     hbx_theta[i].GetYaxis().SetTitleOffset(0.9)
+     hbx_theta[i].Draw()
+     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+".png")
+     c1.SetLogy(1)
+     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+"_Log.png")
+     c1.SetLogy(0)
+     TH1_histo_details = []
+     TH1_histo_details.append((hnames[i][0]).replace("bx_phi","bx_theta"))
+     TH1_histo_details.append("TH1F")
+     TH1_histo_details.append(hnames[i][1])
+     TH1_histo_details.append(hnames[i][2])
+     TH1_histo_details.append((hnames[i][3]).replace("phi","theta"))
+     #TH1_histo_details.append(hbx_theta[i].Integral())
+     TH1_histo_details.append(hbx_theta[i].GetEntries())
+     Table_Histo_Details.append(TH1_histo_details)
+  else: hbx_theta.append("")
+  #
+  # thetaCe != thetaCu
+  #
+  if ("bx_Offphi" in hnames[i][0]):
+     print (hnames[i][0]).replace("bx_Offphi","bx_Offtheta")
+     print hdir+"/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")
+     hbx_Offtheta.append(f.Get(hdir+"/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")))
+     hbx_Offtheta[i].SetLineWidth(6)
+     hbx_Offtheta[i].SetTitle(str((hnames[i][3]).replace("phi","theta")))
+     hbx_Offtheta[i].GetXaxis().SetTitle(str(hnames[i][1]))
+     hbx_Offtheta[i].GetYaxis().SetTitle(str(hnames[i][2]))
+     hbx_Offtheta[i].GetXaxis().SetTitleSize(0.05)
+     hbx_Offtheta[i].GetYaxis().SetTitleSize(0.05)
+     hbx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
+     hbx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
+     hbx_Offtheta[i].Draw()
+     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
+     c1.SetLogy(1)
+     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+"_Log.png")
+     c1.SetLogy(0)
+     TH1_histo_details = []
+     TH1_histo_details.append((hnames[i][0]).replace("bx_Offphi","bx_Offtheta"))
+     TH1_histo_details.append("TH1F")
+     TH1_histo_details.append(hnames[i][1])
+     TH1_histo_details.append(hnames[i][2])
+     TH1_histo_details.append((hnames[i][3]).replace("phi","theta"))
+     #TH1_histo_details.append(hbx_Offtheta[i].Integral())
+     TH1_histo_details.append(hbx_Offtheta[i].GetEntries())
+     Table_Histo_Details.append(TH1_histo_details)
+  else: hbx_Offtheta.append("")
+
   
 #Drawing 2D histograms
 c1.SetRightMargin(0.15)
@@ -250,6 +315,7 @@ for i in range(0,len(h2dnames)):
   h2d.append(f.Get(hdir+"/"+h2dnames[i][0]))
   h2d[i].SetTitle(h2dnames[i][1])
   h2d[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
+  if ("roll" in h2dnames[i][0]): h2d[i].GetXaxis().CenterLabels(1)
   h2d[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
   h2d[i].GetXaxis().SetTitleSize(0.05)
   h2d[i].GetYaxis().SetTitleSize(0.05)
@@ -295,25 +361,59 @@ for i in range(0,len(h2dnames)):
   TH2_histo_details.append(h2dOneHit[i].Integral())
   Table_Histo_Details_Th2.append(TH2_histo_details)
 
-#RatioHistNum = f.Get(hdir+"/h2CeVsCuChamberCuZoneCuOneHit")
-#RatioHistDeno = f.Get(hdir+"/h2CeVsCuChamberCuZoneCu")
-#
-#print "Entries h2CeVsCuChamberCuZoneCuOneHit = ",RatioHistNum.GetEntries()
-#print "Entries h2CeVsCuChamberCuZoneCu = ",RatioHistDeno.GetEntries()
-#print "Entries h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit = ",f.Get(hdir+"/h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonalOneHit").GetEntries()
-#RatioHistNum.Divide(RatioHistDeno)
-#RatioHistNum.SetTitle('')
-#RatioHistNum.GetXaxis().SetTitle("EMTFSubsector(CPPF unpacked)")
-#RatioHistNum.GetYaxis().SetTitle("")
-#RatioHistNum.GetXaxis().SetTitleSize(0.05)
-#RatioHistNum.GetYaxis().SetTitleSize(0.05)
-#RatioHistNum.GetXaxis().SetTitleOffset(0.9)
-#RatioHistNum.GetYaxis().SetTitleOffset(0.9)
-#RatioHistNum.GetZaxis().SetRangeUser(0,5);
-#for j in range(0,12):
-#   RatioHistNum.GetYaxis().SetBinLabel(j+1,axislabels[j]) 
-#RatioHistNum.Draw("COLZ")
-#c1.SaveAs("Ratio_OneHit_Inclusive.png")
+  if ("bx_phi" in hnames[i][0]):
+     print (h2dnames[i][0]).replace("bx_phi","bx_theta")
+     print hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")
+     h2d_bx_theta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")))
+     h2d_bx_theta[i].SetTitle((h2dnames[i][1]).replace("phi","theta"))
+     h2d_bx_theta[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
+     h2d_bx_theta[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
+     h2d_bx_theta[i].GetXaxis().SetTitleSize(0.05)
+     h2d_bx_theta[i].GetYaxis().SetTitleSize(0.05)
+     h2d_bx_theta[i].GetXaxis().SetTitleOffset(0.9)
+     h2d_bx_theta[i].GetYaxis().SetTitleOffset(0.9)
+     h2d_bx_theta[i].GetZaxis().SetRangeUser(0,999);
+     #if i < 2 : 
+     #  for j in range(0,12):
+     #    h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+     h2d_bx_theta[i].Draw("COLZ")
+     c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")+".png")
+     TH2_histo_details = []
+     TH2_histo_details.append((h2dnames[i][0]).replace("bx_phi","bx_theta"))
+     TH2_histo_details.append("TH2F")
+     TH2_histo_details.append(h2dnames[i][2])
+     TH2_histo_details.append(h2dnames[i][3])
+     TH2_histo_details.append((h2dnames[i][1]).replace("phi","theta"))
+     TH2_histo_details.append(h2d_bx_theta[i].Integral())
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+  else: h2d_bx_theta.append("")
+
+  if ("bx_Offphi" in hnames[i][0]):
+     print (h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
+     print hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
+     h2d_bx_Offtheta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")))
+     h2d_bx_Offtheta[i].SetTitle((h2dnames[i][1]).replace("phi","theta"))
+     h2d_bx_Offtheta[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
+     h2d_bx_Offtheta[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
+     h2d_bx_Offtheta[i].GetXaxis().SetTitleSize(0.05)
+     h2d_bx_Offtheta[i].GetYaxis().SetTitleSize(0.05)
+     h2d_bx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
+     h2d_bx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
+     h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
+     #if i < 2 : 
+     #  for j in range(0,12):
+     #    h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+     h2d_bx_Offtheta[i].Draw("COLZ")
+     c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
+     TH2_histo_details = []
+     TH2_histo_details.append((h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta"))
+     TH2_histo_details.append("TH2F")
+     TH2_histo_details.append(h2dnames[i][2])
+     TH2_histo_details.append(h2dnames[i][3])
+     TH2_histo_details.append((h2dnames[i][1]).replace("phi","theta"))
+     TH2_histo_details.append(h2d_bx_Offtheta[i].Integral())
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+  else: h2d_bx_Offtheta.append("")
 
 for i in range(0,len(RatioHistNames)):
    Numerator = f.Get(hdir+"/"+RatioHistNames[i][1])
