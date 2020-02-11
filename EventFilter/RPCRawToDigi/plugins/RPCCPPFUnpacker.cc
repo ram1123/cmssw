@@ -275,11 +275,11 @@ void RPCCPPFUnpacker::processTXRecord(RPCAMCLink link
 
     if (record.isValid(0)) {
         rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getPhi(0), record.getTheta(0), 0, 0, 0, emtf_sector, emtf_link, 0, 0, 0, 0) ); 
-       // rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getTheta(0), record.getPhi(0)));
+        rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getTheta(0), record.getPhi(0)));
     }
     if (record.isValid(1)) {
         rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getPhi(1), record.getTheta(1), 1, 0, 0, emtf_sector, emtf_link, 0, 0, 0, 0) ); 
-        //rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getTheta(1), record.getPhi(1)));
+        rpc_cppf_digis.push_back(l1t::CPPFDigi(rpc_id, 0, record.getTheta(1), record.getPhi(1)));
     }
 }
 
