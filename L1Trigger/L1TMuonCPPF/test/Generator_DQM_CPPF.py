@@ -17,7 +17,7 @@ process.load('Configuration.EventContent.EventContent_cff')
 process.load('Configuration.Geometry.GeometryExtended2016_cff')
 process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
 
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
+process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10000)
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 readFiles = cms.untracked.vstring()
@@ -32,7 +32,7 @@ readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')
 process.TFileService = cms.Service("TFileService",
-	fileName = cms.string("DQM_CPPF.root")
+	fileName = cms.string("DQM_CPPF-Final15Jan.root")
 )
 process.p = cms.Path(process.DQM_CPPF)
 

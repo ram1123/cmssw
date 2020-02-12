@@ -1472,6 +1472,8 @@ steps['ALCAEXPLP']={'-s':'ALCAOUTPUT:AlCaPCCRandom,ALCA:PromptCalibProdLumiPCC',
 steps['ALCAHARVLP']={'-s':'ALCAHARVEST:%s'%(autoPCL['PromptCalibProdLumiPCC']),
                      '--conditions':'auto:run2_data',
                      '--scenario':'pp',
+                     '--datatier':'DQM',
+                     '--eventcontent': 'DQM',
                      '--data':'',
                      '--filein':'file:PromptCalibProdLumiPCC.root'}
 
@@ -1508,7 +1510,7 @@ steps['TIER0EXPSIPIXELCAL']={'-s':'RAW2DIGI,L1Reco,ALCAPRODUCER:SiPixelCalZeroBi
                           '--eventcontent':'ALCARECO',
                           }
 
-steps['ALCASPLITHPBS']={'-s':'ALCAOUTPUT:TkAlMinBias,ALCA:PromptCalibProdBeamSpotHP',
+steps['ALCASPLITHPBS']={'-s':'ALCAOUTPUT:TkAlMinBias,ALCA:PromptCalibProdBeamSpotHP+PromptCalibProdBeamSpotHPLowPU',
                         '--scenario':'pp',
                         '--data':'',
                         '--era':'Run2_2017',
@@ -1537,6 +1539,16 @@ steps['ALCAHARVDHPBS']={'-s':'ALCAHARVEST:%s'%(autoPCL['PromptCalibProdBeamSpotH
                         '--era':'Run2_2017',
                         '--customise':'Configuration/DataProcessing/RecoTLR.customisePostEra_Run2_2017_harvesting_trackingOnly',
                         '--filein':'file:PromptCalibProdBeamSpotHP.root'}
+
+steps['ALCAHARVDHPBSLOWPU']={'-s':'ALCAHARVEST:%s'%(autoPCL['PromptCalibProdBeamSpotHPLowPU']),
+                        #'--conditions':'auto:run2_data_promptlike',
+                        '--conditions':'92X_dataRun2_Express_v2_snapshotted', # to replaced with line above once run2_data_promptlike will contain DropBoxMetadata
+                        '--scenario':'pp',
+                        '--data':'',
+                        '--era':'Run2_2017',
+                        '--customise':'Configuration/DataProcessing/RecoTLR.customisePostEra_Run2_2017_harvesting_trackingOnly',
+                        '--filein':'file:PromptCalibProdBeamSpotHPLowPU.root'}
+
 
 steps['ALCAHARVDSIPIXELCAL']={'-s':'ALCAHARVEST:%s'%(autoPCL['PromptCalibProdSiPixel']),
                         '--conditions':'100X_dataRun2_Express_v2',

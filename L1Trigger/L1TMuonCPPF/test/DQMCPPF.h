@@ -52,6 +52,7 @@ class DQM_CPPF : public edm::EDAnalyzer {
  private:
   
   void beginJob() override;
+
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken1_;
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken2_;
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken3_;
@@ -462,5 +463,3 @@ class DQM_CPPF : public edm::EDAnalyzer {
 
 
 #endif
-
-

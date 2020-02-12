@@ -4,7 +4,6 @@ import datetime
 import random
 import subprocess
 
-
 process = cms.Process('DIGI')
 
 # import of standard configurations
@@ -68,7 +67,6 @@ readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'4EDD5765-B3C0-E711-
 #    readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+in_file_name) )
 
 
-
 process.options = cms.untracked.PSet(
     )
 
@@ -121,4 +119,3 @@ associatePatAlgosToolsTask(process)
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
 # End adding early deletion
-

@@ -912,4 +912,3 @@ void DQM_CPPF::beginJob(){
 }
 //define this as a plug-in
 DEFINE_FWK_MODULE(DQM_CPPF);
-

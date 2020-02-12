@@ -53,7 +53,7 @@ from L1Trigger.L1TGlobal.simGtStage2Digis_cfi import simGtStage2Digis
 from L1Trigger.L1TGlobal.simGtExtFakeProd_cfi import simGtExtFakeProd
 
 valGtStage2Digis = simGtStage2Digis.clone()
-valGtStage2Digis.ExtInputTag = cms.InputTag("simGtExtFakeProd")
+valGtStage2Digis.ExtInputTag = cms.InputTag("gtStage2Digis")
 valGtStage2Digis.MuonInputTag = cms.InputTag("gtStage2Digis", "Muon")
 valGtStage2Digis.EGammaInputTag = cms.InputTag("gtStage2Digis", "EGamma")
 valGtStage2Digis.TauInputTag = cms.InputTag("gtStage2Digis", "Tau")
@@ -61,6 +61,10 @@ valGtStage2Digis.JetInputTag = cms.InputTag("gtStage2Digis", "Jet")
 valGtStage2Digis.EtSumInputTag = cms.InputTag("gtStage2Digis", "EtSum")
 valGtStage2Digis.AlgorithmTriggersUnmasked = cms.bool(False)
 valGtStage2Digis.AlgorithmTriggersUnprescaled = cms.bool(False)
+valGtStage2Digis.EmulateBxInEvent = cms.int32(5)
+valGtStage2Digis.PrescaleSet = cms.uint32(7)
+valGtStage2Digis.GetPrescaleColumnFromData = cms.bool(True)
+valGtStage2Digis.AlgoBlkInputTag = cms.InputTag("gtStage2Digis")
 
 Stage2L1HardwareValidation = cms.Sequence(
     valCaloStage2Layer1Digis +
@@ -84,7 +88,6 @@ from DQM.L1TMonitor.L1TdeStage2CaloLayer1_cfi import *
 
 # CaloLayer2
 from DQM.L1TMonitor.L1TdeStage2CaloLayer2_cfi import *
-from DQM.L1TMonitor.L1TStage2CaloLayer2_cfi import *
 from DQM.L1TMonitor.L1TStage2CaloLayer2Emul_cfi import *
 
 # BMTF
@@ -101,6 +104,7 @@ from DQM.L1TMonitor.L1TdeStage2uGMT_cff import *
 
 # uGT
 from DQM.L1TMonitor.L1TStage2uGTEmul_cfi import *
+from DQM.L1TMonitor.L1TdeStage2uGT_cfi import *
 
 #-------------------------------------------------
 # Stage2 Emulator and Emulator DQM Sequences
@@ -111,16 +115,14 @@ l1tStage2EmulatorOnlineDQM = cms.Sequence(
     l1tdeStage2Omtf +
     l1tdeStage2EmtfOnlineDQMSeq +
     l1tStage2uGMTEmulatorOnlineDQMSeq +
+    l1tdeStage2uGT +
     l1tStage2uGtEmul
 )
 
 # sequence to run only for validation events
 l1tStage2EmulatorOnlineDQMValidationEvents = cms.Sequence(
     l1tdeStage2CaloLayer1 +
-    # We process both layer2 and layer2emu in same sourceclient
-    # to be able to divide them in the MonitorClient
     l1tdeStage2CaloLayer2 +
-    l1tStage2CaloLayer2 +
     l1tStage2CaloLayer2Emul
 )
 

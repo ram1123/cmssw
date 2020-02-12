@@ -537,7 +537,3 @@ void RecHitProcessor::process(
   } // End loop: for (TrackingGeometry::DetContainer::const_iterator iDet = rpcGeom->dets().begin(); iDet < rpcGeom->dets().end(); iDet++)
 } // End function: void RecHitProcessor::process()
 
-
-  
-
-
