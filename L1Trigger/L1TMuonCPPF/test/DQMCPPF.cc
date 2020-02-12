@@ -134,8 +134,10 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          (stationCe == stationCu) &&
          (ringCe == ringCu) &&
          (sectorCe == sectorCu) &&
-         (subsectorCe == subsectorCu) &&
-         (emtfSubsectorCe == emtfSubsectorCu)) {
+         (subsectorCe == subsectorCu) 
+         //&& (emtfSubsectorCe == emtfSubsectorCu)
+         ) 
+         {
          
          matches = true;
          matches_unpacker++;
