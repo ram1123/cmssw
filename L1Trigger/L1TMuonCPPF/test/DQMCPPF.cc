@@ -37,48 +37,10 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   bool matches_bx_theta = false;
   bool matches_bx_Offtheta = false;
 
+    //std::cout << "\n\n\nStart of event--------------\n\n\n" << std::endl;
 
-  for(auto& cppf_digis : *CppfDigis1){
-    RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
-    int regionCe = (int)rpcIdCe.region();
-    int stationCe = (int)rpcIdCe.station();
-    int sectorCe = (int)rpcIdCe.sector();
-    int subsectorCe = (int)rpcIdCe.subsector();
-    int ringCe = (int)rpcIdCe.ring();
-    int rollCe = (int)(rpcIdCe.roll());
-    int phiIntCe = (int)cppf_digis.phi_int();
-    int thetaIntCe =  (int)cppf_digis.theta_int();
-    int phiGlobalCe = (int)cppf_digis.phi_glob();
-    int thetaGlobalCe =  (int)cppf_digis.theta_glob();
-    int cluster_sizeCe = (int)cppf_digis.cluster_size();
-    int bxCe = cppf_digis.bx();
-    
-    int emtfSectorCe = (int)cppf_digis.emtf_sector();
-    int emtfSubsectorCe = GetSubsector(emtfSectorCe, subsectorCe);
-    int fillOccupancyCe = occupancy_value(regionCe, stationCe, ringCe);
-
-    //std::cout << "==================================" << std::endl;
-    //std::cout << "=         DEBUG: 1               =" << std::endl;
-    //std::cout << "roll = " << rollCe << std::endl;
-    //std::cout << "regionCe = " << regionCe << std::endl;
-    //std::cout << "stationCe = " << stationCe << std::endl;
-    //std::cout << "ringCe = " << ringCe << std::endl;
-    //std::cout << "sectorCe = " << sectorCe << std::endl;
-    //std::cout << "subsectorCe = " << subsectorCe << std::endl;
-    //std::cout << "phiIntCe = " << phiIntCe << std::endl;
-    //std::cout << "thetaIntCe = " << thetaIntCe << std::endl;
-    //std::cout << "bxCe = " << bxCe << std::endl;
-    //std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
-    ////std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
-    //std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
-    //std::cout << "==================================" << std::endl;
-    ////int fillBxCe = bx_value(regionCe, emtfSectorCe); 
-    
-    //Chamber ID
-    int nsubCe = 6;
-    (ringCe == 1 && stationCe > 1) ? nsubCe = 3 : nsubCe = 6;
-    int chamberIDCe = subsectorCe + nsubCe * ( sectorCe - 1);
-
+    int count_unpacker = 0;
+    int count_emulator = 0;
     ar_cluster_sizeCe.clear();
     ar_cluster_sizeCu.clear();
     ar_bxCe.clear();
@@ -100,8 +62,119 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     ar_fillOccupancyCu.clear();
     ar_fillOccupancyCe.clear();
 
+    ar_cluster_sizeCe_bx.clear();
+    ar_cluster_sizeCu_bx.clear();
+    ar_bxCe_bx.clear();
+    ar_bxCu_bx.clear();
+    ar_phiIntCe_bx.clear();
+    ar_phiIntCu_bx.clear();
+    ar_thetaIntCu_bx.clear();
+    ar_thetaIntCe_bx.clear();
+    ar_thetaGlobalCe_bx.clear();
+    ar_thetaGlobalCu_bx.clear();
+    ar_phiGlobalCe_bx.clear();
+    ar_phiGlobalCu_bx.clear();
+    ar_chamberIDCe_bx.clear();
+    ar_chamberIDCu_bx.clear();
+    ar_rollCe_bx.clear();
+    ar_rollCu_bx.clear();
+    ar_emtfSubsectorCu_bx.clear();
+    ar_emtfSubsectorCe_bx.clear();
+    ar_fillOccupancyCu_bx.clear();
+    ar_fillOccupancyCe_bx.clear();
 
+    ar_cluster_sizeCe_bx_phi.clear();
+    ar_cluster_sizeCu_bx_phi.clear();
+    ar_bxCe_bx_phi.clear();
+    ar_bxCu_bx_phi.clear();
+    ar_phiIntCe_bx_phi.clear();
+    ar_phiIntCu_bx_phi.clear();
+    ar_thetaIntCu_bx_phi.clear();
+    ar_thetaIntCe_bx_phi.clear();
+    ar_thetaGlobalCe_bx_phi.clear();
+    ar_thetaGlobalCu_bx_phi.clear();
+    ar_phiGlobalCe_bx_phi.clear();
+    ar_phiGlobalCu_bx_phi.clear();
+    ar_chamberIDCe_bx_phi.clear();
+    ar_chamberIDCu_bx_phi.clear();
+    ar_rollCe_bx_phi.clear();
+    ar_rollCu_bx_phi.clear();
+    ar_emtfSubsectorCu_bx_phi.clear();
+    ar_emtfSubsectorCe_bx_phi.clear();
+    ar_fillOccupancyCu_bx_phi.clear();
+    ar_fillOccupancyCe_bx_phi.clear();
+
+    ar_cluster_sizeCe_bx_Offphi.clear();
+    ar_cluster_sizeCu_bx_Offphi.clear();
+    ar_bxCe_bx_Offphi.clear();
+    ar_bxCu_bx_Offphi.clear();
+    ar_phiIntCe_bx_Offphi.clear();
+    ar_phiIntCu_bx_Offphi.clear();
+    ar_thetaIntCu_bx_Offphi.clear();
+    ar_thetaIntCe_bx_Offphi.clear();
+    ar_thetaGlobalCe_bx_Offphi.clear();
+    ar_thetaGlobalCu_bx_Offphi.clear();
+    ar_phiGlobalCe_bx_Offphi.clear();
+    ar_phiGlobalCu_bx_Offphi.clear();
+    ar_chamberIDCe_bx_Offphi.clear();
+    ar_chamberIDCu_bx_Offphi.clear();
+    ar_rollCe_bx_Offphi.clear();
+    ar_rollCu_bx_Offphi.clear();
+    ar_emtfSubsectorCu_bx_Offphi.clear();
+    ar_emtfSubsectorCe_bx_Offphi.clear();
+    ar_fillOccupancyCu_bx_Offphi.clear();
+    ar_fillOccupancyCe_bx_Offphi.clear();
+
+  for(auto& cppf_digis : *CppfDigis1){
+    count_emulator++;
+    RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
+    int regionCe = (int)rpcIdCe.region();
+    int stationCe = (int)rpcIdCe.station();
+    int sectorCe = (int)rpcIdCe.sector();
+    int subsectorCe = (int)rpcIdCe.subsector();
+    int ringCe = (int)rpcIdCe.ring();
+    int rollCe = (int)(rpcIdCe.roll());
+    int phiIntCe = (int)cppf_digis.phi_int();
+    int thetaIntCe =  (int)cppf_digis.theta_int();
+    int phiGlobalCe = (int)cppf_digis.phi_glob();
+    int thetaGlobalCe =  (int)cppf_digis.theta_glob();
+    int cluster_sizeCe = (int)cppf_digis.cluster_size();
+    int bxCe = cppf_digis.bx();
+    
+    int emtfSectorCe = (int)cppf_digis.emtf_sector();
+    int emtfSubsectorCe = GetSubsector(emtfSectorCe, subsectorCe);
+    int fillOccupancyCe = occupancy_value(regionCe, stationCe, ringCe);
+
+    //std::cout << "==================================" << std::endl;
+    //std::cout << "=         DEBUG: 1: Emulator               =" << std::endl;
+    //std::cout << "roll = " << rollCe << std::endl;
+    //std::cout << "regionCe = " << regionCe << std::endl;
+    //std::cout << "stationCe = " << stationCe << std::endl;
+    //std::cout << "ringCe = " << ringCe << std::endl;
+    //std::cout << "sectorCe = " << sectorCe << std::endl;
+    //std::cout << "subsectorCe = " << subsectorCe << std::endl;
+    //std::cout << "phiIntCe = " << phiIntCe << std::endl;
+    //std::cout << "thetaIntCe = " << thetaIntCe << std::endl;
+    //std::cout << "bxCe = " << bxCe << std::endl;
+    //std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
+    //std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
+    //std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
+    //  std::cout << "matches_unpacker = " << matches_unpacker << std::endl;
+    //  std::cout << "count_unpacker = " << count_unpacker << std::endl;
+    //  std::cout << "count_emulator = " << count_emulator << std::endl;
+    //std::cout << "==================================" << std::endl;
+    ////int fillBxCe = bx_value(regionCe, emtfSectorCe); 
+    
+    //Chamber ID
+    int nsubCe = 6;
+    (ringCe == 1 && stationCe > 1) ? nsubCe = 3 : nsubCe = 6;
+    int chamberIDCe = subsectorCe + nsubCe * ( sectorCe - 1);
+
+
+
+    count_unpacker = 0;
     for(auto& cppf_digis2 : *CppfDigis2){
+      count_unpacker++;
       RPCDetId rpcIdCu = cppf_digis2.rpcId();
       int regionCu = rpcIdCu.region();
       int stationCu = rpcIdCu.station();
@@ -120,9 +193,24 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       int emtfSubsectorCu = GetSubsector(emtfSectorCu, subsectorCu);
       int fillOccupancyCu = occupancy_value(regionCu, stationCu, ringCu);
       //int fillBxCu = bx_value(regionCu, emtfSectorCu); 
-      //std::cout << "==================================" << std::endl;
-      //std::cout << "=         DEBUG: 1               =" << std::endl;
       //std::cout << "roll Unpack = " << rollCu << std::endl;
+      //std::cout << "==================================" << std::endl;
+      //std::cout << "=         DEBUG: 2: unpacker               =" << std::endl;
+      //std::cout << "roll = " << rollCu << std::endl;
+      //std::cout << "regionCu = " << regionCu << std::endl;
+      //std::cout << "stationCu = " << stationCu << std::endl;
+      //std::cout << "ringCu = " << ringCu << std::endl;
+      //std::cout << "sectorCu = " << sectorCu << std::endl;
+      //std::cout << "subsectorCu = " << subsectorCu << std::endl;
+      //std::cout << "phiIntCu = " << phiIntCu << std::endl;
+      //std::cout << "thetaIntCu = " << thetaIntCu << std::endl;
+      //std::cout << "bxCu = " << bxCu << std::endl;
+      //std::cout << "emtfSectorCu = " << emtfSectorCu << std::endl;
+      //std::cout << "emtfSubsectorCu = " << emtfSubsectorCu << std::endl;
+      //std::cout << "fillOccupancyCu = " << fillOccupancyCu << std::endl;
+      //std::cout << "matches_unpacker = " << matches_unpacker << std::endl;
+      //std::cout << "count_unpacker = " << count_unpacker << std::endl;
+      //std::cout << "count_emulator = " << count_emulator << std::endl;
       //std::cout << "==================================" << std::endl;
       
       //Chamber ID
@@ -135,14 +223,13 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          (ringCe == ringCu) &&
          (sectorCe == sectorCu) &&
          (subsectorCe == subsectorCu) 
-         //&& (emtfSubsectorCe == emtfSubsectorCu)
+         && (emtfSubsectorCe == emtfSubsectorCu)
          ) 
          {
          
          matches = true;
          matches_unpacker++;
 
-         //if (emtfSubsectorCu == emtfSubsectorCe) {
             ar_cluster_sizeCe.push_back(cluster_sizeCe);
             ar_cluster_sizeCu.push_back(cluster_sizeCu);
             ar_bxCe.push_back(bxCe);
@@ -163,7 +250,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             ar_emtfSubsectorCe.push_back(emtfSubsectorCe);
             ar_fillOccupancyCu.push_back(fillOccupancyCu);
             ar_fillOccupancyCe.push_back(fillOccupancyCe);
-         //}
 
          h1_cluster_sizeCe->Fill(cluster_sizeCe);
          h1_cluster_sizeCu->Fill(cluster_sizeCu);
@@ -192,7 +278,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             matches_bx = true;
             matches_unpacker_bx++;
 
-            if (matches_unpacker_bx<2) {
                ar_cluster_sizeCe_bx.push_back(cluster_sizeCe);
                ar_cluster_sizeCu_bx.push_back(cluster_sizeCu);
                ar_bxCe_bx.push_back(bxCe);
@@ -213,7 +298,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                ar_emtfSubsectorCe_bx.push_back(emtfSubsectorCe);
                ar_fillOccupancyCu_bx.push_back(fillOccupancyCu);
                ar_fillOccupancyCe_bx.push_back(fillOccupancyCe);
-            }
 
             h1_cluster_sizeCe_bx->Fill(cluster_sizeCe);
             h1_cluster_sizeCu_bx->Fill(cluster_sizeCu);
@@ -245,7 +329,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                matches_bx_phi = true;
                matches_unpacker_bx_phi++;
 
-               if (matches_unpacker_bx_phi<2) {
                   ar_cluster_sizeCe_bx_phi.push_back(cluster_sizeCe);
                   ar_cluster_sizeCu_bx_phi.push_back(cluster_sizeCu);
                   ar_bxCe_bx_phi.push_back(bxCe);
@@ -266,7 +349,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                   ar_emtfSubsectorCe_bx_phi.push_back(emtfSubsectorCe);
                   ar_fillOccupancyCu_bx_phi.push_back(fillOccupancyCu);
                   ar_fillOccupancyCe_bx_phi.push_back(fillOccupancyCe);
-               }
 
                h1_cluster_sizeCe_bx_phi->Fill(cluster_sizeCe);
                h1_cluster_sizeCu_bx_phi->Fill(cluster_sizeCu);
@@ -299,7 +381,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                matches_bx_Offphi = true;
                matches_unpacker_bx_Offphi++;
 
-               if (matches_unpacker_bx_Offphi<2) {
                   ar_cluster_sizeCe_bx_Offphi.push_back(cluster_sizeCe);
                   ar_cluster_sizeCu_bx_Offphi.push_back(cluster_sizeCu);
                   ar_bxCe_bx_Offphi.push_back(bxCe);
@@ -320,7 +401,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                   ar_emtfSubsectorCe_bx_Offphi.push_back(emtfSubsectorCe);
                   ar_fillOccupancyCu_bx_Offphi.push_back(fillOccupancyCu);
                   ar_fillOccupancyCe_bx_Offphi.push_back(fillOccupancyCe);
-               }
 
                h1_cluster_sizeCe_bx_Offphi->Fill(cluster_sizeCe);
                h1_cluster_sizeCu_bx_Offphi->Fill(cluster_sizeCu);
@@ -353,7 +433,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                matches_bx_theta = true;
                matches_unpacker_bx_theta++;
 
-               if (matches_unpacker_bx_theta<2) {
+               //if (matches_unpacker_bx_theta<2) {
                   ar_cluster_sizeCe_bx_theta.push_back(cluster_sizeCe);
                   ar_cluster_sizeCu_bx_theta.push_back(cluster_sizeCu);
                   ar_bxCe_bx_theta.push_back(bxCe);
@@ -374,7 +454,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                   ar_emtfSubsectorCe_bx_theta.push_back(emtfSubsectorCe);
                   ar_fillOccupancyCu_bx_theta.push_back(fillOccupancyCu);
                   ar_fillOccupancyCe_bx_theta.push_back(fillOccupancyCe);
-               }
+               //}
 
                h1_cluster_sizeCe_bx_theta->Fill(cluster_sizeCe);
                h1_cluster_sizeCu_bx_theta->Fill(cluster_sizeCu);
@@ -407,7 +487,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                matches_bx_Offtheta = true;
                matches_unpacker_bx_Offtheta++;
 
-               if (matches_unpacker_bx_Offtheta<2) {
                   ar_cluster_sizeCe_bx_Offtheta.push_back(cluster_sizeCe);
                   ar_cluster_sizeCu_bx_Offtheta.push_back(cluster_sizeCu);
                   ar_bxCe_bx_Offtheta.push_back(bxCe);
@@ -428,7 +507,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                   ar_emtfSubsectorCe_bx_Offtheta.push_back(emtfSubsectorCe);
                   ar_fillOccupancyCu_bx_Offtheta.push_back(fillOccupancyCu);
                   ar_fillOccupancyCe_bx_Offtheta.push_back(fillOccupancyCe);
-               }
 
                h1_cluster_sizeCe_bx_Offtheta->Fill(cluster_sizeCe);
                h1_cluster_sizeCu_bx_Offtheta->Fill(cluster_sizeCu);
@@ -459,7 +537,14 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          } // END: if (bxCe == bxCu)
       } // END of matching region, station, ring, sector and subsector if condition
 
+    } // END: of for(auto& cppf_digis2 : *CppfDigis2)
+  } // END: for(auto& cppf_digis : *CppfDigis1)
+
+         //std::cout<<"size = " << ar_phiIntCe.size() << std::endl;
       if (matches_unpacker == 1) {
+         //std::cout<<"Size of one hit event = " << ar_cluster_sizeCe.size() << std::endl;
+         //std::cout<<"phi int unpacker ar_phiIntCu = " << ar_phiIntCu[0] << std::endl;
+         //std::cout<<"phi int emulator ar_phiIntCe = " << ar_phiIntCe[0] << std::endl;
          h1_cluster_sizeCe_oneHit->Fill(ar_cluster_sizeCe[0]);
          h1_cluster_sizeCu_oneHit->Fill(ar_cluster_sizeCu[0]);
          h1_bxCe_oneHit->Fill(ar_bxCe[0]);
@@ -485,6 +570,9 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       } //(matches_unpacker == 1)
 
       if (matches_unpacker_bx == 1) {
+         //std::cout<<"Size of one hit event = " << ar_cluster_sizeCe.size() << std::endl;
+         //std::cout<<"phi int unpacker ar_phiIntCu = " << ar_phiIntCu_bx[0] << std::endl;
+         //std::cout<<"phi int emulator ar_phiIntCe = " << ar_phiIntCe_bx[0] << std::endl;
          h1_cluster_sizeCe_bx_oneHit->Fill(ar_cluster_sizeCe_bx[0]);
          h1_cluster_sizeCu_bx_oneHit->Fill(ar_cluster_sizeCu_bx[0]);
          h1_bxCe_bx_oneHit->Fill(ar_bxCe_bx[0]);
@@ -557,8 +645,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          h2_occupancy_unpacker_bx_Offphi_oneHit->Fill(ar_emtfSubsectorCu_bx_Offphi[0], ar_fillOccupancyCu_bx_Offphi[0]);
          h2_occupancy_emulator_bx_Offphi_oneHit->Fill(ar_emtfSubsectorCe_bx_Offphi[0], ar_fillOccupancyCe_bx_Offphi[0]);
       }// matches_unpacker_bx_Offphi==1
-    } // END: of for(auto& cppf_digis2 : *CppfDigis2)
-  } // END: for(auto& cppf_digis : *CppfDigis1)
+
+
   if (matches == true) h1_matches_unpacker->Fill(matches_unpacker);
   if (matches_bx == true) h1_matches_unpacker_bx->Fill(matches_unpacker_bx);
   if (matches_bx_phi == true) h1_matches_unpacker_bx_phi->Fill(matches_unpacker_bx_phi);
@@ -739,30 +827,30 @@ void DQM_CPPF::beginJob(){
   h1_thetaIntCe_bx_theta_oneHit = fs->make<TH1D>("h1_thetaIntCe_bx_theta_oneHit", "h1_thetaIntCe_bx_theta", 32, 0., 32.);
   h1_thetaIntCe_bx_Offtheta = fs->make<TH1D>("h1_thetaIntCe_bx_Offtheta", "h1_thetaIntCe_bx_Offtheta", 32, 0., 32.);
   h1_thetaIntCe_bx_Offtheta_oneHit = fs->make<TH1D>("h1_thetaIntCe_bx_Offtheta_oneHit", "h1_thetaIntCe_bx_Offtheta", 32, 0., 32.);
-  h1_thetaGlobalCe = fs->make<TH1D>("h1_thetaGlobalCe", "h1_thetaGlobalCe", 360,-180.,180);
-  h1_thetaGlobalCe_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_oneHit", "h1_thetaGlobalCe", 360,-180.,180);
-  h1_thetaGlobalCe_bx = fs->make<TH1D>("h1_thetaGlobalCe_bx", "h1_thetaGlobalCe_bx", 360,-180.,180);
-  h1_thetaGlobalCe_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit", "h1_thetaGlobalCe_bx", 360,-180.,180);
-  h1_thetaGlobalCe_bx_phi = fs->make<TH1D>("h1_thetaGlobalCe_bx_phi", "h1_thetaGlobalCe_bx_phi", 360,-180.,180);
-  h1_thetaGlobalCe_bx_phi_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_phi_oneHit", "h1_thetaGlobalCe_bx_phi", 360,-180.,180);
-  h1_thetaGlobalCe_bx_Offphi = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offphi", "h1_thetaGlobalCe_bx_Offphi", 360,-180.,180);
-  h1_thetaGlobalCe_bx_Offphi_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offphi_oneHit", "h1_thetaGlobalCe_bx_Offphi", 360,-180.,180);
-  h1_thetaGlobalCe_bx_theta = fs->make<TH1D>("h1_thetaGlobalCe_bx_theta", "h1_thetaGlobalCe_bx_theta", 360,-180.,180);
-  h1_thetaGlobalCe_bx_theta_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_theta_oneHit", "h1_thetaGlobalCe_bx_theta", 360,-180.,180);
-  h1_thetaGlobalCe_bx_Offtheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offtheta", "h1_thetaGlobalCe_bx_Offtheta", 360,-180.,180);
-  h1_thetaGlobalCe_bx_Offtheta_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offtheta_oneHit", "h1_thetaGlobalCe_bx_Offtheta", 360,-180.,180);
-  h1_thetaGlobalCu = fs->make<TH1D>("h1_thetaGlobalCu", "h1_thetaGlobalCu", 360,-180.,180);
-  h1_thetaGlobalCu_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_oneHit", "h1_thetaGlobalCu", 360,-180.,180);
-  h1_thetaGlobalCu_bx = fs->make<TH1D>("h1_thetaGlobalCu_bx", "h1_thetaGlobalCu_bx", 360,-180.,180);
-  h1_thetaGlobalCu_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit", "h1_thetaGlobalCu_bx", 360,-180.,180);
-  h1_thetaGlobalCu_bx_phi = fs->make<TH1D>("h1_thetaGlobalCu_bx_phi", "h1_thetaGlobalCu_bx_phi", 360,-180.,180);
-  h1_thetaGlobalCu_bx_phi_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_phi_oneHit", "h1_thetaGlobalCu_bx_phi", 360,-180.,180);
-  h1_thetaGlobalCu_bx_Offphi = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offphi", "h1_thetaGlobalCu_bx_Offphi", 360,-180.,180);
-  h1_thetaGlobalCu_bx_Offphi_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offphi_oneHit", "h1_thetaGlobalCu_bx_Offphi", 360,-180.,180);
-  h1_thetaGlobalCu_bx_theta = fs->make<TH1D>("h1_thetaGlobalCu_bx_theta", "h1_thetaGlobalCu_bx_theta", 360,-180.,180);
-  h1_thetaGlobalCu_bx_theta_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_theta_oneHit", "h1_thetaGlobalCu_bx_theta", 360,-180.,180);
-  h1_thetaGlobalCu_bx_Offtheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offtheta", "h1_thetaGlobalCu_bx_Offtheta", 360,-180.,180);
-  h1_thetaGlobalCu_bx_Offtheta_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offtheta_oneHit", "h1_thetaGlobalCu_bx_Offtheta", 360,-180.,180);
+  h1_thetaGlobalCe = fs->make<TH1D>("h1_thetaGlobalCe", "h1_thetaGlobalCe", 180,0.,180.);
+  h1_thetaGlobalCe_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_oneHit", "h1_thetaGlobalCe", 180,0.,180.);
+  h1_thetaGlobalCe_bx = fs->make<TH1D>("h1_thetaGlobalCe_bx", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_phi = fs->make<TH1D>("h1_thetaGlobalCe_bx_phi", "h1_thetaGlobalCe_bx_phi", 180,0.,180.);
+  h1_thetaGlobalCe_bx_phi_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_phi_oneHit", "h1_thetaGlobalCe_bx_phi", 180,0.,180.);
+  h1_thetaGlobalCe_bx_Offphi = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offphi", "h1_thetaGlobalCe_bx_Offphi", 180,0.,180.);
+  h1_thetaGlobalCe_bx_Offphi_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offphi_oneHit", "h1_thetaGlobalCe_bx_Offphi", 180,0.,180.);
+  h1_thetaGlobalCe_bx_theta = fs->make<TH1D>("h1_thetaGlobalCe_bx_theta", "h1_thetaGlobalCe_bx_theta", 180,0.,180.);
+  h1_thetaGlobalCe_bx_theta_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_theta_oneHit", "h1_thetaGlobalCe_bx_theta", 180,0.,180.);
+  h1_thetaGlobalCe_bx_Offtheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offtheta", "h1_thetaGlobalCe_bx_Offtheta", 180,0.,180.);
+  h1_thetaGlobalCe_bx_Offtheta_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_Offtheta_oneHit", "h1_thetaGlobalCe_bx_Offtheta", 180,0.,180.);
+  h1_thetaGlobalCu = fs->make<TH1D>("h1_thetaGlobalCu", "h1_thetaGlobalCu", 180,0.,180.);
+  h1_thetaGlobalCu_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_oneHit", "h1_thetaGlobalCu", 180,0.,180.);
+  h1_thetaGlobalCu_bx = fs->make<TH1D>("h1_thetaGlobalCu_bx", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_phi = fs->make<TH1D>("h1_thetaGlobalCu_bx_phi", "h1_thetaGlobalCu_bx_phi", 180,0.,180.);
+  h1_thetaGlobalCu_bx_phi_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_phi_oneHit", "h1_thetaGlobalCu_bx_phi", 180,0.,180.);
+  h1_thetaGlobalCu_bx_Offphi = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offphi", "h1_thetaGlobalCu_bx_Offphi", 180,0.,180.);
+  h1_thetaGlobalCu_bx_Offphi_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offphi_oneHit", "h1_thetaGlobalCu_bx_Offphi", 180,0.,180.);
+  h1_thetaGlobalCu_bx_theta = fs->make<TH1D>("h1_thetaGlobalCu_bx_theta", "h1_thetaGlobalCu_bx_theta", 180,0.,180.);
+  h1_thetaGlobalCu_bx_theta_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_theta_oneHit", "h1_thetaGlobalCu_bx_theta", 180,0.,180.);
+  h1_thetaGlobalCu_bx_Offtheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offtheta", "h1_thetaGlobalCu_bx_Offtheta", 180,0.,180.);
+  h1_thetaGlobalCu_bx_Offtheta_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_Offtheta_oneHit", "h1_thetaGlobalCu_bx_Offtheta", 180,0.,180.);
   h1_phiGlobalCe = fs->make<TH1D>("h1_phiGlobalCe", "h1_phiGlobalCe", 360,-180.,180);
   h1_phiGlobalCe_oneHit = fs->make<TH1D>("h1_phiGlobalCe_oneHit", "h1_phiGlobalCe", 360,-180.,180);
   h1_phiGlobalCe_bx = fs->make<TH1D>("h1_phiGlobalCe_bx", "h1_phiGlobalCe_bx", 360,-180.,180);

@@ -24,7 +24,8 @@ b = array('d', blue)
 TColor.CreateGradientColorTable(NRGBs, s, r, g, b, NCont);
 gStyle.SetNumberContours(NCont);
 
-f = TFile.Open('DQM_CPPF.root','read')
+#f = TFile.Open('DQM_CPPF.root','read')
+f = TFile.Open('DQM_CPPF-Final15Jan.root','read')
 c1 = TCanvas('c1', '',1100,1000)
 
 h = []
@@ -321,10 +322,13 @@ for i in range(0,len(h2dnames)):
   h2d[i].GetYaxis().SetTitleSize(0.05)
   h2d[i].GetXaxis().SetTitleOffset(0.9)
   h2d[i].GetYaxis().SetTitleOffset(0.9)
-  h2d[i].GetZaxis().SetRangeUser(0,999);
-  #if i < 2 : 
-  #  for j in range(0,12):
-  #    h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+  #h2d[i].GetZaxis().SetRangeUser(0,5000);
+  #if str(h2dnames[i][2]).contains("Occupancy") or str(h2dnames[i][3]).contains("Occupancy"): 
+  if "Occupancy" in str(h2dnames[i][3]):
+    for j in range(0,12):
+      h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+      h2d[i].GetYaxis().SetTitleOffset(1.1)
+      h2d[i].GetZaxis().SetRangeUser(0,999);
   h2d[i].Draw("COLZ")
   c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+".png")
   TH2_histo_details = []
@@ -346,10 +350,12 @@ for i in range(0,len(h2dnames)):
   h2dOneHit[i].GetYaxis().SetTitleSize(0.05)
   h2dOneHit[i].GetXaxis().SetTitleOffset(0.9)
   h2dOneHit[i].GetYaxis().SetTitleOffset(0.9)
-  h2dOneHit[i].GetZaxis().SetRangeUser(0,999);
-  #if i < 2 : 
-  #  for j in range(0,12):
-  #    h2dOneHit[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+  #h2dOneHit[i].GetZaxis().SetRangeUser(0,5000);
+  if "Occupancy" in str(h2dnames[i][3]):
+    for j in range(0,12):
+      h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+      h2d[i].GetYaxis().SetTitleOffset(1.1)
+      h2dOneHit[i].GetZaxis().SetRangeUser(0,999);
   h2dOneHit[i].Draw("COLZ")
   c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+"_oneHit.png")
   TH2_histo_details = []
@@ -372,10 +378,15 @@ for i in range(0,len(h2dnames)):
      h2d_bx_theta[i].GetYaxis().SetTitleSize(0.05)
      h2d_bx_theta[i].GetXaxis().SetTitleOffset(0.9)
      h2d_bx_theta[i].GetYaxis().SetTitleOffset(0.9)
-     h2d_bx_theta[i].GetZaxis().SetRangeUser(0,999);
+     #h2d_bx_theta[i].GetZaxis().SetRangeUser(0,5000);
      #if i < 2 : 
      #  for j in range(0,12):
      #    h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+     if "Occupancy" in str(h2dnames[i][3]):
+       for j in range(0,12):
+         h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+         h2d[i].GetYaxis().SetTitleOffset(1.1)
+         h2d_bx_theta[i].GetZaxis().SetRangeUser(0,999);
      h2d_bx_theta[i].Draw("COLZ")
      c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")+".png")
      TH2_histo_details = []
@@ -399,10 +410,15 @@ for i in range(0,len(h2dnames)):
      h2d_bx_Offtheta[i].GetYaxis().SetTitleSize(0.05)
      h2d_bx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
      h2d_bx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
-     h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
+     #h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
      #if i < 2 : 
      #  for j in range(0,12):
      #    h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
+     if "Occupancy" in str(h2dnames[i][3]):
+       for j in range(0,12):
+         h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+         h2d[i].GetYaxis().SetTitleOffset(1.1)
+         h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
      h2d_bx_Offtheta[i].Draw("COLZ")
      c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
      TH2_histo_details = []
@@ -429,7 +445,7 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleSize(0.05)
    Numerator.GetXaxis().SetTitleOffset(0.9)
    Numerator.GetYaxis().SetTitleOffset(0.9)
-   Numerator.GetZaxis().SetRangeUser(0,5);
+   #Numerator.GetZaxis().SetRangeUser(0,5);
    Numerator.Draw("COLZ")
    print "integral = ",Numerator.Integral()
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
