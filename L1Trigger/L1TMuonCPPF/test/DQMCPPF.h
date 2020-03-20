@@ -71,10 +71,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu;
   std::vector<int> ar_thetaIntCu;
   std::vector<int> ar_thetaIntCe;
-  std::vector<int> ar_thetaGlobalCe;
-  std::vector<int> ar_thetaGlobalCu;
-  std::vector<int> ar_phiGlobalCe;
-  std::vector<int> ar_phiGlobalCu;
+  std::vector<float> ar_thetaGlobalCe;
+  std::vector<float> ar_thetaGlobalCu;
+  std::vector<float> ar_phiGlobalCe;
+  std::vector<float> ar_phiGlobalCu;
   std::vector<int> ar_chamberIDCe;
   std::vector<int> ar_chamberIDCu;
   std::vector<int> ar_rollCe;
@@ -83,6 +83,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe;
   std::vector<int> ar_fillOccupancyCu;
   std::vector<int> ar_fillOccupancyCe;
+  std::vector<int> ar_first_stripCu;
+  std::vector<int> ar_first_stripCe;
+  std::vector<int> ar_boardCu;
+  std::vector<int> ar_boardCe;
+  std::vector<int> ar_channelCu;
+  std::vector<int> ar_channelCe;
+  std::vector<int> ar_emtf_linkCu;
+  std::vector<int> ar_emtf_linkCe;
 
   std::vector<int> ar_cluster_sizeCe_bx;
   std::vector<int> ar_cluster_sizeCu_bx;
@@ -92,10 +100,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu_bx;
   std::vector<int> ar_thetaIntCu_bx;
   std::vector<int> ar_thetaIntCe_bx;
-  std::vector<int> ar_thetaGlobalCe_bx;
-  std::vector<int> ar_thetaGlobalCu_bx;
-  std::vector<int> ar_phiGlobalCe_bx;
-  std::vector<int> ar_phiGlobalCu_bx;
+  std::vector<float> ar_thetaGlobalCe_bx;
+  std::vector<float> ar_thetaGlobalCu_bx;
+  std::vector<float> ar_phiGlobalCe_bx;
+  std::vector<float> ar_phiGlobalCu_bx;
   std::vector<int> ar_chamberIDCe_bx;
   std::vector<int> ar_chamberIDCu_bx;
   std::vector<int> ar_rollCe_bx;
@@ -104,6 +112,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe_bx;
   std::vector<int> ar_fillOccupancyCu_bx;
   std::vector<int> ar_fillOccupancyCe_bx;
+  std::vector<int> ar_first_stripCu_bx;
+  std::vector<int> ar_first_stripCe_bx;
+  std::vector<int> ar_boardCu_bx;
+  std::vector<int> ar_boardCe_bx;
+  std::vector<int> ar_channelCu_bx;
+  std::vector<int> ar_channelCe_bx;
+  std::vector<int> ar_emtf_linkCu_bx;
+  std::vector<int> ar_emtf_linkCe_bx;
 
   std::vector<int> ar_cluster_sizeCe_bx_phi;
   std::vector<int> ar_cluster_sizeCu_bx_phi;
@@ -113,10 +129,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu_bx_phi;
   std::vector<int> ar_thetaIntCu_bx_phi;
   std::vector<int> ar_thetaIntCe_bx_phi;
-  std::vector<int> ar_thetaGlobalCe_bx_phi;
-  std::vector<int> ar_thetaGlobalCu_bx_phi;
-  std::vector<int> ar_phiGlobalCe_bx_phi;
-  std::vector<int> ar_phiGlobalCu_bx_phi;
+  std::vector<float> ar_thetaGlobalCe_bx_phi;
+  std::vector<float> ar_thetaGlobalCu_bx_phi;
+  std::vector<float> ar_phiGlobalCe_bx_phi;
+  std::vector<float> ar_phiGlobalCu_bx_phi;
   std::vector<int> ar_chamberIDCe_bx_phi;
   std::vector<int> ar_chamberIDCu_bx_phi;
   std::vector<int> ar_rollCe_bx_phi;
@@ -125,6 +141,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe_bx_phi;
   std::vector<int> ar_fillOccupancyCu_bx_phi;
   std::vector<int> ar_fillOccupancyCe_bx_phi;
+  std::vector<int> ar_first_stripCu_bx_phi;
+  std::vector<int> ar_first_stripCe_bx_phi;
+  std::vector<int> ar_boardCu_bx_phi;
+  std::vector<int> ar_boardCe_bx_phi;
+  std::vector<int> ar_channelCu_bx_phi;
+  std::vector<int> ar_channelCe_bx_phi;
+  std::vector<int> ar_emtf_linkCu_bx_phi;
+  std::vector<int> ar_emtf_linkCe_bx_phi;
 
   std::vector<int> ar_cluster_sizeCe_bx_Offphi;
   std::vector<int> ar_cluster_sizeCu_bx_Offphi;
@@ -134,10 +158,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu_bx_Offphi;
   std::vector<int> ar_thetaIntCu_bx_Offphi;
   std::vector<int> ar_thetaIntCe_bx_Offphi;
-  std::vector<int> ar_thetaGlobalCe_bx_Offphi;
-  std::vector<int> ar_thetaGlobalCu_bx_Offphi;
-  std::vector<int> ar_phiGlobalCe_bx_Offphi;
-  std::vector<int> ar_phiGlobalCu_bx_Offphi;
+  std::vector<float> ar_thetaGlobalCe_bx_Offphi;
+  std::vector<float> ar_thetaGlobalCu_bx_Offphi;
+  std::vector<float> ar_phiGlobalCe_bx_Offphi;
+  std::vector<float> ar_phiGlobalCu_bx_Offphi;
   std::vector<int> ar_chamberIDCe_bx_Offphi;
   std::vector<int> ar_chamberIDCu_bx_Offphi;
   std::vector<int> ar_rollCe_bx_Offphi;
@@ -146,6 +170,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe_bx_Offphi;
   std::vector<int> ar_fillOccupancyCu_bx_Offphi;
   std::vector<int> ar_fillOccupancyCe_bx_Offphi;
+  std::vector<int> ar_first_stripCu_bx_Offphi;
+  std::vector<int> ar_first_stripCe_bx_Offphi;
+  std::vector<int> ar_boardCu_bx_Offphi;
+  std::vector<int> ar_boardCe_bx_Offphi;
+  std::vector<int> ar_channelCu_bx_Offphi;
+  std::vector<int> ar_channelCe_bx_Offphi;
+  std::vector<int> ar_emtf_linkCu_bx_Offphi;
+  std::vector<int> ar_emtf_linkCe_bx_Offphi;
   
   std::vector<int> ar_cluster_sizeCe_bx_theta;
   std::vector<int> ar_cluster_sizeCu_bx_theta;
@@ -155,10 +187,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu_bx_theta;
   std::vector<int> ar_thetaIntCu_bx_theta;
   std::vector<int> ar_thetaIntCe_bx_theta;
-  std::vector<int> ar_thetaGlobalCe_bx_theta;
-  std::vector<int> ar_thetaGlobalCu_bx_theta;
-  std::vector<int> ar_phiGlobalCe_bx_theta;
-  std::vector<int> ar_phiGlobalCu_bx_theta;
+  std::vector<float> ar_thetaGlobalCe_bx_theta;
+  std::vector<float> ar_thetaGlobalCu_bx_theta;
+  std::vector<float> ar_phiGlobalCe_bx_theta;
+  std::vector<float> ar_phiGlobalCu_bx_theta;
   std::vector<int> ar_chamberIDCe_bx_theta;
   std::vector<int> ar_chamberIDCu_bx_theta;
   std::vector<int> ar_rollCe_bx_theta;
@@ -167,6 +199,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe_bx_theta;
   std::vector<int> ar_fillOccupancyCu_bx_theta;
   std::vector<int> ar_fillOccupancyCe_bx_theta;
+  std::vector<int> ar_first_stripCu_bx_theta;
+  std::vector<int> ar_first_stripCe_bx_theta;
+  std::vector<int> ar_boardCu_bx_theta;
+  std::vector<int> ar_boardCe_bx_theta;
+  std::vector<int> ar_channelCu_bx_theta;
+  std::vector<int> ar_channelCe_bx_theta;
+  std::vector<int> ar_emtf_linkCu_bx_theta;
+  std::vector<int> ar_emtf_linkCe_bx_theta;
 
   std::vector<int> ar_cluster_sizeCe_bx_Offtheta;
   std::vector<int> ar_cluster_sizeCu_bx_Offtheta;
@@ -176,10 +216,10 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_phiIntCu_bx_Offtheta;
   std::vector<int> ar_thetaIntCu_bx_Offtheta;
   std::vector<int> ar_thetaIntCe_bx_Offtheta;
-  std::vector<int> ar_thetaGlobalCe_bx_Offtheta;
-  std::vector<int> ar_thetaGlobalCu_bx_Offtheta;
-  std::vector<int> ar_phiGlobalCe_bx_Offtheta;
-  std::vector<int> ar_phiGlobalCu_bx_Offtheta;
+  std::vector<float> ar_thetaGlobalCe_bx_Offtheta;
+  std::vector<float> ar_thetaGlobalCu_bx_Offtheta;
+  std::vector<float> ar_phiGlobalCe_bx_Offtheta;
+  std::vector<float> ar_phiGlobalCu_bx_Offtheta;
   std::vector<int> ar_chamberIDCe_bx_Offtheta;
   std::vector<int> ar_chamberIDCu_bx_Offtheta;
   std::vector<int> ar_rollCe_bx_Offtheta;
@@ -188,6 +228,14 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtfSubsectorCe_bx_Offtheta;
   std::vector<int> ar_fillOccupancyCu_bx_Offtheta;
   std::vector<int> ar_fillOccupancyCe_bx_Offtheta;
+  std::vector<int> ar_first_stripCu_bx_Offtheta;
+  std::vector<int> ar_first_stripCe_bx_Offtheta;
+  std::vector<int> ar_boardCu_bx_Offtheta;
+  std::vector<int> ar_boardCe_bx_Offtheta;
+  std::vector<int> ar_channelCu_bx_Offtheta;
+  std::vector<int> ar_channelCe_bx_Offtheta;
+  std::vector<int> ar_emtf_linkCu_bx_Offtheta;
+  std::vector<int> ar_emtf_linkCe_bx_Offtheta;
   
   TH1D* h1_matches_unpacker;
   TH1D* h1_matches_unpacker_bx;
@@ -199,6 +247,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_cluster_sizeCe_oneHit;
   TH1D*  h1_cluster_sizeCe_bx;
   TH1D*  h1_cluster_sizeCe_bx_oneHit;
+  TH1D*  h1_cluster_sizeCe_bx_oneHit_OnPhi;
+  TH1D*  h1_cluster_sizeCe_bx_oneHit_OffPhi;
   TH1D*  h1_cluster_sizeCe_bx_phi;
   TH1D*  h1_cluster_sizeCe_bx_theta;
   TH1D*  h1_cluster_sizeCe_bx_phi_oneHit;
@@ -211,6 +261,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_cluster_sizeCu_oneHit;
   TH1D*  h1_cluster_sizeCu_bx;
   TH1D*  h1_cluster_sizeCu_bx_oneHit;
+  TH1D*  h1_cluster_sizeCu_bx_oneHit_OnPhi;
+  TH1D*  h1_cluster_sizeCu_bx_oneHit_OffPhi;
   TH1D*  h1_cluster_sizeCu_bx_phi;
   TH1D*  h1_cluster_sizeCu_bx_theta;
   TH1D*  h1_cluster_sizeCu_bx_phi_oneHit;
@@ -223,6 +275,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_bxCe_oneHit;
   TH1D*  h1_bxCe_bx;
   TH1D*  h1_bxCe_bx_oneHit;
+  TH1D*  h1_bxCe_bx_oneHit_OnPhi;
+  TH1D*  h1_bxCe_bx_oneHit_OffPhi;
   TH1D*  h1_bxCe_bx_phi;
   TH1D*  h1_bxCe_bx_theta;
   TH1D*  h1_bxCe_bx_phi_oneHit;
@@ -235,6 +289,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_bxCu_oneHit;
   TH1D*  h1_bxCu_bx;
   TH1D*  h1_bxCu_bx_oneHit;
+  TH1D*  h1_bxCu_bx_oneHit_OnPhi;
+  TH1D*  h1_bxCu_bx_oneHit_OffPhi;
   TH1D*  h1_bxCu_bx_phi;
   TH1D*  h1_bxCu_bx_theta;
   TH1D*  h1_bxCu_bx_phi_oneHit;
@@ -247,6 +303,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_phiIntCe_oneHit;
   TH1D*  h1_phiIntCe_bx;
   TH1D*  h1_phiIntCe_bx_oneHit;
+  TH1D*  h1_phiIntCe_bx_oneHit_OnPhi;
+  TH1D*  h1_phiIntCe_bx_oneHit_OffPhi;
   TH1D*  h1_phiIntCe_bx_phi;
   TH1D*  h1_phiIntCe_bx_theta;
   TH1D*  h1_phiIntCe_bx_phi_oneHit;
@@ -259,6 +317,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_phiIntCu_oneHit;
   TH1D*  h1_phiIntCu_bx;
   TH1D*  h1_phiIntCu_bx_oneHit;
+  TH1D*  h1_phiIntCu_bx_oneHit_OnPhi;
+  TH1D*  h1_phiIntCu_bx_oneHit_OffPhi;
   TH1D*  h1_phiIntCu_bx_phi;
   TH1D*  h1_phiIntCu_bx_theta;
   TH1D*  h1_phiIntCu_bx_phi_oneHit;
@@ -271,6 +331,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_thetaIntCu_oneHit;
   TH1D*  h1_thetaIntCu_bx;
   TH1D*  h1_thetaIntCu_bx_oneHit;
+  TH1D*  h1_thetaIntCu_bx_oneHit_OnPhi;
+  TH1D*  h1_thetaIntCu_bx_oneHit_OffPhi;
   TH1D*  h1_thetaIntCu_bx_phi;
   TH1D*  h1_thetaIntCu_bx_theta;
   TH1D*  h1_thetaIntCu_bx_phi_oneHit;
@@ -283,6 +345,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_thetaIntCe_oneHit;
   TH1D*  h1_thetaIntCe_bx;
   TH1D*  h1_thetaIntCe_bx_oneHit;
+  TH1D*  h1_thetaIntCe_bx_oneHit_OnPhi;
+  TH1D*  h1_thetaIntCe_bx_oneHit_OffPhi;
   TH1D*  h1_thetaIntCe_bx_phi;
   TH1D*  h1_thetaIntCe_bx_theta;
   TH1D*  h1_thetaIntCe_bx_phi_oneHit;
@@ -295,6 +359,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_thetaGlobalCe_oneHit;
   TH1D*  h1_thetaGlobalCe_bx;
   TH1D*  h1_thetaGlobalCe_bx_oneHit;
+  TH1D*  h1_thetaGlobalCe_bx_oneHit_OnPhi;
+  TH1D*  h1_thetaGlobalCe_bx_oneHit_OffPhi;
   TH1D*  h1_thetaGlobalCe_bx_phi;
   TH1D*  h1_thetaGlobalCe_bx_theta;
   TH1D*  h1_thetaGlobalCe_bx_phi_oneHit;
@@ -307,6 +373,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_thetaGlobalCu_oneHit;
   TH1D*  h1_thetaGlobalCu_bx;
   TH1D*  h1_thetaGlobalCu_bx_oneHit;
+  TH1D*  h1_thetaGlobalCu_bx_oneHit_OnPhi;
+  TH1D*  h1_thetaGlobalCu_bx_oneHit_OffPhi;
   TH1D*  h1_thetaGlobalCu_bx_phi;
   TH1D*  h1_thetaGlobalCu_bx_theta;
   TH1D*  h1_thetaGlobalCu_bx_phi_oneHit;
@@ -319,6 +387,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_phiGlobalCe_oneHit;
   TH1D*  h1_phiGlobalCe_bx;
   TH1D*  h1_phiGlobalCe_bx_oneHit;
+  TH1D*  h1_phiGlobalCe_bx_oneHit_OnPhi;
+  TH1D*  h1_phiGlobalCe_bx_oneHit_OffPhi;
   TH1D*  h1_phiGlobalCe_bx_phi;
   TH1D*  h1_phiGlobalCe_bx_theta;
   TH1D*  h1_phiGlobalCe_bx_phi_oneHit;
@@ -331,6 +401,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1_phiGlobalCu_oneHit;
   TH1D*  h1_phiGlobalCu_bx;
   TH1D*  h1_phiGlobalCu_bx_oneHit;
+  TH1D*  h1_phiGlobalCu_bx_oneHit_OnPhi;
+  TH1D*  h1_phiGlobalCu_bx_oneHit_OffPhi;
   TH1D*  h1_phiGlobalCu_bx_phi;
   TH1D*  h1_phiGlobalCu_bx_theta;
   TH1D*  h1_phiGlobalCu_bx_phi_oneHit;
@@ -343,6 +415,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_bx_emu_unpack_oneHit;
   TH2D*  h2_bx_emu_unpack_bx;
   TH2D*  h2_bx_emu_unpack_bx_oneHit;
+  TH2D*  h2_bx_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_bx_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_bx_emu_unpack_bx_phi;
   TH2D*  h2_bx_emu_unpack_bx_theta;
   TH2D*  h2_bx_emu_unpack_bx_phi_oneHit;
@@ -355,6 +429,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_phiInt_emu_unpack_oneHit;
   TH2D*  h2_phiInt_emu_unpack_bx;
   TH2D*  h2_phiInt_emu_unpack_bx_oneHit;
+  TH2D*  h2_phiInt_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_phiInt_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_phiInt_emu_unpack_bx_phi;
   TH2D*  h2_phiInt_emu_unpack_bx_theta;
   TH2D*  h2_phiInt_emu_unpack_bx_phi_oneHit;
@@ -367,6 +443,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_phiGlobal_emu_unpack_oneHit;
   TH2D*  h2_phiGlobal_emu_unpack_bx;
   TH2D*  h2_phiGlobal_emu_unpack_bx_oneHit;
+  TH2D*  h2_phiGlobal_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_phiGlobal_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_phiGlobal_emu_unpack_bx_phi;
   TH2D*  h2_phiGlobal_emu_unpack_bx_theta;
   TH2D*  h2_phiGlobal_emu_unpack_bx_phi_oneHit;
@@ -379,6 +457,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_thetaInt_emu_unpack_oneHit;
   TH2D*  h2_thetaInt_emu_unpack_bx;
   TH2D*  h2_thetaInt_emu_unpack_bx_oneHit;
+  TH2D*  h2_thetaInt_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_thetaInt_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_thetaInt_emu_unpack_bx_phi;
   TH2D*  h2_thetaInt_emu_unpack_bx_theta;
   TH2D*  h2_thetaInt_emu_unpack_bx_phi_oneHit;
@@ -391,6 +471,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_thetaGlobal_emu_unpack_oneHit;
   TH2D*  h2_thetaGlobal_emu_unpack_bx;
   TH2D*  h2_thetaGlobal_emu_unpack_bx_oneHit;
+  TH2D*  h2_thetaGlobal_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_thetaGlobal_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_thetaGlobal_emu_unpack_bx_phi;
   TH2D*  h2_thetaGlobal_emu_unpack_bx_theta;
   TH2D*  h2_thetaGlobal_emu_unpack_bx_phi_oneHit;
@@ -403,6 +485,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_chamberID_emu_unpack_oneHit;
   TH2D*  h2_chamberID_emu_unpack_bx;
   TH2D*  h2_chamberID_emu_unpack_bx_oneHit;
+  TH2D*  h2_chamberID_emu_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_chamberID_emu_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_chamberID_emu_unpack_bx_phi;
   TH2D*  h2_chamberID_emu_unpack_bx_theta;
   TH2D*  h2_chamberID_emu_unpack_bx_phi_oneHit;
@@ -415,6 +499,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_chamberID_vs_roll_emu_oneHit;
   TH2D*  h2_chamberID_vs_roll_emu_bx;
   TH2D*  h2_chamberID_vs_roll_emu_bx_oneHit;
+  TH2D*  h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi;
+  TH2D*  h2_chamberID_vs_roll_emu_bx_oneHit_OffPhi;
   TH2D*  h2_chamberID_vs_roll_emu_bx_phi;
   TH2D*  h2_chamberID_vs_roll_emu_bx_theta;
   TH2D*  h2_chamberID_vs_roll_emu_bx_phi_oneHit;
@@ -427,6 +513,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_chamberID_vs_roll_unpack_oneHit;
   TH2D*  h2_chamberID_vs_roll_unpack_bx;
   TH2D*  h2_chamberID_vs_roll_unpack_bx_oneHit;
+  TH2D*  h2_chamberID_vs_roll_unpack_bx_oneHit_OnPhi;
+  TH2D*  h2_chamberID_vs_roll_unpack_bx_oneHit_OffPhi;
   TH2D*  h2_chamberID_vs_roll_unpack_bx_phi;
   TH2D*  h2_chamberID_vs_roll_unpack_bx_theta;
   TH2D*  h2_chamberID_vs_roll_unpack_bx_phi_oneHit;
@@ -439,6 +527,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_occupancy_unpacker_oneHit;
   TH2D*  h2_occupancy_unpacker_bx;
   TH2D*  h2_occupancy_unpacker_bx_oneHit;
+  TH2D*  h2_occupancy_unpacker_bx_oneHit_OnPhi;
+  TH2D*  h2_occupancy_unpacker_bx_oneHit_OffPhi;
   TH2D*  h2_occupancy_unpacker_bx_phi;
   TH2D*  h2_occupancy_unpacker_bx_theta;
   TH2D*  h2_occupancy_unpacker_bx_phi_oneHit;
@@ -451,6 +541,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2_occupancy_emulator_oneHit;
   TH2D*  h2_occupancy_emulator_bx;
   TH2D*  h2_occupancy_emulator_bx_oneHit;
+  TH2D*  h2_occupancy_emulator_bx_oneHit_OnPhi;
+  TH2D*  h2_occupancy_emulator_bx_oneHit_OffPhi;
   TH2D*  h2_occupancy_emulator_bx_phi;
   TH2D*  h2_occupancy_emulator_bx_theta;
   TH2D*  h2_occupancy_emulator_bx_phi_oneHit;

@@ -8,6 +8,7 @@ import os
 gROOT.SetBatch()
 TGaxis.SetMaxDigits(3)
 gStyle.SetOptStat(0)
+gStyle.SetPaintTextFormat("3.1f");
   
 NRGBs = 5;
 NCont = 255;
@@ -37,6 +38,9 @@ h2dOneHit = []
 h2d_bx_theta = []
 h2d_bx_Offtheta = []
 hdir = "DQM_CPPF"
+
+switch_off_linear_plots = 0
+switch_off_log_plots = 1
 
 os.system("rm -rf plots/2D_hist")
 os.system("rm -rf plots/1D_hist")
@@ -188,6 +192,12 @@ h2dnames = [
            ]
 
 RatioHistNames = [
+                    ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emulator_bx_phi"],
+                    ["h2_occupancy_unpacker_bx_Offphi", "h2_occupancy_emulator_bx_Offphi"],
+                    ["h2_occupancy_unpacker_bx", "h2_occupancy_emulator_bx"],
+                    ["h2_chamberID_vs_roll_emu_bx_phi", "h2_chamberID_vs_roll_emu_bx_Offphi"],
+                    ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_unpacker_bx_Offphi"],
+                    ["h2_occupancy_emulator_bx_phi", "h2_occupancy_emulator_bx_Offphi"]
 
                  ]
 
@@ -209,7 +219,7 @@ for i in range(0,len(hnames)):
   h[i].GetXaxis().SetTitleOffset(0.9)
   h[i].GetYaxis().SetTitleOffset(0.9)
   h[i].Draw()
-  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+".png")
+  if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+hnames[i][0]+".png")
   c1.SetLogy(1)
   c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"Log.png")
   c1.SetLogy(0)
@@ -235,7 +245,7 @@ for i in range(0,len(hnames)):
   hOneHit[i].GetXaxis().SetTitleOffset(0.9)
   hOneHit[i].GetYaxis().SetTitleOffset(0.9)
   hOneHit[i].Draw()
-  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit.png")
+  if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit.png")
   c1.SetLogy(1)
   c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit_Log.png")
   c1.SetLogy(0)
@@ -264,7 +274,7 @@ for i in range(0,len(hnames)):
      hbx_theta[i].GetXaxis().SetTitleOffset(0.9)
      hbx_theta[i].GetYaxis().SetTitleOffset(0.9)
      hbx_theta[i].Draw()
-     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+".png")
+     if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+".png")
      c1.SetLogy(1)
      c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+"_Log.png")
      c1.SetLogy(0)
@@ -294,7 +304,7 @@ for i in range(0,len(hnames)):
      hbx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
      hbx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
      hbx_Offtheta[i].Draw()
-     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
+     if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
      c1.SetLogy(1)
      c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+"_Log.png")
      c1.SetLogy(0)
@@ -353,8 +363,8 @@ for i in range(0,len(h2dnames)):
   #h2dOneHit[i].GetZaxis().SetRangeUser(0,5000);
   if "Occupancy" in str(h2dnames[i][3]):
     for j in range(0,12):
-      h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-      h2d[i].GetYaxis().SetTitleOffset(1.1)
+      h2dOneHit[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+      h2dOneHit[i].GetYaxis().SetTitleOffset(1.1)
       h2dOneHit[i].GetZaxis().SetRangeUser(0,999);
   h2dOneHit[i].Draw("COLZ")
   c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+"_oneHit.png")
@@ -367,7 +377,7 @@ for i in range(0,len(h2dnames)):
   TH2_histo_details.append(h2dOneHit[i].Integral())
   Table_Histo_Details_Th2.append(TH2_histo_details)
 
-  if ("bx_phi" in hnames[i][0]):
+  if ("bx_phi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_phi","bx_theta")
      print hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")
      h2d_bx_theta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")))
@@ -384,8 +394,8 @@ for i in range(0,len(h2dnames)):
      #    h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
      if "Occupancy" in str(h2dnames[i][3]):
        for j in range(0,12):
-         h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-         h2d[i].GetYaxis().SetTitleOffset(1.1)
+         h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+         h2d_bx_theta[i].GetYaxis().SetTitleOffset(1.1)
          h2d_bx_theta[i].GetZaxis().SetRangeUser(0,999);
      h2d_bx_theta[i].Draw("COLZ")
      c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")+".png")
@@ -399,7 +409,7 @@ for i in range(0,len(h2dnames)):
      Table_Histo_Details_Th2.append(TH2_histo_details)
   else: h2d_bx_theta.append("")
 
-  if ("bx_Offphi" in hnames[i][0]):
+  if ("bx_Offphi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
      print hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
      h2d_bx_Offtheta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")))
@@ -416,8 +426,8 @@ for i in range(0,len(h2dnames)):
      #    h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
      if "Occupancy" in str(h2dnames[i][3]):
        for j in range(0,12):
-         h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-         h2d[i].GetYaxis().SetTitleOffset(1.1)
+         h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
+         h2d_bx_Offtheta[i].GetYaxis().SetTitleOffset(1.1)
          h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
      h2d_bx_Offtheta[i].Draw("COLZ")
      c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
@@ -445,10 +455,11 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleSize(0.05)
    Numerator.GetXaxis().SetTitleOffset(0.9)
    Numerator.GetYaxis().SetTitleOffset(0.9)
-   #Numerator.GetZaxis().SetRangeUser(0,5);
-   Numerator.Draw("COLZ")
+   Numerator.GetZaxis().SetRangeUser(0,2);
+   Numerator.Draw("COLZ TEXT")
    print "integral = ",Numerator.Integral()
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
+   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".root")
 
 # Markdown table generation
 file = open("plots/1D_hist/yield-info.md", 'w')
@@ -469,3 +480,9 @@ file.close()
 os.system("pandoc -t html -o plots/2D_hist/yield-info_2d.html plots/2D_hist/yield-info_2d.md")
 os.system("sed -i 's/<table>/<table border=\"1\">/' plots/2D_hist/yield-info_2d.html")
 
+os.system('git diff > plots/diff.patch')
+os.system('echo -e "\n\n============\n== Latest commit summary \n\n" > plots/commit-summary.txt')
+os.system("git log -1 --pretty=tformat:' Commit: %h %n Date: %ad %n Relative time: %ar %n Commit Message: %s' >> plots/commit-summary.txt")
+os.system('echo -e "\n\n============\n" >> plots/commit-summary.txt')
+os.system('git log -1 --format="%H" >> plots/commit-summary.txt')
+os.system('echo "https://github.com/ram1123/cmssw/tree/bugfix-CPPFcomparisons8August" >> plots/commit-summary.txt') 
