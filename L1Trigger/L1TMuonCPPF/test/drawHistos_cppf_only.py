@@ -206,86 +206,82 @@ axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/
 Table_Histo_Details = []
 Table_Histo_Details_Th2 = []
 
-#Drawing 1D histograms
-for i in range(0,len(hnames)):
-  print "===> Search hist : ",hdir+"/"+hnames[i][0]
-  h.append(f.Get(hdir+"/"+hnames[i][0]))
-  h[i].SetLineWidth(6)
-  h[i].SetTitle(str(hnames[i][3]))
-  h[i].GetXaxis().SetTitle(str(hnames[i][1]))
-  h[i].GetYaxis().SetTitle(str(hnames[i][2]))
-  h[i].GetXaxis().SetTitleSize(0.05)
-  h[i].GetYaxis().SetTitleSize(0.05)
-  h[i].GetXaxis().SetTitleOffset(0.9)
-  h[i].GetYaxis().SetTitleOffset(0.9)
-  h[i].Draw()
-  if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+hnames[i][0]+".png")
+def SaveHistos(histName, hist_xaxis, hist_yaxis, hist_title, AdditionalTitleCut = " && TEST CUT"):
+  print hdir+"/"+histName
+  hOneHit = f.Get(hdir+"/"+histName)
+  print type(hOneHit)
+  hOneHit.SetLineWidth(6)
+  hOneHit.SetTitle(str(hist_title+AdditionalTitleCut))
+  hOneHit.GetXaxis().SetTitle(str(hist_xaxis))
+  hOneHit.GetYaxis().SetTitle(str(hist_yaxis))
+  hOneHit.GetXaxis().SetTitleSize(0.05)
+  hOneHit.GetYaxis().SetTitleSize(0.05)
+  hOneHit.GetXaxis().SetTitleOffset(0.9)
+  hOneHit.GetYaxis().SetTitleOffset(0.9)
+  hOneHit.Draw()
+  if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+histName+".png")
   c1.SetLogy(1)
-  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"Log.png")
+  c1.SaveAs("plots/1D_hist/"+histName+"_Log.png")
   c1.SetLogy(0)
   TH1_histo_details = []
   TH1_histo_details.append(hnames[i][0])
   TH1_histo_details.append("TH1F")
   TH1_histo_details.append(hnames[i][1])
   TH1_histo_details.append(hnames[i][2])
-  TH1_histo_details.append(hnames[i][3])
-  #TH1_histo_details.append(h[i].Integral())
-  TH1_histo_details.append(h[i].GetEntries())
+  TH1_histo_details.append(hnames[i][3]+AdditionalTitleCut)
+  #TH1_histo_details.append(hOneHit.Integral())
+  TH1_histo_details.append(hOneHit.GetEntries())
+  return TH1_histo_details
+
+def Save2DHistos(histName, hist_xaxis, hist_yaxis, hist_title, AdditionalTitleCut = " && TEST CUT"):
+  print "****=> histName = ",hdir+"/"+histName
+  h2d = f.Get(hdir+"/"+histName)
+  h2d.SetTitle(hist_title+AdditionalTitleCut)
+  h2d.GetXaxis().SetTitle(str(hist_xaxis))
+  if ("roll" in histName): h2d.GetXaxis().CenterLabels(1)
+  h2d.GetYaxis().SetTitle(str(hist_yaxis))
+  h2d.GetXaxis().SetTitleSize(0.05)
+  h2d.GetYaxis().SetTitleSize(0.05)
+  h2d.GetXaxis().SetTitleOffset(0.9)
+  h2d.GetYaxis().SetTitleOffset(0.9)
+  #h2d.GetZaxis().SetRangeUser(0,5000);
+  #if str(h2dnames[i][2]).contains("Occupancy") or str(h2dnames[i][3]).contains("Occupancy"): 
+  if "Occupancy" in str(hist_yaxis):
+    for j in range(0,12):
+      h2d.GetYaxis().SetBinLabel(j+1,axislabels[j])
+      h2d.GetYaxis().SetTitleOffset(1.1)
+      h2d.GetZaxis().SetRangeUser(0,999);
+  h2d.Draw("COLZ")
+  c1.SaveAs("plots/2D_hist/"+histName+".png")
+  TH2_histo_details = []
+  TH2_histo_details.append(histName)
+  TH2_histo_details.append("TH2F")
+  TH2_histo_details.append(hist_xaxis)
+  TH2_histo_details.append(hist_yaxis)
+  TH2_histo_details.append(hist_title+AdditionalTitleCut)
+  TH2_histo_details.append(h2d.Integral())
+  return TH2_histo_details
+
+#Drawing 1D histograms
+for i in range(0,len(hnames)):
+  print "===> Search hist : ",hdir+"/"+hnames[i][0]
+  TH1_histo_details = SaveHistos(hnames[i][0],  hnames[i][1], hnames[i][2], hnames[i][3], "")
   Table_Histo_Details.append(TH1_histo_details)
-  #
-  # One hit histograms
-  #
-  hOneHit.append(f.Get(hdir+"/"+hnames[i][0]+"_oneHit"))
-  hOneHit[i].SetLineWidth(6)
-  hOneHit[i].SetTitle(str(hnames[i][3]+" && One Hit"))
-  hOneHit[i].GetXaxis().SetTitle(str(hnames[i][1]))
-  hOneHit[i].GetYaxis().SetTitle(str(hnames[i][2]))
-  hOneHit[i].GetXaxis().SetTitleSize(0.05)
-  hOneHit[i].GetYaxis().SetTitleSize(0.05)
-  hOneHit[i].GetXaxis().SetTitleOffset(0.9)
-  hOneHit[i].GetYaxis().SetTitleOffset(0.9)
-  hOneHit[i].Draw()
-  if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit.png")
-  c1.SetLogy(1)
-  c1.SaveAs("plots/1D_hist/"+hnames[i][0]+"_oneHit_Log.png")
-  c1.SetLogy(0)
-  TH1_histo_details = []
-  TH1_histo_details.append(hnames[i][0]+"_oneHit")
-  TH1_histo_details.append("TH1F")
-  TH1_histo_details.append(hnames[i][1])
-  TH1_histo_details.append(hnames[i][2])
-  TH1_histo_details.append(hnames[i][3]+" && One Hit")
-  #TH1_histo_details.append(hOneHit[i].Integral())
-  TH1_histo_details.append(hOneHit[i].GetEntries())
+  TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit")
   Table_Histo_Details.append(TH1_histo_details)
+  if (hnames[i][0]).endswith("_bx"):
+     print "\n\n\tEndswith = ",hnames[i][0],"\n\n"
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OnPhi")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffPhi")
+     Table_Histo_Details.append(TH1_histo_details)
   #
   # thetaCe == thetaCu
   #
   if ("bx_phi" in hnames[i][0]):
      print (hnames[i][0]).replace("bx_phi","bx_theta")
      print hdir+"/"+(hnames[i][0]).replace("bx_phi","bx_theta")
-     hbx_theta.append(f.Get(hdir+"/"+(hnames[i][0]).replace("bx_phi","bx_theta")))
-     hbx_theta[i].SetLineWidth(6)
-     hbx_theta[i].SetTitle(str((hnames[i][3]).replace("phi","theta")))
-     hbx_theta[i].GetXaxis().SetTitle(str(hnames[i][1]))
-     hbx_theta[i].GetYaxis().SetTitle(str(hnames[i][2]))
-     hbx_theta[i].GetXaxis().SetTitleSize(0.05)
-     hbx_theta[i].GetYaxis().SetTitleSize(0.05)
-     hbx_theta[i].GetXaxis().SetTitleOffset(0.9)
-     hbx_theta[i].GetYaxis().SetTitleOffset(0.9)
-     hbx_theta[i].Draw()
-     if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+".png")
-     c1.SetLogy(1)
-     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_phi","bx_theta")+"_Log.png")
-     c1.SetLogy(0)
-     TH1_histo_details = []
-     TH1_histo_details.append((hnames[i][0]).replace("bx_phi","bx_theta"))
-     TH1_histo_details.append("TH1F")
-     TH1_histo_details.append(hnames[i][1])
-     TH1_histo_details.append(hnames[i][2])
-     TH1_histo_details.append((hnames[i][3]).replace("phi","theta"))
-     #TH1_histo_details.append(hbx_theta[i].Integral())
-     TH1_histo_details.append(hbx_theta[i].GetEntries())
+     TH1_histo_details = SaveHistos((hnames[i][0]).replace("bx_phi","bx_theta"), hnames[i][1], hnames[i][2], (hnames[i][3]).replace("phi","theta"), "")
      Table_Histo_Details.append(TH1_histo_details)
   else: hbx_theta.append("")
   #
@@ -294,28 +290,8 @@ for i in range(0,len(hnames)):
   if ("bx_Offphi" in hnames[i][0]):
      print (hnames[i][0]).replace("bx_Offphi","bx_Offtheta")
      print hdir+"/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")
-     hbx_Offtheta.append(f.Get(hdir+"/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")))
-     hbx_Offtheta[i].SetLineWidth(6)
-     hbx_Offtheta[i].SetTitle(str((hnames[i][3]).replace("phi","theta")))
-     hbx_Offtheta[i].GetXaxis().SetTitle(str(hnames[i][1]))
-     hbx_Offtheta[i].GetYaxis().SetTitle(str(hnames[i][2]))
-     hbx_Offtheta[i].GetXaxis().SetTitleSize(0.05)
-     hbx_Offtheta[i].GetYaxis().SetTitleSize(0.05)
-     hbx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
-     hbx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
-     hbx_Offtheta[i].Draw()
-     if switch_off_linear_plots: c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
-     c1.SetLogy(1)
-     c1.SaveAs("plots/1D_hist/"+(hnames[i][0]).replace("bx_Offphi","bx_Offtheta")+"_Log.png")
-     c1.SetLogy(0)
-     TH1_histo_details = []
-     TH1_histo_details.append((hnames[i][0]).replace("bx_Offphi","bx_Offtheta"))
-     TH1_histo_details.append("TH1F")
-     TH1_histo_details.append(hnames[i][1])
-     TH1_histo_details.append(hnames[i][2])
-     TH1_histo_details.append((hnames[i][3]).replace("phi","theta"))
-     #TH1_histo_details.append(hbx_Offtheta[i].Integral())
-     TH1_histo_details.append(hbx_Offtheta[i].GetEntries())
+     TH1_histo_details = SaveHistos((hnames[i][0]).replace("bx_Offphi","bx_Offtheta"), hnames[i][1], hnames[i][2], (hnames[i][3]).replace("phi","theta"), "")
+     Table_Histo_Details.append(TH1_histo_details)
      Table_Histo_Details.append(TH1_histo_details)
   else: hbx_Offtheta.append("")
 
@@ -323,121 +299,30 @@ for i in range(0,len(hnames)):
 #Drawing 2D histograms
 c1.SetRightMargin(0.15)
 for i in range(0,len(h2dnames)):
-  h2d.append(f.Get(hdir+"/"+h2dnames[i][0]))
-  h2d[i].SetTitle(h2dnames[i][1])
-  h2d[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
-  if ("roll" in h2dnames[i][0]): h2d[i].GetXaxis().CenterLabels(1)
-  h2d[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
-  h2d[i].GetXaxis().SetTitleSize(0.05)
-  h2d[i].GetYaxis().SetTitleSize(0.05)
-  h2d[i].GetXaxis().SetTitleOffset(0.9)
-  h2d[i].GetYaxis().SetTitleOffset(0.9)
-  #h2d[i].GetZaxis().SetRangeUser(0,5000);
-  #if str(h2dnames[i][2]).contains("Occupancy") or str(h2dnames[i][3]).contains("Occupancy"): 
-  if "Occupancy" in str(h2dnames[i][3]):
-    for j in range(0,12):
-      h2d[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-      h2d[i].GetYaxis().SetTitleOffset(1.1)
-      h2d[i].GetZaxis().SetRangeUser(0,999);
-  h2d[i].Draw("COLZ")
-  c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+".png")
-  TH2_histo_details = []
-  TH2_histo_details.append(h2dnames[i][0])
-  TH2_histo_details.append("TH2F")
-  TH2_histo_details.append(h2dnames[i][2])
-  TH2_histo_details.append(h2dnames[i][3])
-  TH2_histo_details.append(h2dnames[i][1])
-  TH2_histo_details.append(h2d[i].Integral())
+  #Save2DHistos(histName, hist_xaxis, hist_yaxis, hist_title, AdditionalTitleCut = " && TEST CUT"):
+  TH2_histo_details = Save2DHistos(h2dnames[i][0], h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], "")
   Table_Histo_Details_Th2.append(TH2_histo_details)
   #
   # One hit histograms
   #
-  h2dOneHit.append(f.Get(hdir+"/"+h2dnames[i][0]+"_oneHit"))
-  h2dOneHit[i].SetTitle(h2dnames[i][1]+" && One Hit")
-  h2dOneHit[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
-  h2dOneHit[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
-  h2dOneHit[i].GetXaxis().SetTitleSize(0.05)
-  h2dOneHit[i].GetYaxis().SetTitleSize(0.05)
-  h2dOneHit[i].GetXaxis().SetTitleOffset(0.9)
-  h2dOneHit[i].GetYaxis().SetTitleOffset(0.9)
-  #h2dOneHit[i].GetZaxis().SetRangeUser(0,5000);
-  if "Occupancy" in str(h2dnames[i][3]):
-    for j in range(0,12):
-      h2dOneHit[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-      h2dOneHit[i].GetYaxis().SetTitleOffset(1.1)
-      h2dOneHit[i].GetZaxis().SetRangeUser(0,999);
-  h2dOneHit[i].Draw("COLZ")
-  c1.SaveAs("plots/2D_hist/"+h2dnames[i][0]+"_oneHit.png")
-  TH2_histo_details = []
-  TH2_histo_details.append(h2dnames[i][0]+"_oneHit")
-  TH2_histo_details.append("TH2F")
-  TH2_histo_details.append(h2dnames[i][2])
-  TH2_histo_details.append(h2dnames[i][3])
-  TH2_histo_details.append(h2dnames[i][1]+" && One Hit")
-  TH2_histo_details.append(h2dOneHit[i].Integral())
+  TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit")
   Table_Histo_Details_Th2.append(TH2_histo_details)
-
+  if (hnames[i][0]).endswith("_bx"):
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OnPhi")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffPhi")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
   if ("bx_phi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_phi","bx_theta")
      print hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")
-     h2d_bx_theta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")))
-     h2d_bx_theta[i].SetTitle((h2dnames[i][1]).replace("phi","theta"))
-     h2d_bx_theta[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
-     h2d_bx_theta[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
-     h2d_bx_theta[i].GetXaxis().SetTitleSize(0.05)
-     h2d_bx_theta[i].GetYaxis().SetTitleSize(0.05)
-     h2d_bx_theta[i].GetXaxis().SetTitleOffset(0.9)
-     h2d_bx_theta[i].GetYaxis().SetTitleOffset(0.9)
-     #h2d_bx_theta[i].GetZaxis().SetRangeUser(0,5000);
-     #if i < 2 : 
-     #  for j in range(0,12):
-     #    h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
-     if "Occupancy" in str(h2dnames[i][3]):
-       for j in range(0,12):
-         h2d_bx_theta[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-         h2d_bx_theta[i].GetYaxis().SetTitleOffset(1.1)
-         h2d_bx_theta[i].GetZaxis().SetRangeUser(0,999);
-     h2d_bx_theta[i].Draw("COLZ")
-     c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")+".png")
-     TH2_histo_details = []
-     TH2_histo_details.append((h2dnames[i][0]).replace("bx_phi","bx_theta"))
-     TH2_histo_details.append("TH2F")
-     TH2_histo_details.append(h2dnames[i][2])
-     TH2_histo_details.append(h2dnames[i][3])
-     TH2_histo_details.append((h2dnames[i][1]).replace("phi","theta"))
-     TH2_histo_details.append(h2d_bx_theta[i].Integral())
+     TH2_histo_details = Save2DHistos((h2dnames[i][0]).replace("bx_phi","bx_theta"), h2dnames[i][2], h2dnames[i][3], (h2dnames[i][1]).replace("phi","theta"), "")
      Table_Histo_Details_Th2.append(TH2_histo_details)
   else: h2d_bx_theta.append("")
 
   if ("bx_Offphi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
      print hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")
-     h2d_bx_Offtheta.append(f.Get(hdir+"/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")))
-     h2d_bx_Offtheta[i].SetTitle((h2dnames[i][1]).replace("phi","theta"))
-     h2d_bx_Offtheta[i].GetXaxis().SetTitle(str(h2dnames[i][2]))
-     h2d_bx_Offtheta[i].GetYaxis().SetTitle(str(h2dnames[i][3]))
-     h2d_bx_Offtheta[i].GetXaxis().SetTitleSize(0.05)
-     h2d_bx_Offtheta[i].GetYaxis().SetTitleSize(0.05)
-     h2d_bx_Offtheta[i].GetXaxis().SetTitleOffset(0.9)
-     h2d_bx_Offtheta[i].GetYaxis().SetTitleOffset(0.9)
-     #h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
-     #if i < 2 : 
-     #  for j in range(0,12):
-     #    h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j]) 
-     if "Occupancy" in str(h2dnames[i][3]):
-       for j in range(0,12):
-         h2d_bx_Offtheta[i].GetYaxis().SetBinLabel(j+1,axislabels[j])
-         h2d_bx_Offtheta[i].GetYaxis().SetTitleOffset(1.1)
-         h2d_bx_Offtheta[i].GetZaxis().SetRangeUser(0,999);
-     h2d_bx_Offtheta[i].Draw("COLZ")
-     c1.SaveAs("plots/2D_hist/"+(h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta")+".png")
-     TH2_histo_details = []
-     TH2_histo_details.append((h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta"))
-     TH2_histo_details.append("TH2F")
-     TH2_histo_details.append(h2dnames[i][2])
-     TH2_histo_details.append(h2dnames[i][3])
-     TH2_histo_details.append((h2dnames[i][1]).replace("phi","theta"))
-     TH2_histo_details.append(h2d_bx_Offtheta[i].Integral())
+     TH2_histo_details = Save2DHistos((h2dnames[i][0]).replace("bx_Offphi","bx_Offtheta"), h2dnames[i][2], h2dnames[i][3], (h2dnames[i][1]).replace("phi","theta"), "")
      Table_Histo_Details_Th2.append(TH2_histo_details)
   else: h2d_bx_Offtheta.append("")
 
@@ -486,3 +371,4 @@ os.system("git log -1 --pretty=tformat:' Commit: %h %n Date: %ad %n Relative tim
 os.system('echo -e "\n\n============\n" >> plots/commit-summary.txt')
 os.system('git log -1 --format="%H" >> plots/commit-summary.txt')
 os.system('echo "https://github.com/ram1123/cmssw/tree/bugfix-CPPFcomparisons8August" >> plots/commit-summary.txt') 
+
