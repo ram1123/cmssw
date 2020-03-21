@@ -863,29 +863,42 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             h2_chamberID_vs_roll_unpack_bx_twoHit->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
             h2_occupancy_unpacker_bx_twoHit->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
             h2_occupancy_emulator_bx_twoHit->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
-            if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) {
-               h1_cluster_sizeCe_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCe_bx[matches]);
-               h1_cluster_sizeCu_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCu_bx[matches]);
-               h1_bxCe_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[matches]);
-               h1_bxCu_bx_twoHit_OnPhi->Fill(ar_bxCu_bx[matches]);
-               h1_phiIntCe_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[matches]);
-               h1_phiIntCu_bx_twoHit_OnPhi->Fill(ar_phiIntCu_bx[matches]);
-               h1_thetaIntCu_bx_twoHit_OnPhi->Fill(ar_thetaIntCu_bx[matches]);
-               h1_thetaIntCe_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[matches]);
-               h1_thetaGlobalCe_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[matches]);
-               h1_thetaGlobalCu_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCu_bx[matches]);
-               h1_phiGlobalCe_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[matches]);
-               h1_phiGlobalCu_bx_twoHit_OnPhi->Fill(ar_phiGlobalCu_bx[matches]);
-               h2_bx_emu_unpack_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
-               h2_phiInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
-               h2_phiGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
-               h2_thetaInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
-               h2_thetaGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
-               h2_chamberID_emu_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
-               h2_chamberID_vs_roll_emu_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
-               h2_chamberID_vs_roll_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
-               h2_occupancy_unpacker_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
-               h2_occupancy_emulator_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            //if ((ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) || (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[1])) 
+            int first = matches;
+            int second = matches;
+            bool onphi = false;
+
+            if (matches == 0) {
+              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
+              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[1]) { first = 0; second = 1; onphi = true;}
+            }
+            if (matches == 1) {
+              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
+              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[0]) { first = 1; second = 0; onphi = true;}
+            }
+            if (onphi) {
+               h1_cluster_sizeCe_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCe_bx[first]);
+               h1_cluster_sizeCu_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCu_bx[second]);
+               h1_bxCe_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[first]);
+               h1_bxCu_bx_twoHit_OnPhi->Fill(ar_bxCu_bx[second]);
+               h1_phiIntCe_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[first]);
+               h1_phiIntCu_bx_twoHit_OnPhi->Fill(ar_phiIntCu_bx[second]);
+               h1_thetaIntCu_bx_twoHit_OnPhi->Fill(ar_thetaIntCu_bx[second]);
+               h1_thetaIntCe_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[first]);
+               h1_thetaGlobalCe_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[first]);
+               h1_thetaGlobalCu_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCu_bx[second]);
+               h1_phiGlobalCe_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[first]);
+               h1_phiGlobalCu_bx_twoHit_OnPhi->Fill(ar_phiGlobalCu_bx[second]);
+               h2_bx_emu_unpack_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[first], ar_bxCu_bx[second]);
+               h2_phiInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[first], ar_phiIntCu_bx[second]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[first], ar_phiGlobalCu_bx[second]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[first], ar_thetaIntCu_bx[second]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[first], ar_thetaGlobalCu_bx[second]);
+               h2_chamberID_emu_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[first], ar_chamberIDCu_bx[second]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[first], ar_rollCe_bx[first]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCu_bx[second], ar_rollCu_bx[second]);
+               h2_occupancy_unpacker_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCu_bx[second], ar_fillOccupancyCu_bx[second]);
+               h2_occupancy_emulator_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCe_bx[first], ar_fillOccupancyCe_bx[first]);
             } else {
                h1_cluster_sizeCe_bx_twoHit_OffPhi->Fill(ar_cluster_sizeCe_bx[matches]);
                h1_cluster_sizeCu_bx_twoHit_OffPhi->Fill(ar_cluster_sizeCu_bx[matches]);
