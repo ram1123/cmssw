@@ -273,6 +273,8 @@ for i in range(0,len(hnames)):
   Table_Histo_Details.append(TH1_histo_details)
   if (hnames[i][0]).endswith("_bx"):
      print "\n\n\tEndswith = ",hnames[i][0],"\n\n"
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit")
+     Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OnPhi")
      Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffPhi")
@@ -280,6 +282,14 @@ for i in range(0,len(hnames)):
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OnTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OnTheta")
      Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffTheta")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnPhi")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffPhi")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OnTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnTheta")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffTheta")
      Table_Histo_Details.append(TH1_histo_details)
   #
   # thetaCe == thetaCu
@@ -314,6 +324,8 @@ for i in range(0,len(h2dnames)):
   TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit")
   Table_Histo_Details_Th2.append(TH2_histo_details)
   if (hnames[i][0]).endswith("_bx"):
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OnPhi")
      Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffPhi")
@@ -321,6 +333,14 @@ for i in range(0,len(h2dnames)):
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OnTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OnTheta")
      Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffTheta")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnPhi")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffPhi")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OnTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnTheta")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffTheta")
      Table_Histo_Details_Th2.append(TH2_histo_details)
   if ("bx_phi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_phi","bx_theta")

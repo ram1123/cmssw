@@ -835,6 +835,132 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             h2_occupancy_emulator_bx_oneHit_OffTheta->Fill(ar_emtfSubsectorCe_bx[0], ar_fillOccupancyCe_bx[0]);
          }
       }  // matches_unpacker_bx == 1
+
+      if (matches_unpacker_bx == 2) {
+         //std::cout<<"Size of one hit event = " << ar_cluster_sizeCe.size() << std::endl;
+         //std::cout<<"phi int unpacker ar_phiIntCu = " << ar_phiIntCu_bx[0] << std::endl;
+         //std::cout<<"phi int emulator ar_phiIntCe = " << ar_phiIntCe_bx[0] << std::endl;
+         for (int matches=0; matches<2; matches++) {
+            h1_cluster_sizeCe_bx_twoHit->Fill(ar_cluster_sizeCe_bx[matches]);
+            h1_cluster_sizeCu_bx_twoHit->Fill(ar_cluster_sizeCu_bx[matches]);
+            h1_bxCe_bx_twoHit->Fill(ar_bxCe_bx[matches]);
+            h1_bxCu_bx_twoHit->Fill(ar_bxCu_bx[matches]);
+            h1_phiIntCe_bx_twoHit->Fill(ar_phiIntCe_bx[matches]);
+            h1_phiIntCu_bx_twoHit->Fill(ar_phiIntCu_bx[matches]);
+            h1_thetaIntCu_bx_twoHit->Fill(ar_thetaIntCu_bx[matches]);
+            h1_thetaIntCe_bx_twoHit->Fill(ar_thetaIntCe_bx[matches]);
+            h1_thetaGlobalCe_bx_twoHit->Fill(ar_thetaGlobalCe_bx[matches]);
+            h1_thetaGlobalCu_bx_twoHit->Fill(ar_thetaGlobalCu_bx[matches]);
+            h1_phiGlobalCe_bx_twoHit->Fill(ar_phiGlobalCe_bx[matches]);
+            h1_phiGlobalCu_bx_twoHit->Fill(ar_phiGlobalCu_bx[matches]);
+            h2_bx_emu_unpack_bx_twoHit->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
+            h2_phiInt_emu_unpack_bx_twoHit->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
+            h2_phiGlobal_emu_unpack_bx_twoHit->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
+            h2_thetaInt_emu_unpack_bx_twoHit->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
+            h2_thetaGlobal_emu_unpack_bx_twoHit->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
+            h2_chamberID_emu_unpack_bx_twoHit->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
+            h2_chamberID_vs_roll_emu_bx_twoHit->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
+            h2_chamberID_vs_roll_unpack_bx_twoHit->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
+            h2_occupancy_unpacker_bx_twoHit->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
+            h2_occupancy_emulator_bx_twoHit->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) {
+               h1_cluster_sizeCe_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCe_bx[matches]);
+               h1_cluster_sizeCu_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCu_bx[matches]);
+               h1_bxCe_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[matches]);
+               h1_bxCu_bx_twoHit_OnPhi->Fill(ar_bxCu_bx[matches]);
+               h1_phiIntCe_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[matches]);
+               h1_phiIntCu_bx_twoHit_OnPhi->Fill(ar_phiIntCu_bx[matches]);
+               h1_thetaIntCu_bx_twoHit_OnPhi->Fill(ar_thetaIntCu_bx[matches]);
+               h1_thetaIntCe_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[matches]);
+               h1_thetaGlobalCe_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[matches]);
+               h1_thetaGlobalCu_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCu_bx[matches]);
+               h1_phiGlobalCe_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[matches]);
+               h1_phiGlobalCu_bx_twoHit_OnPhi->Fill(ar_phiGlobalCu_bx[matches]);
+               h2_bx_emu_unpack_bx_twoHit_OnPhi->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
+               h2_phiInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OnPhi->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
+               h2_chamberID_emu_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OnPhi->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OnPhi->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
+               h2_occupancy_unpacker_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
+               h2_occupancy_emulator_bx_twoHit_OnPhi->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            } else {
+               h1_cluster_sizeCe_bx_twoHit_OffPhi->Fill(ar_cluster_sizeCe_bx[matches]);
+               h1_cluster_sizeCu_bx_twoHit_OffPhi->Fill(ar_cluster_sizeCu_bx[matches]);
+               h1_bxCe_bx_twoHit_OffPhi->Fill(ar_bxCe_bx[matches]);
+               h1_bxCu_bx_twoHit_OffPhi->Fill(ar_bxCu_bx[matches]);
+               h1_phiIntCe_bx_twoHit_OffPhi->Fill(ar_phiIntCe_bx[matches]);
+               h1_phiIntCu_bx_twoHit_OffPhi->Fill(ar_phiIntCu_bx[matches]);
+               h1_thetaIntCu_bx_twoHit_OffPhi->Fill(ar_thetaIntCu_bx[matches]);
+               h1_thetaIntCe_bx_twoHit_OffPhi->Fill(ar_thetaIntCe_bx[matches]);
+               h1_thetaGlobalCe_bx_twoHit_OffPhi->Fill(ar_thetaGlobalCe_bx[matches]);
+               h1_thetaGlobalCu_bx_twoHit_OffPhi->Fill(ar_thetaGlobalCu_bx[matches]);
+               h1_phiGlobalCe_bx_twoHit_OffPhi->Fill(ar_phiGlobalCe_bx[matches]);
+               h1_phiGlobalCu_bx_twoHit_OffPhi->Fill(ar_phiGlobalCu_bx[matches]);
+               h2_bx_emu_unpack_bx_twoHit_OffPhi->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
+               h2_phiInt_emu_unpack_bx_twoHit_OffPhi->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OffPhi->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OffPhi->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OffPhi->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
+               h2_chamberID_emu_unpack_bx_twoHit_OffPhi->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OffPhi->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OffPhi->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
+               h2_occupancy_unpacker_bx_twoHit_OffPhi->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
+               h2_occupancy_emulator_bx_twoHit_OffPhi->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            }
+
+            if (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches]) {
+               h1_cluster_sizeCe_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCe_bx[matches]);
+               h1_cluster_sizeCu_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCu_bx[matches]);
+               h1_bxCe_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[matches]);
+               h1_bxCu_bx_twoHit_OnTheta->Fill(ar_bxCu_bx[matches]);
+               h1_phiIntCe_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[matches]);
+               h1_phiIntCu_bx_twoHit_OnTheta->Fill(ar_phiIntCu_bx[matches]);
+               h1_thetaIntCu_bx_twoHit_OnTheta->Fill(ar_thetaIntCu_bx[matches]);
+               h1_thetaIntCe_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[matches]);
+               h1_thetaGlobalCe_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[matches]);
+               h1_thetaGlobalCu_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCu_bx[matches]);
+               h1_phiGlobalCe_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[matches]);
+               h1_phiGlobalCu_bx_twoHit_OnTheta->Fill(ar_phiGlobalCu_bx[matches]);
+               h2_bx_emu_unpack_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
+               h2_phiInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
+               h2_chamberID_emu_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
+               h2_occupancy_unpacker_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
+               h2_occupancy_emulator_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            } else {
+               h1_cluster_sizeCe_bx_twoHit_OffTheta->Fill(ar_cluster_sizeCe_bx[matches]);
+               h1_cluster_sizeCu_bx_twoHit_OffTheta->Fill(ar_cluster_sizeCu_bx[matches]);
+               h1_bxCe_bx_twoHit_OffTheta->Fill(ar_bxCe_bx[matches]);
+               h1_bxCu_bx_twoHit_OffTheta->Fill(ar_bxCu_bx[matches]);
+               h1_phiIntCe_bx_twoHit_OffTheta->Fill(ar_phiIntCe_bx[matches]);
+               h1_phiIntCu_bx_twoHit_OffTheta->Fill(ar_phiIntCu_bx[matches]);
+               h1_thetaIntCu_bx_twoHit_OffTheta->Fill(ar_thetaIntCu_bx[matches]);
+               h1_thetaIntCe_bx_twoHit_OffTheta->Fill(ar_thetaIntCe_bx[matches]);
+               h1_thetaGlobalCe_bx_twoHit_OffTheta->Fill(ar_thetaGlobalCe_bx[matches]);
+               h1_thetaGlobalCu_bx_twoHit_OffTheta->Fill(ar_thetaGlobalCu_bx[matches]);
+               h1_phiGlobalCe_bx_twoHit_OffTheta->Fill(ar_phiGlobalCe_bx[matches]);
+               h1_phiGlobalCu_bx_twoHit_OffTheta->Fill(ar_phiGlobalCu_bx[matches]);
+               h2_bx_emu_unpack_bx_twoHit_OffTheta->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
+               h2_phiInt_emu_unpack_bx_twoHit_OffTheta->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OffTheta->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OffTheta->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OffTheta->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
+               h2_chamberID_emu_unpack_bx_twoHit_OffTheta->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OffTheta->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OffTheta->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
+               h2_occupancy_unpacker_bx_twoHit_OffTheta->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
+               h2_occupancy_emulator_bx_twoHit_OffTheta->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            }
+            }  // END: for (int matches=0; matches<2; matches++) 
+      }  // matches_unpacker_bx == 2
+
       if (matches_unpacker_bx_phi==1) {
          h1_cluster_sizeCe_bx_phi_oneHit->Fill(ar_cluster_sizeCe_bx_phi[0]);
          h1_cluster_sizeCu_bx_phi_oneHit->Fill(ar_cluster_sizeCu_bx_phi[0]);
@@ -1026,6 +1152,11 @@ void DQM_CPPF::beginJob(){
   h1_cluster_sizeCe_oneHit = fs->make<TH1D>("h1_cluster_sizeCe_oneHit", "Cluster size of emulator", 10, 0., 10.);
   h1_cluster_sizeCe_bx = fs->make<TH1D>("h1_cluster_sizeCe_bx", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCe_bx_oneHit = fs->make<TH1D>("h1_cluster_sizeCe_bx_oneHit", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCe_bx_twoHit = fs->make<TH1D>("h1_cluster_sizeCe_bx_twoHit", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_cluster_sizeCe_bx_twoHit_OnTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_cluster_sizeCe_bx_twoHit_OffTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_cluster_sizeCe_bx_twoHit_OnPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_cluster_sizeCe_bx_twoHit_OffPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_cluster_sizeCe_bx_oneHit_OnTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_cluster_sizeCe_bx_oneHit_OffTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_cluster_sizeCe_bx_oneHit_OnPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
@@ -1042,6 +1173,11 @@ void DQM_CPPF::beginJob(){
   h1_cluster_sizeCu_oneHit = fs->make<TH1D>("h1_cluster_sizeCu_oneHit", "Cluster size of emulator", 10, 0., 10.);
   h1_cluster_sizeCu_bx = fs->make<TH1D>("h1_cluster_sizeCu_bx", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCu_bx_oneHit = fs->make<TH1D>("h1_cluster_sizeCu_bx_oneHit", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCu_bx_twoHit = fs->make<TH1D>("h1_cluster_sizeCu_bx_twoHit", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_cluster_sizeCu_bx_twoHit_OnTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_cluster_sizeCu_bx_twoHit_OffTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_cluster_sizeCu_bx_twoHit_OnPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
+  h1_cluster_sizeCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_cluster_sizeCu_bx_twoHit_OffPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_cluster_sizeCu_bx_oneHit_OnTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_cluster_sizeCu_bx_oneHit_OffTheta", "Cluster size of emulator with same BX", 10, 0., 10.);
   h1_cluster_sizeCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_cluster_sizeCu_bx_oneHit_OnPhi", "Cluster size of emulator with same BX", 10, 0., 10.);
@@ -1058,6 +1194,11 @@ void DQM_CPPF::beginJob(){
   h1_bxCe_oneHit = fs->make<TH1D>("h1_bxCe_oneHit", "h1_bxCe", 8, -4., 4.);
   h1_bxCe_bx = fs->make<TH1D>("h1_bxCe_bx", "h1_bxCe_bx", 8, -4., 4.);
   h1_bxCe_bx_oneHit = fs->make<TH1D>("h1_bxCe_bx_oneHit", "h1_bxCe_bx", 8, -4., 4.);
+  h1_bxCe_bx_twoHit = fs->make<TH1D>("h1_bxCe_bx_twoHit", "h1_bxCe_bx", 8, -4., 4.);
+  h1_bxCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_bxCe_bx_twoHit_OnTheta", "h1_bxCe_bx", 8, -4., 4.);
+  h1_bxCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_bxCe_bx_twoHit_OffTheta", "h1_bxCe_bx", 8, -4., 4.);
+  h1_bxCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_bxCe_bx_twoHit_OnPhi", "h1_bxCe_bx", 8, -4., 4.);
+  h1_bxCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_bxCe_bx_twoHit_OffPhi", "h1_bxCe_bx", 8, -4., 4.);
   h1_bxCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_bxCe_bx_oneHit_OnTheta", "h1_bxCe_bx", 8, -4., 4.);
   h1_bxCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_bxCe_bx_oneHit_OffTheta", "h1_bxCe_bx", 8, -4., 4.);
   h1_bxCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_bxCe_bx_oneHit_OnPhi", "h1_bxCe_bx", 8, -4., 4.);
@@ -1074,6 +1215,11 @@ void DQM_CPPF::beginJob(){
   h1_bxCu_oneHit = fs->make<TH1D>("h1_bxCu_oneHit", "h1_bxCu", 8, -4., 4.);
   h1_bxCu_bx = fs->make<TH1D>("h1_bxCu_bx", "h1_bxCu_bx", 8, -4., 4.);
   h1_bxCu_bx_oneHit = fs->make<TH1D>("h1_bxCu_bx_oneHit", "h1_bxCu_bx", 8, -4., 4.);
+  h1_bxCu_bx_twoHit = fs->make<TH1D>("h1_bxCu_bx_twoHit", "h1_bxCu_bx", 8, -4., 4.);
+  h1_bxCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_bxCu_bx_twoHit_OnTheta", "h1_bxCu_bx", 8, -4., 4.);
+  h1_bxCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_bxCu_bx_twoHit_OffTheta", "h1_bxCu_bx", 8, -4., 4.);
+  h1_bxCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_bxCu_bx_twoHit_OnPhi", "h1_bxCu_bx", 8, -4., 4.);
+  h1_bxCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_bxCu_bx_twoHit_OffPhi", "h1_bxCu_bx", 8, -4., 4.);
   h1_bxCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_bxCu_bx_oneHit_OnTheta", "h1_bxCu_bx", 8, -4., 4.);
   h1_bxCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_bxCu_bx_oneHit_OffTheta", "h1_bxCu_bx", 8, -4., 4.);
   h1_bxCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_bxCu_bx_oneHit_OnPhi", "h1_bxCu_bx", 8, -4., 4.);
@@ -1090,6 +1236,11 @@ void DQM_CPPF::beginJob(){
   h1_phiIntCe_oneHit = fs->make<TH1D>("h1_phiIntCe_oneHit", "h1_phiIntCe", 124, 0., 1240.);
   h1_phiIntCe_bx = fs->make<TH1D>("h1_phiIntCe_bx", "h1_phiIntCe_bx", 124, 0., 1240.);
   h1_phiIntCe_bx_oneHit = fs->make<TH1D>("h1_phiIntCe_bx_oneHit", "h1_phiIntCe_bx", 124, 0., 1240.);
+  h1_phiIntCe_bx_twoHit = fs->make<TH1D>("h1_phiIntCe_bx_twoHit", "h1_phiIntCe_bx", 124, 0., 1240.);
+  h1_phiIntCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_phiIntCe_bx_twoHit_OnTheta", "h1_phiIntCe_bx", 124, 0., 1240.);
+  h1_phiIntCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_phiIntCe_bx_twoHit_OffTheta", "h1_phiIntCe_bx", 124, 0., 1240.);
+  h1_phiIntCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_phiIntCe_bx_twoHit_OnPhi", "h1_phiIntCe_bx", 124, 0., 1240.);
+  h1_phiIntCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_phiIntCe_bx_twoHit_OffPhi", "h1_phiIntCe_bx", 124, 0., 1240.);
   h1_phiIntCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_phiIntCe_bx_oneHit_OnTheta", "h1_phiIntCe_bx", 124, 0., 1240.);
   h1_phiIntCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_phiIntCe_bx_oneHit_OffTheta", "h1_phiIntCe_bx", 124, 0., 1240.);
   h1_phiIntCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_phiIntCe_bx_oneHit_OnPhi", "h1_phiIntCe_bx", 124, 0., 1240.);
@@ -1106,6 +1257,11 @@ void DQM_CPPF::beginJob(){
   h1_phiIntCu_oneHit = fs->make<TH1D>("h1_phiIntCu_oneHit", "h1_phiIntCu", 124, 0., 1240.);
   h1_phiIntCu_bx = fs->make<TH1D>("h1_phiIntCu_bx", "h1_phiIntCu_bx", 124, 0., 1240.);
   h1_phiIntCu_bx_oneHit = fs->make<TH1D>("h1_phiIntCu_bx_oneHit", "h1_phiIntCu_bx", 124, 0., 1240.);
+  h1_phiIntCu_bx_twoHit = fs->make<TH1D>("h1_phiIntCu_bx_twoHit", "h1_phiIntCu_bx", 124, 0., 1240.);
+  h1_phiIntCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_phiIntCu_bx_twoHit_OnTheta", "h1_phiIntCu_bx", 124, 0., 1240.);
+  h1_phiIntCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_phiIntCu_bx_twoHit_OffTheta", "h1_phiIntCu_bx", 124, 0., 1240.);
+  h1_phiIntCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_phiIntCu_bx_twoHit_OnPhi", "h1_phiIntCu_bx", 124, 0., 1240.);
+  h1_phiIntCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_phiIntCu_bx_twoHit_OffPhi", "h1_phiIntCu_bx", 124, 0., 1240.);
   h1_phiIntCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_phiIntCu_bx_oneHit_OnTheta", "h1_phiIntCu_bx", 124, 0., 1240.);
   h1_phiIntCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_phiIntCu_bx_oneHit_OffTheta", "h1_phiIntCu_bx", 124, 0., 1240.);
   h1_phiIntCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_phiIntCu_bx_oneHit_OnPhi", "h1_phiIntCu_bx", 124, 0., 1240.);
@@ -1122,6 +1278,11 @@ void DQM_CPPF::beginJob(){
   h1_thetaIntCu_oneHit = fs->make<TH1D>("h1_thetaIntCu_oneHit", "h1_thetaIntCu", 32, 0., 32.);
   h1_thetaIntCu_bx = fs->make<TH1D>("h1_thetaIntCu_bx", "h1_thetaIntCu_bx", 32, 0., 32.);
   h1_thetaIntCu_bx_oneHit = fs->make<TH1D>("h1_thetaIntCu_bx_oneHit", "h1_thetaIntCu_bx", 32, 0., 32.);
+  h1_thetaIntCu_bx_twoHit = fs->make<TH1D>("h1_thetaIntCu_bx_twoHit", "h1_thetaIntCu_bx", 32, 0., 32.);
+  h1_thetaIntCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_thetaIntCu_bx_twoHit_OnTheta", "h1_thetaIntCu_bx", 32, 0., 32.);
+  h1_thetaIntCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_thetaIntCu_bx_twoHit_OffTheta", "h1_thetaIntCu_bx", 32, 0., 32.);
+  h1_thetaIntCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_thetaIntCu_bx_twoHit_OnPhi", "h1_thetaIntCu_bx", 32, 0., 32.);
+  h1_thetaIntCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_thetaIntCu_bx_twoHit_OffPhi", "h1_thetaIntCu_bx", 32, 0., 32.);
   h1_thetaIntCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_thetaIntCu_bx_oneHit_OnTheta", "h1_thetaIntCu_bx", 32, 0., 32.);
   h1_thetaIntCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_thetaIntCu_bx_oneHit_OffTheta", "h1_thetaIntCu_bx", 32, 0., 32.);
   h1_thetaIntCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_thetaIntCu_bx_oneHit_OnPhi", "h1_thetaIntCu_bx", 32, 0., 32.);
@@ -1138,6 +1299,11 @@ void DQM_CPPF::beginJob(){
   h1_thetaIntCe_oneHit = fs->make<TH1D>("h1_thetaIntCe_oneHit", "h1_thetaIntCe", 32, 0., 32.);
   h1_thetaIntCe_bx = fs->make<TH1D>("h1_thetaIntCe_bx", "h1_thetaIntCe_bx", 32, 0., 32.);
   h1_thetaIntCe_bx_oneHit = fs->make<TH1D>("h1_thetaIntCe_bx_oneHit", "h1_thetaIntCe_bx", 32, 0., 32.);
+  h1_thetaIntCe_bx_twoHit = fs->make<TH1D>("h1_thetaIntCe_bx_twoHit", "h1_thetaIntCe_bx", 32, 0., 32.);
+  h1_thetaIntCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_thetaIntCe_bx_twoHit_OnTheta", "h1_thetaIntCe_bx", 32, 0., 32.);
+  h1_thetaIntCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_thetaIntCe_bx_twoHit_OffTheta", "h1_thetaIntCe_bx", 32, 0., 32.);
+  h1_thetaIntCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_thetaIntCe_bx_twoHit_OnPhi", "h1_thetaIntCe_bx", 32, 0., 32.);
+  h1_thetaIntCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_thetaIntCe_bx_twoHit_OffPhi", "h1_thetaIntCe_bx", 32, 0., 32.);
   h1_thetaIntCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_thetaIntCe_bx_oneHit_OnTheta", "h1_thetaIntCe_bx", 32, 0., 32.);
   h1_thetaIntCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_thetaIntCe_bx_oneHit_OffTheta", "h1_thetaIntCe_bx", 32, 0., 32.);
   h1_thetaIntCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_thetaIntCe_bx_oneHit_OnPhi", "h1_thetaIntCe_bx", 32, 0., 32.);
@@ -1154,6 +1320,11 @@ void DQM_CPPF::beginJob(){
   h1_thetaGlobalCe_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_oneHit", "h1_thetaGlobalCe", 180,0.,180.);
   h1_thetaGlobalCe_bx = fs->make<TH1D>("h1_thetaGlobalCe_bx", "h1_thetaGlobalCe_bx", 180,0.,180.);
   h1_thetaGlobalCe_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_twoHit = fs->make<TH1D>("h1_thetaGlobalCe_bx_twoHit", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_twoHit_OnTheta", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_twoHit_OffTheta", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_thetaGlobalCe_bx_twoHit_OnPhi", "h1_thetaGlobalCe_bx", 180,0.,180.);
+  h1_thetaGlobalCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_thetaGlobalCe_bx_twoHit_OffPhi", "h1_thetaGlobalCe_bx", 180,0.,180.);
   h1_thetaGlobalCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit_OnTheta", "h1_thetaGlobalCe_bx", 180,0.,180.);
   h1_thetaGlobalCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit_OffTheta", "h1_thetaGlobalCe_bx", 180,0.,180.);
   h1_thetaGlobalCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_thetaGlobalCe_bx_oneHit_OnPhi", "h1_thetaGlobalCe_bx", 180,0.,180.);
@@ -1170,6 +1341,11 @@ void DQM_CPPF::beginJob(){
   h1_thetaGlobalCu_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_oneHit", "h1_thetaGlobalCu", 180,0.,180.);
   h1_thetaGlobalCu_bx = fs->make<TH1D>("h1_thetaGlobalCu_bx", "h1_thetaGlobalCu_bx", 180,0.,180.);
   h1_thetaGlobalCu_bx_oneHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_twoHit = fs->make<TH1D>("h1_thetaGlobalCu_bx_twoHit", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_twoHit_OnTheta", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_twoHit_OffTheta", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_thetaGlobalCu_bx_twoHit_OnPhi", "h1_thetaGlobalCu_bx", 180,0.,180.);
+  h1_thetaGlobalCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_thetaGlobalCu_bx_twoHit_OffPhi", "h1_thetaGlobalCu_bx", 180,0.,180.);
   h1_thetaGlobalCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit_OnTheta", "h1_thetaGlobalCu_bx", 180,0.,180.);
   h1_thetaGlobalCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit_OffTheta", "h1_thetaGlobalCu_bx", 180,0.,180.);
   h1_thetaGlobalCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_thetaGlobalCu_bx_oneHit_OnPhi", "h1_thetaGlobalCu_bx", 180,0.,180.);
@@ -1186,6 +1362,11 @@ void DQM_CPPF::beginJob(){
   h1_phiGlobalCe_oneHit = fs->make<TH1D>("h1_phiGlobalCe_oneHit", "h1_phiGlobalCe", 360,-180.,180);
   h1_phiGlobalCe_bx = fs->make<TH1D>("h1_phiGlobalCe_bx", "h1_phiGlobalCe_bx", 360,-180.,180);
   h1_phiGlobalCe_bx_oneHit = fs->make<TH1D>("h1_phiGlobalCe_bx_oneHit", "h1_phiGlobalCe_bx", 360,-180.,180);
+  h1_phiGlobalCe_bx_twoHit = fs->make<TH1D>("h1_phiGlobalCe_bx_twoHit", "h1_phiGlobalCe_bx", 360,-180.,180);
+  h1_phiGlobalCe_bx_twoHit_OnTheta = fs->make<TH1D>("h1_phiGlobalCe_bx_twoHit_OnTheta", "h1_phiGlobalCe_bx", 360,-180.,180);
+  h1_phiGlobalCe_bx_twoHit_OffTheta = fs->make<TH1D>("h1_phiGlobalCe_bx_twoHit_OffTheta", "h1_phiGlobalCe_bx", 360,-180.,180);
+  h1_phiGlobalCe_bx_twoHit_OnPhi = fs->make<TH1D>("h1_phiGlobalCe_bx_twoHit_OnPhi", "h1_phiGlobalCe_bx", 360,-180.,180);
+  h1_phiGlobalCe_bx_twoHit_OffPhi = fs->make<TH1D>("h1_phiGlobalCe_bx_twoHit_OffPhi", "h1_phiGlobalCe_bx", 360,-180.,180);
   h1_phiGlobalCe_bx_oneHit_OnTheta = fs->make<TH1D>("h1_phiGlobalCe_bx_oneHit_OnTheta", "h1_phiGlobalCe_bx", 360,-180.,180);
   h1_phiGlobalCe_bx_oneHit_OffTheta = fs->make<TH1D>("h1_phiGlobalCe_bx_oneHit_OffTheta", "h1_phiGlobalCe_bx", 360,-180.,180);
   h1_phiGlobalCe_bx_oneHit_OnPhi = fs->make<TH1D>("h1_phiGlobalCe_bx_oneHit_OnPhi", "h1_phiGlobalCe_bx", 360,-180.,180);
@@ -1202,6 +1383,11 @@ void DQM_CPPF::beginJob(){
   h1_phiGlobalCu_oneHit = fs->make<TH1D>("h1_phiGlobalCu_oneHit", "h1_phiGlobalCu", 360,-180.,180);
   h1_phiGlobalCu_bx = fs->make<TH1D>("h1_phiGlobalCu_bx", "h1_phiGlobalCu_bx", 360,-180.,180);
   h1_phiGlobalCu_bx_oneHit = fs->make<TH1D>("h1_phiGlobalCu_bx_oneHit", "h1_phiGlobalCu_bx", 360,-180.,180);
+  h1_phiGlobalCu_bx_twoHit = fs->make<TH1D>("h1_phiGlobalCu_bx_twoHit", "h1_phiGlobalCu_bx", 360,-180.,180);
+  h1_phiGlobalCu_bx_twoHit_OnTheta = fs->make<TH1D>("h1_phiGlobalCu_bx_twoHit_OnTheta", "h1_phiGlobalCu_bx", 360,-180.,180);
+  h1_phiGlobalCu_bx_twoHit_OffTheta = fs->make<TH1D>("h1_phiGlobalCu_bx_twoHit_OffTheta", "h1_phiGlobalCu_bx", 360,-180.,180);
+  h1_phiGlobalCu_bx_twoHit_OnPhi = fs->make<TH1D>("h1_phiGlobalCu_bx_twoHit_OnPhi", "h1_phiGlobalCu_bx", 360,-180.,180);
+  h1_phiGlobalCu_bx_twoHit_OffPhi = fs->make<TH1D>("h1_phiGlobalCu_bx_twoHit_OffPhi", "h1_phiGlobalCu_bx", 360,-180.,180);
   h1_phiGlobalCu_bx_oneHit_OnTheta = fs->make<TH1D>("h1_phiGlobalCu_bx_oneHit_OnTheta", "h1_phiGlobalCu_bx", 360,-180.,180);
   h1_phiGlobalCu_bx_oneHit_OffTheta = fs->make<TH1D>("h1_phiGlobalCu_bx_oneHit_OffTheta", "h1_phiGlobalCu_bx", 360,-180.,180);
   h1_phiGlobalCu_bx_oneHit_OnPhi = fs->make<TH1D>("h1_phiGlobalCu_bx_oneHit_OnPhi", "h1_phiGlobalCu_bx", 360,-180.,180);
@@ -1220,6 +1406,11 @@ void DQM_CPPF::beginJob(){
   h2_bx_emu_unpack_oneHit = fs->make<TH2D>("h2_bx_emu_unpack_oneHit", "h2_bx_emu_unpack", 8, -4., 4.,8, -4., 4.);
   h2_bx_emu_unpack_bx = fs->make<TH2D>("h2_bx_emu_unpack_bx", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
   h2_bx_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_bx_emu_unpack_bx_oneHit", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
+  h2_bx_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_bx_emu_unpack_bx_twoHit", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
+  h2_bx_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_bx_emu_unpack_bx_twoHit_OnTheta", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
+  h2_bx_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_bx_emu_unpack_bx_twoHit_OffTheta", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
+  h2_bx_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_bx_emu_unpack_bx_twoHit_OnPhi", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
+  h2_bx_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_bx_emu_unpack_bx_twoHit_OffPhi", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
   h2_bx_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_bx_emu_unpack_bx_oneHit_OnTheta", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
   h2_bx_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_bx_emu_unpack_bx_oneHit_OffTheta", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
   h2_bx_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_bx_emu_unpack_bx_oneHit_OnPhi", "h2_bx_emu_unpack_bx", 8, -4., 4.,8, -4., 4.);
@@ -1236,6 +1427,11 @@ void DQM_CPPF::beginJob(){
   h2_phiInt_emu_unpack_oneHit = fs->make<TH2D>("h2_phiInt_emu_unpack_oneHit", "h2_phiInt_emu_unpack", 124, 0., 1240.,124, 0., 1240.);
   h2_phiInt_emu_unpack_bx = fs->make<TH2D>("h2_phiInt_emu_unpack_bx", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
   h2_phiInt_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_oneHit", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
+  h2_phiInt_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_twoHit", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
+  h2_phiInt_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_twoHit_OnTheta", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
+  h2_phiInt_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_twoHit_OffTheta", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
+  h2_phiInt_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_twoHit_OnPhi", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
+  h2_phiInt_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_twoHit_OffPhi", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
   h2_phiInt_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_oneHit_OnTheta", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
   h2_phiInt_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_oneHit_OffTheta", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
   h2_phiInt_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_phiInt_emu_unpack_bx_oneHit_OnPhi", "h2_phiInt_emu_unpack_bx", 124, 0., 1240.,124, 0., 1240.);
@@ -1252,6 +1448,11 @@ void DQM_CPPF::beginJob(){
   h2_phiGlobal_emu_unpack_oneHit = fs->make<TH2D>("h2_phiGlobal_emu_unpack_oneHit", "h2_phiGlobal_emu_unpack", 360,-180.,180, 360,-180.,180);
   h2_phiGlobal_emu_unpack_bx = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_phiGlobal_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_oneHit", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_phiGlobal_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_twoHit", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_phiGlobal_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_twoHit_OnTheta", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_phiGlobal_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_twoHit_OffTheta", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_phiGlobal_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_twoHit_OnPhi", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_phiGlobal_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_twoHit_OffPhi", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_phiGlobal_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_oneHit_OnTheta", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_phiGlobal_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_oneHit_OffTheta", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_phiGlobal_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_phiGlobal_emu_unpack_bx_oneHit_OnPhi", "h2_phiGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
@@ -1268,6 +1469,11 @@ void DQM_CPPF::beginJob(){
   h2_thetaInt_emu_unpack_oneHit = fs->make<TH2D>("h2_thetaInt_emu_unpack_oneHit", "h2_thetaInt_emu_unpack", 32, 0., 32., 32, 0., 32.);
   h2_thetaInt_emu_unpack_bx = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
   h2_thetaInt_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_oneHit", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
+  h2_thetaInt_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_twoHit", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
+  h2_thetaInt_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_twoHit_OnTheta", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
+  h2_thetaInt_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_twoHit_OffTheta", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
+  h2_thetaInt_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_twoHit_OnPhi", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
+  h2_thetaInt_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_twoHit_OffPhi", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
   h2_thetaInt_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_oneHit_OnTheta", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
   h2_thetaInt_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_oneHit_OffTheta", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
   h2_thetaInt_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_thetaInt_emu_unpack_bx_oneHit_OnPhi", "h2_thetaInt_emu_unpack_bx", 32, 0., 32., 32, 0., 32.);
@@ -1284,6 +1490,11 @@ void DQM_CPPF::beginJob(){
   h2_thetaGlobal_emu_unpack_oneHit = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_oneHit", "h2_thetaGlobal_emu_unpack", 360,-180.,180, 360,-180.,180);
   h2_thetaGlobal_emu_unpack_bx = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_thetaGlobal_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_oneHit", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_thetaGlobal_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_twoHit", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_thetaGlobal_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_twoHit_OnTheta", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_thetaGlobal_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_twoHit_OffTheta", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_thetaGlobal_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_twoHit_OnPhi", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
+  h2_thetaGlobal_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_twoHit_OffPhi", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_thetaGlobal_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_oneHit_OnTheta", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_thetaGlobal_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_oneHit_OffTheta", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
   h2_thetaGlobal_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_thetaGlobal_emu_unpack_bx_oneHit_OnPhi", "h2_thetaGlobal_emu_unpack_bx", 360,-180.,180, 360,-180.,180);
@@ -1300,6 +1511,11 @@ void DQM_CPPF::beginJob(){
   h2_chamberID_emu_unpack_oneHit = fs->make<TH2D>("h2_chamberID_emu_unpack_oneHit", "h2_chamberID_emu_unpack", 36, 1, 37, 36, 1, 37);
   h2_chamberID_emu_unpack_bx = fs->make<TH2D>("h2_chamberID_emu_unpack_bx", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
   h2_chamberID_emu_unpack_bx_oneHit = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_oneHit", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
+  h2_chamberID_emu_unpack_bx_twoHit = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_twoHit", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
+  h2_chamberID_emu_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_twoHit_OnTheta", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
+  h2_chamberID_emu_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_twoHit_OffTheta", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
+  h2_chamberID_emu_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_twoHit_OnPhi", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
+  h2_chamberID_emu_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_twoHit_OffPhi", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
   h2_chamberID_emu_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_oneHit_OnTheta", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
   h2_chamberID_emu_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_oneHit_OffTheta", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
   h2_chamberID_emu_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_chamberID_emu_unpack_bx_oneHit_OnPhi", "h2_chamberID_emu_unpack_bx", 36, 1, 37, 36, 1, 37);
@@ -1316,6 +1532,11 @@ void DQM_CPPF::beginJob(){
   h2_chamberID_vs_roll_emu_oneHit = fs->make<TH2D>("h2_chamberID_vs_roll_emu_oneHit", "h2_chamberID_vs_roll_emu", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_emu_bx = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_emu_bx_oneHit = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_oneHit", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_emu_bx_twoHit = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_twoHit", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_emu_bx_twoHit_OnTheta = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_twoHit_OnTheta", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_emu_bx_twoHit_OffTheta = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_twoHit_OffTheta", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_emu_bx_twoHit_OnPhi = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_twoHit_OnPhi", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_emu_bx_twoHit_OffPhi = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_twoHit_OffPhi", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_emu_bx_oneHit_OnTheta = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_oneHit_OnTheta", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_emu_bx_oneHit_OffTheta = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_oneHit_OffTheta", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi = fs->make<TH2D>("h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_emu_bx", 36, 1, 37, 4, 0, 4);
@@ -1332,6 +1553,11 @@ void DQM_CPPF::beginJob(){
   h2_chamberID_vs_roll_unpack_oneHit = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_oneHit", "h2_chamberID_vs_roll_unpack", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_unpack_bx = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_unpack_bx_oneHit = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_oneHit", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_unpack_bx_twoHit = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_twoHit", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_unpack_bx_twoHit_OnTheta = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_twoHit_OnTheta", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_unpack_bx_twoHit_OffTheta = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_twoHit_OffTheta", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_unpack_bx_twoHit_OnPhi = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_twoHit_OnPhi", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
+  h2_chamberID_vs_roll_unpack_bx_twoHit_OffPhi = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_twoHit_OffPhi", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_unpack_bx_oneHit_OnTheta = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_oneHit_OnTheta", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_unpack_bx_oneHit_OffTheta = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_oneHit_OffTheta", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
   h2_chamberID_vs_roll_unpack_bx_oneHit_OnPhi = fs->make<TH2D>("h2_chamberID_vs_roll_unpack_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_unpack_bx", 36, 1, 37, 4, 0, 4);
@@ -1348,6 +1574,11 @@ void DQM_CPPF::beginJob(){
   h2_occupancy_unpacker_oneHit = fs->make<TH2D>("h2_occupancy_unpacker_oneHit", "h2_occupancy_unpacker", 36, 1, 37, 12, 1, 13);
   h2_occupancy_unpacker_bx = fs->make<TH2D>("h2_occupancy_unpacker_bx", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_unpacker_bx_oneHit = fs->make<TH2D>("h2_occupancy_unpacker_bx_oneHit", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_unpacker_bx_twoHit = fs->make<TH2D>("h2_occupancy_unpacker_bx_twoHit", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_unpacker_bx_twoHit_OnTheta = fs->make<TH2D>("h2_occupancy_unpacker_bx_twoHit_OnTheta", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_unpacker_bx_twoHit_OffTheta = fs->make<TH2D>("h2_occupancy_unpacker_bx_twoHit_OffTheta", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_unpacker_bx_twoHit_OnPhi = fs->make<TH2D>("h2_occupancy_unpacker_bx_twoHit_OnPhi", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_unpacker_bx_twoHit_OffPhi = fs->make<TH2D>("h2_occupancy_unpacker_bx_twoHit_OffPhi", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_unpacker_bx_oneHit_OnTheta = fs->make<TH2D>("h2_occupancy_unpacker_bx_oneHit_OnTheta", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_unpacker_bx_oneHit_OffTheta = fs->make<TH2D>("h2_occupancy_unpacker_bx_oneHit_OffTheta", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_unpacker_bx_oneHit_OnPhi = fs->make<TH2D>("h2_occupancy_unpacker_bx_oneHit_OnPhi", "h2_occupancy_unpacker_bx", 36, 1, 37, 12, 1, 13);
@@ -1364,6 +1595,11 @@ void DQM_CPPF::beginJob(){
   h2_occupancy_emulator_oneHit = fs->make<TH2D>("h2_occupancy_emulator_oneHit", "h2_occupancy_emulator", 36, 1, 37, 12, 1, 13);
   h2_occupancy_emulator_bx = fs->make<TH2D>("h2_occupancy_emulator_bx", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_emulator_bx_oneHit = fs->make<TH2D>("h2_occupancy_emulator_bx_oneHit", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_emulator_bx_twoHit = fs->make<TH2D>("h2_occupancy_emulator_bx_twoHit", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_emulator_bx_twoHit_OnTheta = fs->make<TH2D>("h2_occupancy_emulator_bx_twoHit_OnTheta", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_emulator_bx_twoHit_OffTheta = fs->make<TH2D>("h2_occupancy_emulator_bx_twoHit_OffTheta", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_emulator_bx_twoHit_OnPhi = fs->make<TH2D>("h2_occupancy_emulator_bx_twoHit_OnPhi", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
+  h2_occupancy_emulator_bx_twoHit_OffPhi = fs->make<TH2D>("h2_occupancy_emulator_bx_twoHit_OffPhi", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_emulator_bx_oneHit_OnTheta = fs->make<TH2D>("h2_occupancy_emulator_bx_oneHit_OnTheta", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_emulator_bx_oneHit_OffTheta = fs->make<TH2D>("h2_occupancy_emulator_bx_oneHit_OffTheta", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
   h2_occupancy_emulator_bx_oneHit_OnPhi = fs->make<TH2D>("h2_occupancy_emulator_bx_oneHit_OnPhi", "h2_occupancy_emulator_bx", 36, 1, 37, 12, 1, 13);
