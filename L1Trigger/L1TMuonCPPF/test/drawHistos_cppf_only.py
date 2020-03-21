@@ -197,8 +197,10 @@ RatioHistNames = [
                     ["h2_occupancy_unpacker_bx", "h2_occupancy_emulator_bx"],
                     ["h2_chamberID_vs_roll_emu_bx_phi", "h2_chamberID_vs_roll_emu_bx_Offphi"],
                     ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_unpacker_bx_Offphi"],
-                    ["h2_occupancy_emulator_bx_phi", "h2_occupancy_emulator_bx_Offphi"]
-
+                    ["h2_occupancy_emulator_bx_phi", "h2_occupancy_emulator_bx_Offphi"],
+                    ["h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_emu_bx_oneHit_OffPhi"],
+                    ["h2_occupancy_unpacker_bx_oneHit_OnPhi", "h2_occupancy_unpacker_bx_oneHit_OffPhi"],
+                    ["h2_occupancy_emulator_bx_oneHit_OnPhi", "h2_occupancy_emulator_bx_oneHit_OffPhi"]
                  ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
@@ -275,6 +277,10 @@ for i in range(0,len(hnames)):
      Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffPhi")
      Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OnTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OnTheta")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffTheta")
+     Table_Histo_Details.append(TH1_histo_details)
   #
   # thetaCe == thetaCu
   #
@@ -312,6 +318,10 @@ for i in range(0,len(h2dnames)):
      Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffPhi")
      Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OnTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OnTheta")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffTheta")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
   if ("bx_phi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_phi","bx_theta")
      print hdir+"/"+(h2dnames[i][0]).replace("bx_phi","bx_theta")
@@ -340,8 +350,8 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetYaxis().SetTitleSize(0.05)
    Numerator.GetXaxis().SetTitleOffset(0.9)
    Numerator.GetYaxis().SetTitleOffset(0.9)
-   Numerator.GetZaxis().SetRangeUser(0,2);
-   Numerator.Draw("COLZ TEXT")
+   Numerator.GetZaxis().SetRangeUser(0,1);
+   Numerator.Draw("COLZ TEXT45")
    print "integral = ",Numerator.Integral()
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
    c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".root")
