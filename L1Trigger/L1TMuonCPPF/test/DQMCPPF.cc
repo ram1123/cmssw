@@ -36,7 +36,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   bool matches_bx_Offphi = false;
   bool matches_bx_theta = false;
   bool matches_bx_Offtheta = false;
-
+    
     //std::cout << "\n\n\nStart of event--------------\n\n\n" << std::endl;
 
     int count_unpacker = 0;
@@ -214,7 +214,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     ar_channelCe_bx_Offtheta.clear();
     ar_emtf_linkCu_bx_Offtheta.clear();
     ar_emtf_linkCe_bx_Offtheta.clear();
-
+    
   for(auto& cppf_digis : *CppfDigis1){
     count_emulator++;
     RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
@@ -836,11 +836,12 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          }
       }  // matches_unpacker_bx == 1
 
-      if (matches_unpacker_bx == 5) {
+      if (matches_unpacker_bx == 2) {
          //std::cout<<"Size of one hit event = " << ar_cluster_sizeCe.size() << std::endl;
          //std::cout<<"phi int unpacker ar_phiIntCu = " << ar_phiIntCu_bx[0] << std::endl;
          //std::cout<<"phi int emulator ar_phiIntCe = " << ar_phiIntCe_bx[0] << std::endl;
-         for (int matches=0; matches<5; matches++) {
+         for (int matches=0; matches<matches_unpacker_bx; matches++) {
+//             std::cout << "matches_unpacker_bx = " << matches_unpacker_bx << "\t matches = " << matches << std::endl;
             h1_cluster_sizeCe_bx_twoHit->Fill(ar_cluster_sizeCe_bx[matches]);
             h1_cluster_sizeCu_bx_twoHit->Fill(ar_cluster_sizeCu_bx[matches]);
             h1_bxCe_bx_twoHit->Fill(ar_bxCe_bx[matches]);
@@ -863,47 +864,20 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             h2_chamberID_vs_roll_unpack_bx_twoHit->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
             h2_occupancy_unpacker_bx_twoHit->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
             h2_occupancy_emulator_bx_twoHit->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
-            //if ((ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) || (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[1])) 
-            int first = matches;
-            int second = matches;
-            bool onphi = false;
+             
+             int first = matches;
+             int second = matches;
+             bool onphi = false;
+             
+             // NEW METHOD
+             for (int matches_count1 = 0; matches_count1<matches_unpacker_bx; matches_count1++) {
+                 if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches_count1]) {
+                     first = matches;
+                     second = matches_count1;
+                     onphi = true;
+                 }
+             }
 
-            //if  (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-            if (matches == 0) {
-              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[1]) { first = 0; second = 1; onphi = true;}
-              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[2]) { first = 0; second = 2; onphi = true;}
-              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[3]) { first = 0; second = 3; onphi = true;}
-              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[4]) { first = 0; second = 4; onphi = true;}
-            }
-            if (matches == 1) {
-              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[0]) { first = 1; second = 0; onphi = true;}
-              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[2]) { first = 1; second = 2; onphi = true;}
-              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[3]) { first = 1; second = 3; onphi = true;}
-              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[4]) { first = 1; second = 4; onphi = true;}
-            }
-            if (matches == 2) {
-              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[1]) { first = 2; second = 1; onphi = true;}
-              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[0]) { first = 2; second = 0; onphi = true;}
-              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[3]) { first = 2; second = 3; onphi = true;}
-              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[4]) { first = 2; second = 4; onphi = true;}
-            }
-            if (matches == 3) {
-              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[2]) { first = 3; second = 2; onphi = true;}
-              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[1]) { first = 3; second = 1; onphi = true;}
-              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[0]) { first = 3; second = 0; onphi = true;}
-              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[4]) { first = 3; second = 4; onphi = true;}
-            }
-            if (matches == 4) {
-              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
-              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[3]) { first = 4; second = 3; onphi = true;}
-              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[2]) { first = 4; second = 2; onphi = true;}
-              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[1]) { first = 4; second = 1; onphi = true;}
-              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[0]) { first = 4; second = 0; onphi = true;}
-            }            
             if (onphi) {
                h1_cluster_sizeCe_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCe_bx[first]);
                h1_cluster_sizeCu_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCu_bx[second]);
@@ -952,29 +926,42 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
                h2_occupancy_emulator_bx_twoHit_OffPhi->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
             }
 
-            if (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches]) {
-               h1_cluster_sizeCe_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCe_bx[matches]);
-               h1_cluster_sizeCu_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCu_bx[matches]);
-               h1_bxCe_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[matches]);
-               h1_bxCu_bx_twoHit_OnTheta->Fill(ar_bxCu_bx[matches]);
-               h1_phiIntCe_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[matches]);
-               h1_phiIntCu_bx_twoHit_OnTheta->Fill(ar_phiIntCu_bx[matches]);
-               h1_thetaIntCu_bx_twoHit_OnTheta->Fill(ar_thetaIntCu_bx[matches]);
-               h1_thetaIntCe_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[matches]);
-               h1_thetaGlobalCe_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[matches]);
-               h1_thetaGlobalCu_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCu_bx[matches]);
-               h1_phiGlobalCe_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[matches]);
-               h1_phiGlobalCu_bx_twoHit_OnTheta->Fill(ar_phiGlobalCu_bx[matches]);
-               h2_bx_emu_unpack_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[matches], ar_bxCu_bx[matches]);
-               h2_phiInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[matches], ar_phiIntCu_bx[matches]);
-               h2_phiGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[matches], ar_phiGlobalCu_bx[matches]);
-               h2_thetaInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[matches], ar_thetaIntCu_bx[matches]);
-               h2_thetaGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[matches], ar_thetaGlobalCu_bx[matches]);
-               h2_chamberID_emu_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[matches], ar_chamberIDCu_bx[matches]);
-               h2_chamberID_vs_roll_emu_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[matches], ar_rollCe_bx[matches]);
-               h2_chamberID_vs_roll_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCu_bx[matches], ar_rollCu_bx[matches]);
-               h2_occupancy_unpacker_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCu_bx[matches], ar_fillOccupancyCu_bx[matches]);
-               h2_occupancy_emulator_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCe_bx[matches], ar_fillOccupancyCe_bx[matches]);
+            first = matches;
+            second = matches;
+            bool ontheta = false;
+             
+            // NEW METHOD
+            for (int matches_count1 = 0; matches_count1<matches_unpacker_bx; matches_count1++) {
+                if (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches_count1]) {
+                     first = matches;
+                     second = matches_count1;
+                     ontheta = true;
+                }
+            }
+
+            if (ontheta) {
+               h1_cluster_sizeCe_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCe_bx[first]);
+               h1_cluster_sizeCu_bx_twoHit_OnTheta->Fill(ar_cluster_sizeCu_bx[second]);
+               h1_bxCe_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[first]);
+               h1_bxCu_bx_twoHit_OnTheta->Fill(ar_bxCu_bx[second]);
+               h1_phiIntCe_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[first]);
+               h1_phiIntCu_bx_twoHit_OnTheta->Fill(ar_phiIntCu_bx[second]);
+               h1_thetaIntCu_bx_twoHit_OnTheta->Fill(ar_thetaIntCu_bx[second]);
+               h1_thetaIntCe_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[first]);
+               h1_thetaGlobalCe_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[first]);
+               h1_thetaGlobalCu_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCu_bx[second]);
+               h1_phiGlobalCe_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[first]);
+               h1_phiGlobalCu_bx_twoHit_OnTheta->Fill(ar_phiGlobalCu_bx[second]);
+               h2_bx_emu_unpack_bx_twoHit_OnTheta->Fill(ar_bxCe_bx[first], ar_bxCu_bx[second]);
+               h2_phiInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiIntCe_bx[first], ar_phiIntCu_bx[second]);
+               h2_phiGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_phiGlobalCe_bx[first], ar_phiGlobalCu_bx[second]);
+               h2_thetaInt_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaIntCe_bx[first], ar_thetaIntCu_bx[second]);
+               h2_thetaGlobal_emu_unpack_bx_twoHit_OnTheta->Fill(ar_thetaGlobalCe_bx[first], ar_thetaGlobalCu_bx[second]);
+               h2_chamberID_emu_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[first], ar_chamberIDCu_bx[second]);
+               h2_chamberID_vs_roll_emu_bx_twoHit_OnTheta->Fill(ar_chamberIDCe_bx[first], ar_rollCe_bx[first]);
+               h2_chamberID_vs_roll_unpack_bx_twoHit_OnTheta->Fill(ar_chamberIDCu_bx[second], ar_rollCu_bx[second]);
+               h2_occupancy_unpacker_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCu_bx[second], ar_fillOccupancyCu_bx[second]);
+               h2_occupancy_emulator_bx_twoHit_OnTheta->Fill(ar_emtfSubsectorCe_bx[first], ar_fillOccupancyCe_bx[first]);
             } else {
                h1_cluster_sizeCe_bx_twoHit_OffTheta->Fill(ar_cluster_sizeCe_bx[matches]);
                h1_cluster_sizeCu_bx_twoHit_OffTheta->Fill(ar_cluster_sizeCu_bx[matches]);
@@ -1025,7 +1012,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          h2_chamberID_vs_roll_unpack_bx_phi_oneHit->Fill(ar_chamberIDCu_bx_phi[0], ar_rollCu_bx_phi[0]);
          h2_occupancy_unpacker_bx_phi_oneHit->Fill(ar_emtfSubsectorCu_bx_phi[0], ar_fillOccupancyCu_bx_phi[0]);
          h2_occupancy_emulator_bx_phi_oneHit->Fill(ar_emtfSubsectorCe_bx_phi[0], ar_fillOccupancyCe_bx_phi[0]);
-         std::cout << "| " << ar_rollCe_bx_Offphi[0] << "\t| " << ar_chamberIDCe_bx_Offphi[0] << "\t | " << ar_phiGlobalCe_bx_Offphi[0] << "\t | " << ar_thetaGlobalCe_bx_Offphi[0] << "\t | " << ar_cluster_sizeCe_bx_phi[0] << "\t | " << ar_phiIntCe_bx_phi[0] << "\t | " << ar_thetaIntCe_bx_phi[0] << "\t | " << ar_first_stripCe[0] << "\t | " << ar_boardCe[0] << "\t | " << ar_channelCe[0] << "\t | " << ar_emtf_linkCe[0] <<  std::endl;
+         //std::cout << "| " << ar_rollCe_bx_Offphi[0] << "\t| " << ar_chamberIDCe_bx_Offphi[0] << "\t | " << ar_phiGlobalCe_bx_Offphi[0] << "\t | " << ar_thetaGlobalCe_bx_Offphi[0] << "\t | " << ar_cluster_sizeCe_bx_phi[0] << "\t | " << ar_phiIntCe_bx_phi[0] << "\t | " << ar_thetaIntCe_bx_phi[0] << "\t | " << ar_first_stripCe[0] << "\t | " << ar_boardCe[0] << "\t | " << ar_channelCe[0] << "\t | " << ar_emtf_linkCe[0] <<  std::endl;
       }
 
       if (matches_unpacker_bx_Offphi==1) {
