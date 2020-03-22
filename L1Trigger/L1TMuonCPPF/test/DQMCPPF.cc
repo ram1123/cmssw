@@ -836,11 +836,11 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
          }
       }  // matches_unpacker_bx == 1
 
-      if (matches_unpacker_bx == 2) {
+      if (matches_unpacker_bx == 5) {
          //std::cout<<"Size of one hit event = " << ar_cluster_sizeCe.size() << std::endl;
          //std::cout<<"phi int unpacker ar_phiIntCu = " << ar_phiIntCu_bx[0] << std::endl;
          //std::cout<<"phi int emulator ar_phiIntCe = " << ar_phiIntCe_bx[0] << std::endl;
-         for (int matches=0; matches<2; matches++) {
+         for (int matches=0; matches<5; matches++) {
             h1_cluster_sizeCe_bx_twoHit->Fill(ar_cluster_sizeCe_bx[matches]);
             h1_cluster_sizeCu_bx_twoHit->Fill(ar_cluster_sizeCu_bx[matches]);
             h1_bxCe_bx_twoHit->Fill(ar_bxCe_bx[matches]);
@@ -868,14 +868,42 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
             int second = matches;
             bool onphi = false;
 
+            //if  (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
             if (matches == 0) {
               if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
               if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[1]) { first = 0; second = 1; onphi = true;}
+              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[2]) { first = 0; second = 2; onphi = true;}
+              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[3]) { first = 0; second = 3; onphi = true;}
+              if (ar_phiIntCe_bx[0] == ar_phiIntCu_bx[4]) { first = 0; second = 4; onphi = true;}
             }
             if (matches == 1) {
               if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
               if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[0]) { first = 1; second = 0; onphi = true;}
+              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[2]) { first = 1; second = 2; onphi = true;}
+              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[3]) { first = 1; second = 3; onphi = true;}
+              if (ar_phiIntCe_bx[1] == ar_phiIntCu_bx[4]) { first = 1; second = 4; onphi = true;}
             }
+            if (matches == 2) {
+              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
+              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[1]) { first = 2; second = 1; onphi = true;}
+              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[0]) { first = 2; second = 0; onphi = true;}
+              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[3]) { first = 2; second = 3; onphi = true;}
+              if (ar_phiIntCe_bx[2] == ar_phiIntCu_bx[4]) { first = 2; second = 4; onphi = true;}
+            }
+            if (matches == 3) {
+              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
+              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[2]) { first = 3; second = 2; onphi = true;}
+              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[1]) { first = 3; second = 1; onphi = true;}
+              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[0]) { first = 3; second = 0; onphi = true;}
+              if (ar_phiIntCe_bx[3] == ar_phiIntCu_bx[4]) { first = 3; second = 4; onphi = true;}
+            }
+            if (matches == 4) {
+              if (ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches]) { first = matches; second = matches; onphi = true;}
+              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[3]) { first = 4; second = 3; onphi = true;}
+              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[2]) { first = 4; second = 2; onphi = true;}
+              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[1]) { first = 4; second = 1; onphi = true;}
+              if (ar_phiIntCe_bx[4] == ar_phiIntCu_bx[0]) { first = 4; second = 0; onphi = true;}
+            }            
             if (onphi) {
                h1_cluster_sizeCe_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCe_bx[first]);
                h1_cluster_sizeCu_bx_twoHit_OnPhi->Fill(ar_cluster_sizeCu_bx[second]);
