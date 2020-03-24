@@ -88,19 +88,19 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     int emtfSubsectorCe = GetSubsector(emtfSectorCe, subsectorCe);
     int fillOccupancyCe = occupancy_value(regionCe, stationCe, ringCe);
 
-    std::cout << "==================================" << std::endl;
-    std::cout << "=         DEBUG: 1               =" << std::endl;
-    std::cout << "regionCe = " << regionCe << std::endl;
-    std::cout << "stationCe = " << stationCe << std::endl;
-    std::cout << "ringCe = " << ringCe << std::endl;
-    std::cout << "sectorCe = " << sectorCe << std::endl;
-    std::cout << "subsectorCe = " << subsectorCe << std::endl;
-    std::cout << "phiIntCe = " << phiIntCe << std::endl;
-    std::cout << "thetaIntCe = " << thetaIntCe << std::endl;
-    std::cout << "bxCe = " << bxCe << std::endl;
-    std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
-    std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
-    std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
+    //std::cout << "==================================" << std::endl;
+    //std::cout << "=         DEBUG: 1               =" << std::endl;
+    //std::cout << "regionCe = " << regionCe << std::endl;
+    //std::cout << "stationCe = " << stationCe << std::endl;
+    //std::cout << "ringCe = " << ringCe << std::endl;
+    //std::cout << "sectorCe = " << sectorCe << std::endl;
+    //std::cout << "subsectorCe = " << subsectorCe << std::endl;
+    //std::cout << "phiIntCe = " << phiIntCe << std::endl;
+    //std::cout << "thetaIntCe = " << thetaIntCe << std::endl;
+    //std::cout << "bxCe = " << bxCe << std::endl;
+    //std::cout << "emtfSectorCe = " << emtfSectorCe << std::endl;
+    //std::cout << "emtfSubsectorCe = " << emtfSubsectorCe << std::endl;
+    //std::cout << "fillOccupancyCe = " << fillOccupancyCe << std::endl;
     //std::cout << "==================================" << std::endl;
     //int fillBxCe = bx_value(regionCe, emtfSectorCe); 
     
@@ -114,14 +114,6 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     std::istringstream iss(oss.str());
     int unique_id;
     iss >> unique_id;
-    //std::cout << "\n\n==================================================================\n" << std::endl;
-    std::cout << "\n\n printing _nHit_Ce ... \n" << std::endl;
-    //std::cout << "iss = " << iss << "\n";
-    //std::cout << "unique_id = " << unique_id << "\n";
-    //std::cout << "_nHit_Ce.find(unique_id) = " << _nHit_Ce.find(unique_id) << "\n";
-    for (auto& t : _nHit_Ce)
-       std::cout << t.first << "\t" << t.second << std::endl;
-    //std::cout << "_nHit_Ce.end() = " << _nHit_Ce.end() << std::endl;
     if ( _nHit_Ce.find(unique_id) == _nHit_Ce.end() ) { // chamber had no hit so far
       _nHit_Ce.insert({unique_id, 1});
       _phi_Ce.insert({unique_id,phiIntCe});
@@ -131,14 +123,10 @@ void EMTF_CPPF_DQM::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
       _emtfSubsector_Ce.insert({unique_id,emtfSubsectorCe});
       _emtfSector_Ce.insert({unique_id,emtfSectorCe});
       _bx_Ce.insert({unique_id,bxCe});
-      std::cout << "***" << std::endl;
     }
     else {
       _nHit_Ce.at(unique_id) += 1;
     }
-    std::cout << "\n\nprinting nHit_Ce after if condition" << std::endl;
-    for (auto& t : _nHit_Ce)
-       std::cout << t.first << "\t" << t.second << std::endl;
   }
 
   for(auto& cppf_digis2 : *CppfDigis2){
@@ -966,7 +954,6 @@ void EMTF_CPPF_DQM::beginJob(){
 
 
   h1CeVsEuMatches = fs->make<TH1D>("h1CeVsEuMatches", "CPPFDigis_h1CeVsEuMatches" , 5, 0. , 5.);
-  h2CeVsCuChamberCeChamberCuOneHit = fs->make<TH2D>("h2CeVsCuChamberCeChamberCuOneHit","h2CeVsCuChamberCeChamberCuOneHit", 36, 1.,37.,36,1.,37.);
   
   h1CeVsEuMatches_ch = fs->make<TH1D>("h1CeVsEuMatches_ch", "CPPFDigis_Matches_ch" , 5, 0. , 5.);
   h2CeVsEuChamberCeChamberEu_test = fs->make<TH2D>("h2CeVsEuChamberCeChamberEu_test","h2CeVsEuChamberCeChamberEu_test", 36, 1.,37.,36,1.,37.);
@@ -1083,6 +1070,7 @@ void EMTF_CPPF_DQM::beginJob(){
   h1CeVsCuPhiInDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuPhiInDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuPhiInDiagonalOneHit_bx" , 2, 0. , 2.);
   h1CeVsCuThetaOffDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaOffDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuThetaOffDiagonalOneHit_bx" , 2, 0. , 2.);
   h1CeVsCuThetaInDiagonalOneHit_bx = fs->make<TH1D>("h1CeVsCuThetaInDiagonalOneHit_bx", "CPPFDigis_h1CeVsCuThetaInDiagonalOneHit_bx" , 2, 0. , 2.);
+  h2CeVsCuChamberCeChamberCuOneHit = fs->make<TH2D>("h2CeVsCuChamberCeChamberCuOneHit","h2CeVsCuChamberCeChamberCuOneHit", 36, 1.,37.,36,1.,37.);
   h2CeVsCuPhiCePhiCuOneHit=fs->make<TH2D>("h2CeVsCuPhiCePhiCuOneHit", "h2CeVsCuPhiCePhiCuOneHit",  124, 0., 1240., 124, 0., 1240.);
   h1CeVsCuPhiCePhiCuDiffOneHit=fs->make<TH1D>("h1CeVsCuPhiCePhiCuDiffOneHit", "h1CeVsCuPhiCePhiCuDiffOneHit",  200, -100., 100.);
   h1CeVsCuThetaCeThetaCuDiffOneHit=fs->make<TH1D>("h1CeVsCuThetaCeThetaCuDiffOneHit", "h1CeVsCuThetaCeThetaCuDiffOneHit",  200, -100., 100.);
