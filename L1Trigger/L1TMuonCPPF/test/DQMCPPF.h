@@ -237,6 +237,8 @@ class DQM_CPPF : public edm::EDAnalyzer {
   std::vector<int> ar_emtf_linkCu_bx_Offtheta;
   std::vector<int> ar_emtf_linkCe_bx_Offtheta;
   
+  TH1D* h1_nHits_emulator;
+  TH1D* h1_nHits_unpacker;
   TH1D* h1_matches_unpacker;
   TH1D* h1_matches_unpacker_bx;
   TH1D* h1_matches_unpacker_bx_phi;

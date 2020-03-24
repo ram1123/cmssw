@@ -216,7 +216,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     ar_emtf_linkCe_bx_Offtheta.clear();
     
   for(auto& cppf_digis : *CppfDigis1){
-    count_emulator++;
     RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
     int regionCe = (int)rpcIdCe.region();
     int stationCe = (int)rpcIdCe.station();
@@ -229,6 +228,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     float phiGlobalCe = (float)cppf_digis.phi_glob();
     float thetaGlobalCe =  (float)cppf_digis.theta_glob();
     int bxCe = cppf_digis.bx();
+
+    if (bxCe == 0) count_emulator++;
     int cluster_sizeCe = (int)cppf_digis.cluster_size();
     int first_stripCe = (int)cppf_digis.first_strip();
     int boardCe = (int)cppf_digis.board();
@@ -266,7 +267,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     count_unpacker = 0;
     for(auto& cppf_digis2 : *CppfDigis2){
-      count_unpacker++;
       RPCDetId rpcIdCu = cppf_digis2.rpcId();
       int regionCu = rpcIdCu.region();
       int stationCu = rpcIdCu.station();
@@ -280,6 +280,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
       float thetaGlobalCu =  (float)cppf_digis2.theta_glob();
       int cluster_sizeCu = (int)cppf_digis2.cluster_size();
       int bxCu = cppf_digis2.bx();
+      if (bxCu == 0) count_unpacker++;
       int first_stripCu = (int)cppf_digis2.first_strip();
       int boardCu = (int)cppf_digis2.board();
       int channelCu = (int)cppf_digis2.channel();
@@ -686,6 +687,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
 
     } // END: of for(auto& cppf_digis2 : *CppfDigis2)
   } // END: for(auto& cppf_digis : *CppfDigis1)
+  h1_nHits_emulator->Fill(count_emulator);
+  h1_nHits_unpacker->Fill(count_unpacker);
 
          //std::cout<<"size = " << ar_phiIntCe.size() << std::endl;
       if (matches_unpacker == 1) {
@@ -877,6 +880,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
              
              // NEW METHOD
              for (int matches_count1 = 0; matches_count1<matches_unpacker_bx; matches_count1++) {
+                 //if ((ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches_count1]) ) {
                  if ((ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches_count1]) && (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches_count1])) {
                      first = matches;
                      second = matches_count1;
@@ -938,7 +942,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
              
             // NEW METHOD
             for (int matches_count1 = 0; matches_count1<matches_unpacker_bx; matches_count1++) {
-                //if (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches_count1]) {
+                 //if (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches_count1]) {
                  if ((ar_phiIntCe_bx[matches] == ar_phiIntCu_bx[matches_count1]) && (ar_thetaIntCe_bx[matches] == ar_thetaIntCu_bx[matches_count1])) {
                      first = matches;
                      second = matches_count1;
@@ -1075,6 +1079,8 @@ void DQM_CPPF::beginRun(const edm::Run& run, const edm::EventSetup& iSetup){
 void DQM_CPPF::beginJob(){
   edm::Service<TFileService> fs;
   
+  h1_nHits_emulator = fs->make<TH1D>("h1_nHits_emulator", "nHits emulator", 35, 0, 35);
+  h1_nHits_unpacker = fs->make<TH1D>("h1_nHits_unpacker", "nHits unpacker", 35, 0, 35);
   h1_matches_unpacker = fs->make<TH1D>("h1_matches_unpacker", "CPPFDigis total matched hits" , 50, 0. , 50.);
   h1_matches_unpacker_bx = fs->make<TH1D>("h1_matches_unpacker_bx", "CPPFDigis total matched hits with same BX" , 50, 0. , 50.);
   h1_matches_unpacker_bx_phi = fs->make<TH1D>("h1_matches_unpacker_bx_phi", "CPPFDigis total matched hits with same BX and Phi" , 50, 0. , 50.);
