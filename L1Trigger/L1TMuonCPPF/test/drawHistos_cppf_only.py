@@ -53,10 +53,10 @@ os.system("cp index.php plots/")
 
 # hnames pattern ["hist_name as defined in input root file", "x-axis title", "y-axis title"]
 hnames     = [ 
-               #["h1_matches_unpacker", "Total matched #hits", "", "Basic Cuts"],
-               #["h1_matches_unpacker_bx", "Total matched #hits", "", "Basic Cuts && Same BX"], 
-               #["h1_matches_unpacker_bx_phi", "Total matched #hits", "", "Basic Cuts && Same BX && Same #phi"],
-               #["h1_matches_unpacker_bx_Offphi", "Total matched #hits", "", "Basic Cuts && Same BX && Off axis #phi"],
+               ["h1_matches_unpacker", "Total matched #hits", "", "Basic Cuts"],
+               ["h1_matches_unpacker_bx", "Total matched #hits", "", "Basic Cuts && Same BX"], 
+               ["h1_matches_unpacker_bx_phi", "Total matched #hits", "", "Basic Cuts && Same BX && Same #phi"],
+               ["h1_matches_unpacker_bx_Offphi", "Total matched #hits", "", "Basic Cuts && Same BX && Off axis #phi"],
                ["h1_cluster_sizeCe", "Emulator cluster size", "", "Basic Cuts"], 
                ["h1_cluster_sizeCe_bx", "Emulator cluster size", "", "Basic Cuts && Same BX"], 
                ["h1_cluster_sizeCe_bx_phi", "Emulator Cluster size", "", "Basic Cuts && Same BX && Same #phi"],
@@ -192,16 +192,20 @@ h2dnames = [
            ]
 
 RatioHistNames = [
-                    ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_emulator_bx_phi"],
-                    ["h2_occupancy_unpacker_bx_Offphi", "h2_occupancy_emulator_bx_Offphi"],
-                    ["h2_occupancy_unpacker_bx", "h2_occupancy_emulator_bx"],
-                    ["h2_chamberID_vs_roll_emu_bx_phi", "h2_chamberID_vs_roll_emu_bx_Offphi"],
-                    ["h2_occupancy_unpacker_bx_phi", "h2_occupancy_unpacker_bx_Offphi"],
-                    ["h2_occupancy_emulator_bx_phi", "h2_occupancy_emulator_bx_Offphi"],
-                    ["h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_emu_bx_oneHit_OffPhi"],
-                    ["h2_occupancy_unpacker_bx_oneHit_OnPhi", "h2_occupancy_unpacker_bx_oneHit_OffPhi"],
-                    ["h2_occupancy_emulator_bx_oneHit_OnPhi", "h2_occupancy_emulator_bx_oneHit_OffPhi"]
-                 ]
+                    ["h2_occupancy_unpacker_bx_oneHit_OffPhi", "h2_occupancy_unpacker_bx_oneHit"],
+                    ["h2_occupancy_unpacker_bx_oneHit_OnPhi", "h2_occupancy_unpacker_bx_oneHit"],
+                    ["h2_occupancy_emulator_bx_oneHit_OffPhi", "h2_occupancy_emulator_bx_oneHit"],
+                    ["h2_occupancy_emulator_bx_oneHit_OnPhi", "h2_occupancy_emulator_bx_oneHit"],
+                    ["h2_chamberID_vs_roll_emu_bx_oneHit_OffPhi","h2_chamberID_vs_roll_emu_bx_oneHit"],
+                    ["h2_chamberID_vs_roll_emu_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_emu_bx_oneHit"],
+                    ["h2_chamberID_vs_roll_unpack_bx_oneHit_OffPhi", "h2_chamberID_vs_roll_unpack_bx_oneHit"],
+                    ["h2_chamberID_vs_roll_unpack_bx_oneHit_OnPhi", "h2_chamberID_vs_roll_unpack_bx_oneHit"],
+                    ["h2_occupancy_emulator_bx_phi", "h2_occupancy_unpacker_bx_phi"],
+                    ["h2_occupancy_emulator_bx_Offphi", "h2_occupancy_unpacker_bx_Offphi"],
+                    ["h2_occupancy_emulator_bx", "h2_occupancy_unpacker_bx"],
+                    ["h2_chamberID_vs_roll_emu_bx_Offphi", "h2_chamberID_vs_roll_emu_bx"],
+                    ["h2_chamberID_vs_roll_emu_bx_phi", "h2_chamberID_vs_roll_emu_bx"]
+                ]
 
 axislabels = ["RE-4/3", "RE-4/2", "RE-3/3", "RE-3/2", "RE-2/2", "RE-1/2", "RE+1/2", "RE+2/2", "RE+3/2", "RE+3/3", "RE+4/2", "RE+4/3"]
 
@@ -269,11 +273,12 @@ for i in range(0,len(hnames)):
   print "===> Search hist : ",hdir+"/"+hnames[i][0]
   TH1_histo_details = SaveHistos(hnames[i][0],  hnames[i][1], hnames[i][2], hnames[i][3], "")
   Table_Histo_Details.append(TH1_histo_details)
-  TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit")
-  Table_Histo_Details.append(TH1_histo_details)
   if (hnames[i][0]).endswith("_bx"):
      print "\n\n\tEndswith = ",hnames[i][0],"\n\n"
-     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit")
+     if (hnames[i][0] == "h1_matches_unpacker_bx"): continue
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit")
+     Table_Histo_Details.append(TH1_histo_details)
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_InclusiveHit", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit")
      Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OnPhi")
      Table_Histo_Details.append(TH1_histo_details)
@@ -283,13 +288,13 @@ for i in range(0,len(hnames)):
      Table_Histo_Details.append(TH1_histo_details)
      TH1_histo_details = SaveHistos(hnames[i][0]+"_oneHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && One Hit && OffTheta")
      Table_Histo_Details.append(TH1_histo_details)
-     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnPhi")
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_InclusiveHit_OnPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnPhi")
      Table_Histo_Details.append(TH1_histo_details)
-     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffPhi")
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_InclusiveHit_OffPhi", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffPhi")
      Table_Histo_Details.append(TH1_histo_details)
-     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OnTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnTheta")
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_InclusiveHit_OnTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OnTheta")
      Table_Histo_Details.append(TH1_histo_details)
-     TH1_histo_details = SaveHistos(hnames[i][0]+"_twoHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffTheta")
+     TH1_histo_details = SaveHistos(hnames[i][0]+"_InclusiveHit_OffTheta", hnames[i][1], hnames[i][2], hnames[i][3], " && Two Hit && OffTheta")
      Table_Histo_Details.append(TH1_histo_details)
   #
   # thetaCe == thetaCu
@@ -321,10 +326,10 @@ for i in range(0,len(h2dnames)):
   #
   # One hit histograms
   #
-  TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit")
-  Table_Histo_Details_Th2.append(TH2_histo_details)
   if (hnames[i][0]).endswith("_bx"):
-     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit")
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit")
+     Table_Histo_Details_Th2.append(TH2_histo_details)
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_InclusiveHit", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit")
      Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OnPhi")
      Table_Histo_Details_Th2.append(TH2_histo_details)
@@ -334,13 +339,13 @@ for i in range(0,len(h2dnames)):
      Table_Histo_Details_Th2.append(TH2_histo_details)
      TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_oneHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && One Hit && OffTheta")
      Table_Histo_Details_Th2.append(TH2_histo_details)
-     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnPhi")
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_InclusiveHit_OnPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnPhi")
      Table_Histo_Details_Th2.append(TH2_histo_details)
-     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffPhi")
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_InclusiveHit_OffPhi", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffPhi")
      Table_Histo_Details_Th2.append(TH2_histo_details)
-     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OnTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnTheta")
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_InclusiveHit_OnTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OnTheta")
      Table_Histo_Details_Th2.append(TH2_histo_details)
-     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_twoHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffTheta")
+     TH2_histo_details = Save2DHistos(h2dnames[i][0]+"_InclusiveHit_OffTheta", h2dnames[i][2], h2dnames[i][3], h2dnames[i][1], " && Two Hit && OffTheta")
      Table_Histo_Details_Th2.append(TH2_histo_details)
   if ("bx_phi" in h2dnames[i][0]):
      print (h2dnames[i][0]).replace("bx_phi","bx_theta")
@@ -357,10 +362,10 @@ for i in range(0,len(h2dnames)):
   else: h2d_bx_Offtheta.append("")
 
 for i in range(0,len(RatioHistNames)):
-   Numerator = f.Get(hdir+"/"+RatioHistNames[i][1])
-   Denomenator = f.Get(hdir+"/"+RatioHistNames[i][0])
-   print "Entries in ",RatioHistNames[i][1]," = ",Numerator.GetEntries(), "\t", Numerator.Integral()
-   print "Entries in ",RatioHistNames[i][0]," = ",Denomenator.GetEntries(), "\t", Denomenator.Integral()
+   Numerator = f.Get(hdir+"/"+RatioHistNames[i][0])
+   Denomenator = f.Get(hdir+"/"+RatioHistNames[i][1])
+   print "Entries in ",RatioHistNames[i][0]," = ",Numerator.GetEntries(), "\t", Numerator.Integral()
+   print "Entries in ",RatioHistNames[i][1]," = ",Denomenator.GetEntries(), "\t", Denomenator.Integral()
    
    Numerator.Divide(Denomenator)
    Numerator.SetTitle('')
@@ -373,8 +378,8 @@ for i in range(0,len(RatioHistNames)):
    Numerator.GetZaxis().SetRangeUser(0,1);
    Numerator.Draw("COLZ TEXT45")
    print "integral = ",Numerator.Integral()
-   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".png")
-   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][1]+"-"+RatioHistNames[i][0]+".root")
+   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][0]+"-"+RatioHistNames[i][1]+".png")
+   c1.SaveAs("plots/"+"Ratio_"+RatioHistNames[i][0]+"-"+RatioHistNames[i][1]+".root")
 
 # Markdown table generation
 file = open("plots/1D_hist/yield-info.md", 'w')
