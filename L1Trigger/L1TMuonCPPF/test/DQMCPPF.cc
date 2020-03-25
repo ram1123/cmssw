@@ -102,12 +102,33 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
     }
     else {
       _nHit_Ce.at(unique_id) += 1;
-        _phi_Ce[unique_id].push_back(phiIntCe);
+          _phi_Ce[unique_id].push_back(phiIntCe);
+        _phi_glob_Ce[unique_id].push_back(phiGlobalCe);
+        _theta_Ce[unique_id].push_back(thetaIntCe);
+        _theta_glob_Ce[unique_id].push_back(thetaGlobalCe);
+        _roll_Ce[unique_id].push_back(rollCe);
+        _ID_Ce[unique_id].push_back( chamberIDCe);
+        _zone_Ce[unique_id].push_back(fillOccupancyCe);
+        _emtfSubsector_Ce[unique_id].push_back(emtfSubsectorCe);
+        _emtfSector_Ce[unique_id].push_back(emtfSectorCe);
+        _bx_Ce[unique_id].push_back(bxCe);
+        _cluster_size_Ce[unique_id].push_back(cluster_sizeCe);
     }
   }
     std::cout << "\n\nprinting nHit_Ce after if condition" << std::endl;
     for (auto& t : _nHit_Ce)
        std::cout << t.first << "\t" << t.second << std::endl;
+    
+    std::cout<<"=====" << std::endl;
+    for (auto& t: _nHit_Ce) {
+        std::cout << t.first << "\t" << t.second << "\t" ;
+        if (_phi_Ce.find(t.first) != _phi_Ce.end()) {
+            for (auto y: _phi_Ce.at(t.first)) {
+                std::cout << y << "\t";
+            }
+        }
+        std::cout << "\t" << std::endl;
+    }
 
   for(auto& cppf_digis2 : *CppfDigis2){
 
