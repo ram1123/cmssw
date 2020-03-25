@@ -8,8 +8,8 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.threshold = 'INFO'
 process.MessageLogger.categories.append('DQMPlots')
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(
-	limit = cms.untracked.int32(-1)
-)
+                                                     limit = cms.untracked.int32(-1)
+                                                     )
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.load('Configuration.StandardSequences.Services_cff')
@@ -22,8 +22,8 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(21) )
 
 readFiles = cms.untracked.vstring()
 process.source = cms.Source("PoolSource",
-        fileNames = readFiles,
-)
+                            fileNames = readFiles,
+                            )
 in_dir_name = './'
 #readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator.root') )
 readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
@@ -32,8 +32,8 @@ readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')
 process.TFileService = cms.Service("TFileService",
-	fileName = cms.string("DQM_CPPF.root")
-)
+                                   fileName = cms.string("DQM_CPPF.root")
+                                   )
 process.p = cms.Path(process.DQM_CPPF)
 
 

@@ -38,7 +38,7 @@
 
 class DQM_CPPF : public edm::EDAnalyzer {
   
- public:
+public:
   explicit DQM_CPPF(const edm::ParameterSet&);
   ~DQM_CPPF() override;
   void beginRun(const edm::Run&, const edm::EventSetup&) override;
@@ -46,23 +46,23 @@ class DQM_CPPF : public edm::EDAnalyzer {
   int occupancy_value(int region_, int station_, int ring_);
   int bx_value(int region_, int emtfsector_);
   int GetSubsector(int emtfsector_, int lsubsector_);
-
+  
   edm::ESHandle <RPCGeometry> rpcGeom;
   
- private:
+private:
   
   void beginJob() override;
-
+  
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken1_;
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken2_;
   const edm::EDGetTokenT<l1t::CPPFDigiCollection> cppfDigiToken3_;
-
+  
   int EMTF_sector;
   int EMTF_subsector;
   int EMTF_subsector_unpacker;
   int EMTF_subsector_EMTF;
   int EMTF_bx;
-
+  
   std::vector<int> EMTFsector0bins;
   std::vector<int> EMTFsector1bins;
   std::vector<int> EMTFsector2bins;
@@ -76,16 +76,16 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D* h1_total_hits_unpacker;
   TH1D* h1_total_hits_unpacker_bx;
   TH1D* h1_total_hits_unpacker_bx_phi;
-
+  
   TH1D* h1_total_hits_emulator;
   TH1D* h1_total_hits_emulator_bx;
   TH1D* h1_total_hits_emulator_bx_phi;
-
+  
   TH1D* h1_bx_emulated;
   TH1D* h1_bx_unpacker;
   TH1D* h1_bx_diff_emu_unpacker;
   TH1D* h1_phi_diff_emu_unpacker;
-
+  
   TH2D* h2_chamber_emu_unpacker;
   TH2D* h2_chamber_emu_unpacker_REm43;
   TH2D* h2_chamber_emu_unpacker_REm42;
@@ -99,29 +99,29 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D* h2_chamber_emu_unpacker_REp33;
   TH2D* h2_chamber_emu_unpacker_REp42;
   TH2D* h2_chamber_emu_unpacker_REp43;
-
+  
   TH2D* h2_phi_emu_unpacker;
   TH2D* h2_theta_emu_unpacker;
   TH2D* h2_bx_emu_unpacker;
-
+  
   TH2D* h2_phi_emu_unpacker_bx;
   TH2D* h2_theta_emu_unpacker_bx;
   TH2D* h2_bx_emu_unpacker_bx;
-
+  
   TH2D* h2_phi_emu_unpacker_bx_phi;
   TH2D* h2_theta_emu_unpacker_bx_phi;
   TH2D* h2_occupancy_unpacker_bx_phi;
   TH2D* h2_occupancy_emu_unpacker_bx_phi;
-
+  
   //TH2D* h2_bx_occupancy_unpacker_bx_phi;
   //TH2D* h2_bx_occupancy_emu_unpacker_bx_phi;
   //TH2D* h2_bx_sector_unpacker_bx_phi; 
   //TH2D* h2_bx_sector_emu_unpacker_bx_phi;
-
+  
   TH2D* h2_bx;
   TH2D* h2_bx_occupancy;
-
-
+  
+  
   // NEW HISTOS
   TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit;
   TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit_bx;
@@ -139,7 +139,7 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH1D*  h1CeVsCuPhi_InDiagonal_NotOneHit_bx;
   TH1D*  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx;
   TH1D*  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx;
-
+  
   TH2D*  h2CeVsCuChamberCuChamberCe_OneHit;
   TH2D*  h2CeVsCuPhiCePhiCu_OneHit;
   TH2D*  h2CeVsCuPhiCePhiCu_OneHit_bx;
@@ -163,13 +163,13 @@ class DQM_CPPF : public edm::EDAnalyzer {
   TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit;
   TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit;
   TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit;
-
+  
   //std::map<int, TH1F*> h1_nHits_each_chamber_unpacker;
   //
-
+  
   TH1F* h1_nHits_each_chamber_unpacker[2][5][4][7][7];
   TH1F* h1_nHits_each_chamber_emulator[2][5][4][7][7];
-
+  
 };
 
 
