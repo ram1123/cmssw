@@ -8,32 +8,32 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.threshold = 'INFO'
 process.MessageLogger.categories.append('DQMPlots')
 process.MessageLogger.cerr.INFO = cms.untracked.PSet(
-                                                     limit = cms.untracked.int32(-1)
-                                                     )
-
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.load('Configuration.StandardSequences.Services_cff')
-process.load('Configuration.EventContent.EventContent_cff')
-process.load('Configuration.Geometry.GeometryExtended2016_cff')
-process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
-
+                                                    limit = cms.untracked.int32(0)
+                                                    )
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(21) )
 
-readFiles = cms.untracked.vstring()
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(2))
+
+process.load('Configuration.StandardSequences.Services_cff')
+process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
+process.load('Configuration.StandardSequences.MagneticField_cff')
+process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
+process.load('Configuration.EventContent.EventContent_cff')
+process.load('Configuration.Geometry.GeometryDB_cff')
+process.load("Geometry.MuonNumbering.muonNumberingInitialization_cfi")
+process.GlobalTag.globaltag = "101X_dataRun2_Express_v8"
+
+READFILES = cms.untracked.vstring()
 process.source = cms.Source("PoolSource",
-                            fileNames = readFiles,
+                            fileNames = READFILES,
                             )
-in_dir_name = './'
-#readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator.root') )
-readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
-#readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'test_cppf_unpacker_emulator-2017-200k.root') )
-
+DIRECTORYNAME = './'
+#READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator.root') )
+READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
+#READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2017-200k.root') )
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("DQM_CPPF.root")
+                                   fileName=cms.string("DQM_CPPF.root")
                                    )
 process.p = cms.Path(process.DQM_CPPF)
-
-

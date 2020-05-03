@@ -73,102 +73,102 @@ private:
   
   std::map<int , std::vector<int>> fill_info;
   
-  TH1D* h1_total_hits_unpacker;
-  TH1D* h1_total_hits_unpacker_bx;
-  TH1D* h1_total_hits_unpacker_bx_phi;
+  // TH1D* h1_total_hits_unpacker;
+  // TH1D* h1_total_hits_unpacker_bx;
+  // TH1D* h1_total_hits_unpacker_bx_phi;
   
-  TH1D* h1_total_hits_emulator;
-  TH1D* h1_total_hits_emulator_bx;
-  TH1D* h1_total_hits_emulator_bx_phi;
+  // TH1D* h1_total_hits_emulator;
+  // TH1D* h1_total_hits_emulator_bx;
+  // TH1D* h1_total_hits_emulator_bx_phi;
   
-  TH1D* h1_bx_emulated;
-  TH1D* h1_bx_unpacker;
-  TH1D* h1_bx_diff_emu_unpacker;
-  TH1D* h1_phi_diff_emu_unpacker;
+  // TH1D* h1_bx_emulated;
+  // TH1D* h1_bx_unpacker;
+  // TH1D* h1_bx_diff_emu_unpacker;
+  // TH1D* h1_phi_diff_emu_unpacker;
   
-  TH2D* h2_chamber_emu_unpacker;
-  TH2D* h2_chamber_emu_unpacker_REm43;
-  TH2D* h2_chamber_emu_unpacker_REm42;
-  TH2D* h2_chamber_emu_unpacker_REm33;
-  TH2D* h2_chamber_emu_unpacker_REm32;
-  TH2D* h2_chamber_emu_unpacker_REm22;
-  TH2D* h2_chamber_emu_unpacker_REm12;
-  TH2D* h2_chamber_emu_unpacker_REp12;
-  TH2D* h2_chamber_emu_unpacker_REp22;
-  TH2D* h2_chamber_emu_unpacker_REp32;
-  TH2D* h2_chamber_emu_unpacker_REp33;
-  TH2D* h2_chamber_emu_unpacker_REp42;
-  TH2D* h2_chamber_emu_unpacker_REp43;
+  // TH2D* h2_chamber_emu_unpacker;
+  // TH2D* h2_chamber_emu_unpacker_REm43;
+  // TH2D* h2_chamber_emu_unpacker_REm42;
+  // TH2D* h2_chamber_emu_unpacker_REm33;
+  // TH2D* h2_chamber_emu_unpacker_REm32;
+  // TH2D* h2_chamber_emu_unpacker_REm22;
+  // TH2D* h2_chamber_emu_unpacker_REm12;
+  // TH2D* h2_chamber_emu_unpacker_REp12;
+  // TH2D* h2_chamber_emu_unpacker_REp22;
+  // TH2D* h2_chamber_emu_unpacker_REp32;
+  // TH2D* h2_chamber_emu_unpacker_REp33;
+  // TH2D* h2_chamber_emu_unpacker_REp42;
+  // TH2D* h2_chamber_emu_unpacker_REp43;
   
-  TH2D* h2_phi_emu_unpacker;
-  TH2D* h2_theta_emu_unpacker;
-  TH2D* h2_bx_emu_unpacker;
+  // TH2D* h2_phi_emu_unpacker;
+  // TH2D* h2_theta_emu_unpacker;
+  // TH2D* h2_bx_emu_unpacker;
   
-  TH2D* h2_phi_emu_unpacker_bx;
-  TH2D* h2_theta_emu_unpacker_bx;
-  TH2D* h2_bx_emu_unpacker_bx;
+  // TH2D* h2_phi_emu_unpacker_bx;
+  // TH2D* h2_theta_emu_unpacker_bx;
+  // TH2D* h2_bx_emu_unpacker_bx;
   
-  TH2D* h2_phi_emu_unpacker_bx_phi;
-  TH2D* h2_theta_emu_unpacker_bx_phi;
-  TH2D* h2_occupancy_unpacker_bx_phi;
-  TH2D* h2_occupancy_emu_unpacker_bx_phi;
+  // TH2D* h2_phi_emu_unpacker_bx_phi;
+  // TH2D* h2_theta_emu_unpacker_bx_phi;
+  // TH2D* h2_occupancy_unpacker_bx_phi;
+  // TH2D* h2_occupancy_emu_unpacker_bx_phi;
   
-  //TH2D* h2_bx_occupancy_unpacker_bx_phi;
-  //TH2D* h2_bx_occupancy_emu_unpacker_bx_phi;
-  //TH2D* h2_bx_sector_unpacker_bx_phi; 
-  //TH2D* h2_bx_sector_emu_unpacker_bx_phi;
+  // //TH2D* h2_bx_occupancy_unpacker_bx_phi;
+  // //TH2D* h2_bx_occupancy_emu_unpacker_bx_phi;
+  // //TH2D* h2_bx_sector_unpacker_bx_phi; 
+  // //TH2D* h2_bx_sector_emu_unpacker_bx_phi;
   
-  TH2D* h2_bx;
-  TH2D* h2_bx_occupancy;
+  // TH2D* h2_bx;
+  // TH2D* h2_bx_occupancy;
   
   
-  // NEW HISTOS
-  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit;
-  TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit_bx;
-  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit;
-  TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit_bx;
-  TH1D*  h1CeVsCuBxCeBxCuDiff_OneHit;
-  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit;
-  TH1D*  h1CeVsCuPhi_InDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit;
-  TH1D*  h1CeVsCuTheta_InDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit;
-  TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit_bx;
-  TH1D*  h1CeVsCuPhi_InDiagonal_NotOneHit_bx;
-  TH1D*  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx;
-  TH1D*  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx;
+  // // NEW HISTOS
+  // TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit;
+  // TH1D*  h1CeVsCuPhiCePhiCuDiff_OneHit_bx;
+  // TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit;
+  // TH1D*  h1CeVsCuThetaCeThetaCuDiff_OneHit_bx;
+  // TH1D*  h1CeVsCuBxCeBxCuDiff_OneHit;
+  // TH1D*  h1CeVsCuPhi_InDiagonal_OneHit;
+  // TH1D*  h1CeVsCuPhi_InDiagonal_OneHit_bx;
+  // TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit;
+  // TH1D*  h1CeVsCuPhi_OffDiagonal_OneHit_bx;
+  // TH1D*  h1CeVsCuTheta_InDiagonal_OneHit;
+  // TH1D*  h1CeVsCuTheta_InDiagonal_OneHit_bx;
+  // TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit;
+  // TH1D*  h1CeVsCuTheta_OffDiagonal_OneHit_bx;
+  // TH1D*  h1CeVsCuPhi_InDiagonal_NotOneHit_bx;
+  // TH1D*  h1CeVsCuPhi_OffDiagonal_NotOneHit_bx;
+  // TH1D*  h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx;
   
-  TH2D*  h2CeVsCuChamberCuChamberCe_OneHit;
-  TH2D*  h2CeVsCuPhiCePhiCu_OneHit;
-  TH2D*  h2CeVsCuPhiCePhiCu_OneHit_bx;
-  TH2D*  h2CeVsCuChamberCuZoneCu_OneHit_bx;
-  TH2D*  h2CeVsCuChamberCeZoneCe_OneHit_bx;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancy_OneHit;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancy_OneHit;
-  TH2D*  h2CeVsCuBxCuZoneCu_OneHit;
-  TH2D*  h2CeVsCuBxCeZoneCe_OneHit;
-  TH2D*  h2CeVsCuThetaCeThetaCu_OneHit;
-  TH2D*  h2CeVsCuThetaCeThetaCu_OneHit_bx;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx;
-  TH2D*  h2CeVsCuChamberCuZoneCu_NotOneHit;
-  TH2D*  h2CeVsCuChamberCeZoneCe_NotOneHit;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit;
-  TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit;
-  TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit;
+  // TH2D*  h2CeVsCuChamberCuChamberCe_OneHit;
+  // TH2D*  h2CeVsCuPhiCePhiCu_OneHit;
+  // TH2D*  h2CeVsCuPhiCePhiCu_OneHit_bx;
+  // TH2D*  h2CeVsCuChamberCuZoneCu_OneHit_bx;
+  // TH2D*  h2CeVsCuChamberCeZoneCe_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancy_OneHit;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancy_OneHit;
+  // TH2D*  h2CeVsCuBxCuZoneCu_OneHit;
+  // TH2D*  h2CeVsCuBxCeZoneCe_OneHit;
+  // TH2D*  h2CeVsCuThetaCeThetaCu_OneHit;
+  // TH2D*  h2CeVsCuThetaCeThetaCu_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx;
+  // TH2D*  h2CeVsCuChamberCuZoneCu_NotOneHit;
+  // TH2D*  h2CeVsCuChamberCeZoneCe_NotOneHit;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit;
+  // TH2D*  h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit;
+  // TH2D*  h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit;
   
-  //std::map<int, TH1F*> h1_nHits_each_chamber_unpacker;
-  //
+  // //std::map<int, TH1F*> h1_nHits_each_chamber_unpacker;
+  // //
   
-  TH1F* h1_nHits_each_chamber_unpacker[2][5][4][7][7];
-  TH1F* h1_nHits_each_chamber_emulator[2][5][4][7][7];
+  // TH1F* h1_nHits_each_chamber_unpacker[2][5][4][7][7];
+  // TH1F* h1_nHits_each_chamber_emulator[2][5][4][7][7];
   
 };
 
