@@ -222,18 +222,16 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     h1_total_hits_emulator->Fill(nHit);
 
     if (DEBUG) std::cout << "Main for loop starts for emulator..." << key << "\t" << nHit << std::endl;
+    if (DEBUG) std::cout << "key: " << key << "\tsize = " << _phi_Ce.at(key).size() <<";\t";
     
-    // if (_phi_Ce.find(key) != _phi_Ce.end()) 
+    for (int vecSize = 0; vecSize < nHit; vecSize++)
     {
-      if (DEBUG) std::cout << "key: " << key << "\tsize = " << _phi_Ce.at(key).size() <<";\t";
-      for (unsigned int vecSize = 0; vecSize < _phi_Ce.at(key).size(); vecSize++) {
-        //        std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ")\t";
-        if (_bx_Ce.at(key)[vecSize]!=0) ifBxNotZero = ifBxNotZero && false;
-        if (DEBUG) std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ", "
-        << _ID_Ce.at(key)[vecSize] << ", " << _zone_Ce.at(key)[vecSize] << ", " << _roll_Ce.at(key)[vecSize] << ", "
-        << _emtfSector_Ce.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Ce.at(key)[vecSize] << ", "
-        << _bx_Ce.at(key)[vecSize] << ", " << _cluster_size_Ce.at(key)[vecSize] <<")\t";
-      }
+      if (_bx_Ce.at(key)[vecSize]!=0) ifBxNotZero = ifBxNotZero && false;
+     
+      if (DEBUG) std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ", "
+      << _ID_Ce.at(key)[vecSize] << ", " << _zone_Ce.at(key)[vecSize] << ", " << _roll_Ce.at(key)[vecSize] << ", "
+      << _emtfSector_Ce.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Ce.at(key)[vecSize] << ", "
+      << _bx_Ce.at(key)[vecSize] << ", " << _cluster_size_Ce.at(key)[vecSize] <<")\t";
     }
     if (ifBxNotZero)  h1_total_hits_emulator_bx->Fill(nHit);
     if (DEBUG) std::cout << "\t" << std::endl;
@@ -309,94 +307,6 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   }
 } //End class
 
-/**
- * Based on the value of region, station and ring information
- * it assigns a number from 1-12  to each ring. So, that one
- * could identify each ring.
- * @param  region_  +ve or -ve endcap.
- * @param  station_ In each region there are four stations.
- * @param  ring_    In each station there are three rings.
- *                  Currently, ring 1 is not instrumented.
- *                  Also, for station 1 and 2 only only ring two
- *                  is available and for 3 and 4 ring two and
- *                  three both are available.
- * @return          It returns an unique number between 1-12 for
- *                  each ring.
- */
-int DQM_CPPF::occupancy_value(int region_, int station_, int ring_) {
-  
-  int fill_val = 0;
-  if(region_ == -1) {
-    
-    if((station_ == 4) && (ring_ == 3)) fill_val = 1;
-    else if ((station_ == 4) && (ring_ == 2)) fill_val = 2;
-    else if ((station_ == 3) && (ring_ == 3)) fill_val = 3;
-    else if ((station_ == 3) && (ring_ == 2)) fill_val = 4;
-    else if ((station_ == 2) && (ring_ == 2)) fill_val = 5;
-    else if ((station_ == 1) && (ring_ == 2)) fill_val = 6;
-    
-  }
-  else if(region_ == +1) {
-    
-    if((station_ == 1) && (ring_ == 2)) fill_val = 7;
-    else if((station_ == 2) && (ring_ == 2)) fill_val = 8;
-    else if((station_ == 3) && (ring_ == 2)) fill_val = 9;
-    else if((station_ == 3) && (ring_ == 3)) fill_val = 10;
-    else if((station_ == 4) && (ring_ == 2)) fill_val = 11;
-    else if((station_ == 4) && (ring_ == 3)) fill_val = 12;
-    
-  }
-  return fill_val;
-}
-
-/**
- * Get EMTF sub-sector unique number based on the local EMTF sector
- * and CPPF local sub-sector numbers.
- * @param  emtfsector_ EMTF Sector number from 1 to 6.
- * @param  lsubsector_ CPPF sub-sector number from 1 to 6.
- * @return             returns a unique sub-sector number between [1,36] that
- *                     corresponds to the EMTF sub-sector.
- */
-int DQM_CPPF::GetSubsector(int emtfsector_, int lsubsector_) {
-  const int nsectors = 6;
-  int gsubsector = 0;
-  if ((emtfsector_ != -99) and (lsubsector_ != 0)) {
-    gsubsector = (emtfsector_ - 1)*nsectors + lsubsector_;
-  }
-  return gsubsector;
-}
-
-int DQM_CPPF::bx_value(int region_, int emtfsector_) {
-  
-  int fill_val = 0;
-  
-  if(region_ == -1){
-    
-    if(emtfsector_ == 1) fill_val = 6;
-    else if(emtfsector_ == 2) fill_val = 5;
-    else if(emtfsector_ == 3) fill_val = 4;
-    else if(emtfsector_ == 4) fill_val = 3;
-    else if(emtfsector_ == 5) fill_val = 2;
-    else if(emtfsector_ == 6) fill_val = 1;
-    
-  }
-  
-  else if(region_ == +1){
-    
-    if(emtfsector_ == 1) fill_val = 7;
-    else if(emtfsector_ == 2) fill_val = 8;
-    else if(emtfsector_ == 3) fill_val = 9;
-    else if(emtfsector_ == 4) fill_val = 10;
-    else if(emtfsector_ == 5) fill_val = 11;
-    else if(emtfsector_ == 6) fill_val = 12;
-  }
-  return fill_val;
-}
-
-
-void DQM_CPPF::beginRun(const edm::Run& run, const edm::EventSetup& iSetup){
-  iSetup.get<MuonGeometryRecord>().get(rpcGeom);
-}
 
 void DQM_CPPF::beginJob()
 {
@@ -404,14 +314,13 @@ void DQM_CPPF::beginJob()
 
   h1_nEvents = fs->make<TH1D>("h1_nEvents", "Total number of events", 3, 0., 3.);
 
-  h1_total_hits_unpacker = fs->make<TH1D>("h1_total_hits_unpacker", 
-                                          "Total number of hits in unpacker" , 5, 0. , 5.); 
+  h1_total_hits_unpacker = fs->make<TH1D>("h1_total_hits_unpacker", "Total number of hits in unpacker" , 5, 0. , 5.); 
   h1_total_hits_unpacker_bx = fs->make<TH1D>("h1_total_hits_unpacker_bx", "Total number of hits in unpacker (bxE == bxU)" , 5, 0. , 5.);
-  // h1_total_hits_unpacker_bx_phi = fs->make<TH1D>("h1_total_hits_unpacker_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
+  h1_total_hits_unpacker_bx_phi = fs->make<TH1D>("h1_total_hits_unpacker_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
   
   h1_total_hits_emulator = fs->make<TH1D>("h1_total_hits_emulator", "CPPFDigis_total_hits_emulator" , 5, 0. , 5.);
   h1_total_hits_emulator_bx = fs->make<TH1D>("h1_total_hits_emulator_bx", "CPPFDigis_Matches_bx" , 5, 0. , 5.);
-  // h1_total_hits_emulator_bx_phi = fs->make<TH1D>("h1_total_hits_emulator_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
+  h1_total_hits_emulator_bx_phi = fs->make<TH1D>("h1_total_hits_emulator_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
   
   // h1_bx_emulated = fs->make<TH1D>("h1_bx_emulated","Emulated bunch crossing",8, -4., 4.);
   // h1_bx_unpacker = fs->make<TH1D>("h1_bx_unpacker","Unpacked bunch crossing",8, -4., 4.);
@@ -512,5 +421,96 @@ void DQM_CPPF::beginJob()
   
   return;
 }
+
+/**
+ * Based on the value of region, station and ring information
+ * it assigns a number from 1-12  to each ring. So, that one
+ * could identify each ring.
+ * @param  region_  +ve or -ve endcap.
+ * @param  station_ In each region there are four stations.
+ * @param  ring_    In each station there are three rings.
+ *                  Currently, ring 1 is not instrumented.
+ *                  Also, for station 1 and 2 only only ring two
+ *                  is available and for 3 and 4 ring two and
+ *                  three both are available.
+ * @return          It returns an unique number between 1-12 for
+ *                  each ring.
+ */
+int DQM_CPPF::occupancy_value(int region_, int station_, int ring_) {
+  
+  int fill_val = 0;
+  if(region_ == -1) {
+    
+    if((station_ == 4) && (ring_ == 3)) fill_val = 1;
+    else if ((station_ == 4) && (ring_ == 2)) fill_val = 2;
+    else if ((station_ == 3) && (ring_ == 3)) fill_val = 3;
+    else if ((station_ == 3) && (ring_ == 2)) fill_val = 4;
+    else if ((station_ == 2) && (ring_ == 2)) fill_val = 5;
+    else if ((station_ == 1) && (ring_ == 2)) fill_val = 6;
+    
+  }
+  else if(region_ == +1) {
+    
+    if((station_ == 1) && (ring_ == 2)) fill_val = 7;
+    else if((station_ == 2) && (ring_ == 2)) fill_val = 8;
+    else if((station_ == 3) && (ring_ == 2)) fill_val = 9;
+    else if((station_ == 3) && (ring_ == 3)) fill_val = 10;
+    else if((station_ == 4) && (ring_ == 2)) fill_val = 11;
+    else if((station_ == 4) && (ring_ == 3)) fill_val = 12;
+    
+  }
+  return fill_val;
+}
+
+/**
+ * Get EMTF sub-sector unique number based on the local EMTF sector
+ * and CPPF local sub-sector numbers.
+ * @param  emtfsector_ EMTF Sector number from 1 to 6.
+ * @param  lsubsector_ CPPF sub-sector number from 1 to 6.
+ * @return             returns a unique sub-sector number between [1,36] that
+ *                     corresponds to the EMTF sub-sector.
+ */
+int DQM_CPPF::GetSubsector(int emtfsector_, int lsubsector_) {
+  const int nsectors = 6;
+  int gsubsector = 0;
+  if ((emtfsector_ != -99) and (lsubsector_ != 0)) {
+    gsubsector = (emtfsector_ - 1)*nsectors + lsubsector_;
+  }
+  return gsubsector;
+}
+
+int DQM_CPPF::bx_value(int region_, int emtfsector_) {
+  
+  int fill_val = 0;
+  
+  if(region_ == -1){
+    
+    if(emtfsector_ == 1) fill_val = 6;
+    else if(emtfsector_ == 2) fill_val = 5;
+    else if(emtfsector_ == 3) fill_val = 4;
+    else if(emtfsector_ == 4) fill_val = 3;
+    else if(emtfsector_ == 5) fill_val = 2;
+    else if(emtfsector_ == 6) fill_val = 1;
+    
+  }
+  
+  else if(region_ == +1){
+    
+    if(emtfsector_ == 1) fill_val = 7;
+    else if(emtfsector_ == 2) fill_val = 8;
+    else if(emtfsector_ == 3) fill_val = 9;
+    else if(emtfsector_ == 4) fill_val = 10;
+    else if(emtfsector_ == 5) fill_val = 11;
+    else if(emtfsector_ == 6) fill_val = 12;
+  }
+  return fill_val;
+}
+
+
+void DQM_CPPF::beginRun(const edm::Run& run, const edm::EventSetup& iSetup){
+  iSetup.get<MuonGeometryRecord>().get(rpcGeom);
+}
+
+
 //define this as a plug-in
 DEFINE_FWK_MODULE(DQM_CPPF);

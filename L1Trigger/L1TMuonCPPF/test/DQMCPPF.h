@@ -74,13 +74,13 @@ private:
   std::map<int , std::vector<int>> fill_info;
 
   TH1D* h1_nEvents; ///< Total number of event over which we run this framework
-  TH1D* h1_total_hits_unpacker; ///< Number of total hits in an unpacker. 
-  TH1D* h1_total_hits_unpacker_bx; ///< Total number of hits in unpacker (bxE == bxU)
-  TH1D* h1_total_hits_unpacker_bx_phi;  ///< Total number of hits in unpacker (#phiE == #phiU)
+  TH1D* h1_total_hits_unpacker; ///< Number of total hits on one chamber in an unpacker. 
+  TH1D* h1_total_hits_unpacker_bx; ///< Number of hits on one chamber in unpacker (bxE == bxU)
+  TH1D* h1_total_hits_unpacker_bx_phi;  ///< Number of hits  on one chamber in unpacker (#phiE == #phiU)
   
-  TH1D* h1_total_hits_emulator; ///< Total number of hits in emulator
-  TH1D* h1_total_hits_emulator_bx;  ///< Total number of hits in emulator (bxE == bxU)
-  TH1D* h1_total_hits_emulator_bx_phi;  ///< Total number of hits in emulator (#phiE == #phiU)
+  TH1D* h1_total_hits_emulator; ///< Number of hits on one chamber in emulator
+  TH1D* h1_total_hits_emulator_bx;  ///< Number of hits on one chamber in emulator (bxE == bxU)
+  TH1D* h1_total_hits_emulator_bx_phi;  ///< Number of hits on one chamber in emulator (#phiE == #phiU)
   
   // TH1D* h1_bx_emulated;
   // TH1D* h1_bx_unpacker;

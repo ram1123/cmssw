@@ -27,7 +27,7 @@ READFILES = cms.untracked.vstring()
 process.source = cms.Source("PoolSource",
                             fileNames = READFILES,
                             )
-DIRECTORYNAME = './'
+DIRECTORYNAME = 'rootFiles/'
 #READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator.root') )
 READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
 #READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2017-200k.root') )
