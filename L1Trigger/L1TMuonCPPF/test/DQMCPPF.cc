@@ -12,22 +12,26 @@ EMTF_subsector_EMTF(0),
 EMTF_bx(0) {
 }
 
-DQM_CPPF::~DQM_CPPF(){
+DQM_CPPF::~DQM_CPPF() {
 }
 
-void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) {
+void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+{
   // Get the CPPFDigi
   edm::Handle<l1t::CPPFDigiCollection> CppfDigis1;
   edm::Handle<l1t::CPPFDigiCollection> CppfDigis2;
-  
+
   iEvent.getByToken(cppfDigiToken1_, CppfDigis1);
   iEvent.getByToken(cppfDigiToken2_, CppfDigis2);
 
-  bool DEBUG = true;
-  
+  bool DEBUG = false;
+
+  /// Count total number of events.
+  h1_nEvents->Fill(1.0);
+
   ///////////////////////////////////////////////////////////
   /// Syntax: Comparison CPPF emulator (Ce) vs CPPF unpacked (Cu),
-  /// 
+  ///  
   /// Syntax: EMTF unpacked (Eu) and EMTF emulator (Ee)
   ///////////////////////////////////////////////////////////
   std::map<int,int> _nHit_Ce; 
@@ -58,8 +62,8 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
   /**
    * ***Step-1***: Loop over cppf_digis for emulator and put information into map.
    */
-  for(auto& cppf_digis : *CppfDigis1){
-    
+  for(auto& cppf_digis : *CppfDigis1)
+  {
     RPCDetId rpcIdCe = (int)cppf_digis.rpcId();
     int regionCe = (int)rpcIdCe.region();
     int stationCe = (int)rpcIdCe.station();
@@ -73,28 +77,27 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     int thetaGlobalCe =  (int)cppf_digis.theta_glob();
     int cluster_sizeCe = (int)cppf_digis.cluster_size();
     int bxCe = cppf_digis.bx();
-    
     int emtfSectorCe = (int)cppf_digis.emtf_sector();
     int emtfSubsectorCe = GetSubsector(emtfSectorCe, subsectorCe);
     int fillOccupancyCe = occupancy_value(regionCe, stationCe, ringCe);
-    
     //Chamber ID
     /// **TODO**: Check the definition of this variable named **chamberIDCe**.
     int nsubCe = 6;
     (ringCe == 1 && stationCe > 1) ? nsubCe = 3 : nsubCe = 6;
     int chamberIDCe = subsectorCe + nsubCe * ( sectorCe - 1);
-    
-    if (DEBUG) std::cout << "Info: " << regionCe << "\t" << stationCe << "\t" << ringCe << "\t" << sectorCe << "\t" << subsectorCe << "\t" << emtfSectorCe << "\t" << emtfSubsectorCe << std::endl;
 
-    std::ostringstream oss;
+    if (DEBUG) std::cout << "Info: " << regionCe << "\t" << stationCe << "\t" << ringCe << "\t" << sectorCe << "\t" << subsectorCe << "\t" << emtfSectorCe << "\t" << emtfSubsectorCe << std::endl;
 
     /// Generate Unique ID baseed on:
     /// [regionCe, stationCe, ringCe, sectorCe, subsectorCe, emtfSectorCe, emtfSubsectorCe]
+    std::ostringstream oss;
     oss << regionCe << stationCe << ringCe << sectorCe << subsectorCe<< emtfSectorCe << emtfSubsectorCe;
     std::istringstream iss(oss.str());
     int unique_id;
     iss >> unique_id;
-    
+
+    /// 1 (a) - Emulator: Check if key exists in the map if not add the key and 
+    /// corresponding variables in the map of vectors.    
     if ( _nHit_Ce.find(unique_id) == _nHit_Ce.end() ) { // chamber had no hit so far
       _nHit_Ce.insert({unique_id, 1});
       _phi_Ce[unique_id].push_back(phiIntCe);
@@ -145,7 +148,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
     int emtfSectorCu = (int)cppf_digis2.emtf_sector();
     int emtfSubsectorCu = GetSubsector(emtfSectorCu, subsectorCu);
     int fillOccupancyCu = occupancy_value(regionCu, stationCu, ringCu);
-    //int fillBxCu = bx_value(regionCu, emtfSectorCu);
+    //int fillBxCu = bx_value(regionCu, emtfSectorCu);  
 
     //Chamber ID
     int nsubCu = 6;
@@ -154,14 +157,16 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
 
     if (DEBUG) std::cout << "Info: " << regionCu << "\t" << stationCu << "\t" << ringCu << "\t" << sectorCu << "\t" << subsectorCu << "\t" << emtfSectorCu << "\t" << emtfSubsectorCu << std::endl;
     
-    std::ostringstream oss2;
     /// Generate Unique ID for unpacker baseed on:
     /// [regionCu, stationCu, ringCu, sectorCu, subsectorCu, emtfSectorCu, emtfSubsectorCu]
+    std::ostringstream oss2;
     oss2 << regionCu << stationCu << ringCu << sectorCu << subsectorCu << emtfSectorCu << emtfSubsectorCu;
     std::istringstream iss2(oss2.str());
     int unique_id;
     iss2 >> unique_id;
 
+    /// 2 (a) - Unpacker: Check if key exists in the map if not add the key and 
+    /// corresponding variables in the map of vectors.
     if ( _nHit_Cu.find(unique_id) == _nHit_Cu.end() ) { // chamber had no hit so far
       _nHit_Cu.insert({unique_id, 1});
       _phi_Cu[unique_id].push_back(phiIntCu);
@@ -190,38 +195,47 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
       _cluster_size_Cu[unique_id].push_back(cluster_sizeCu);
     }
   }  // END: : for(auto& cppf_digis2 : *CppfDigis2)
-  
+
   int total_hits_unpacker = 0;
   int total_hits_unpacker_bx = 0;
   int total_hits_unpacker_bx_phi = 0;
-  
+
   int total_hits_emulator = 0;
   int total_hits_emulator_bx = 0;
   int total_hits_emulator_bx_phi = 0;
 
-  if (DEBUG) std::cout << "\n\n\n===========================================================\n" << std::endl;
-  if (DEBUG) std::cout << "\n=== Emulator \t===\n" << std::endl;
-  
+  if (DEBUG)
+    std::cout << "\n\n\n===========================================================\n" << std::endl;
+  if (DEBUG)
+    std::cout << "\n=== Emulator \t===\n" << std::endl;
+
   /**
    * ***Step:3*** : Now loop over number of hits in emulator:
    *   - Saves all the variable for the emulator.
    */
-  for (auto const& it : _nHit_Ce) {
+  for (auto const& it : _nHit_Ce) 
+  {
     int key = it.first;
     int nHit = it.second;
+    bool ifBxNotZero = true;
+
+    h1_total_hits_emulator->Fill(nHit);
+
     if (DEBUG) std::cout << "Main for loop starts for emulator..." << key << "\t" << nHit << std::endl;
-    if (_phi_Ce.find(key) != _phi_Ce.end()) 
+    
+    // if (_phi_Ce.find(key) != _phi_Ce.end()) 
     {
       if (DEBUG) std::cout << "key: " << key << "\tsize = " << _phi_Ce.at(key).size() <<";\t";
       for (unsigned int vecSize = 0; vecSize < _phi_Ce.at(key).size(); vecSize++) {
         //        std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ")\t";
-        // if (_bx_Ce.at(key)[vecSize]==0)
+        if (_bx_Ce.at(key)[vecSize]!=0) ifBxNotZero = ifBxNotZero && false;
         if (DEBUG) std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ", "
         << _ID_Ce.at(key)[vecSize] << ", " << _zone_Ce.at(key)[vecSize] << ", " << _roll_Ce.at(key)[vecSize] << ", "
         << _emtfSector_Ce.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Ce.at(key)[vecSize] << ", "
         << _bx_Ce.at(key)[vecSize] << ", " << _cluster_size_Ce.at(key)[vecSize] <<")\t";
       }
     }
+    if (ifBxNotZero)  h1_total_hits_emulator_bx->Fill(nHit);
     if (DEBUG) std::cout << "\t" << std::endl;
   }
   
@@ -234,13 +248,18 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
   for (auto const& it : _nHit_Cu) {
     int key = it.first;
     int nHit = it.second;
+    bool ifBxNotZero = true;
+
+    h1_total_hits_unpacker->Fill(nHit);
     if (DEBUG) std::cout << "Main for loop starts for unpacker..." << key << "\t" << nHit << std::endl;
     
-    if (_phi_Cu.find(key) != _phi_Cu.end()) {
+    // if (_phi_Cu.find(key) != _phi_Cu.end()) 
+    {
       if (DEBUG) std::cout << "key: " << key << "\t size = " << _phi_Cu.at(key).size() <<";\t";
       for (unsigned int vecSize = 0; vecSize < _phi_Cu.at(key).size(); vecSize++) {
-        //        std::cout << _phi_Cu.at(key)[vecSize] <<  " ( " << _theta_Cu.at(key)[vecSize] << ")\t";
-        if (_bx_Cu.at(key)[vecSize]==0)
+        if (DEBUG) std::cout << _phi_Cu.at(key)[vecSize] <<  " ( " << _theta_Cu.at(key)[vecSize] << ")\t";
+        // if (_bx_Cu.at(key)[vecSize]==0)
+        if (_bx_Cu.at(key)[vecSize]!=0) ifBxNotZero = ifBxNotZero && false;
         if (DEBUG) std::cout << _phi_Cu.at(key)[vecSize] <<  " ( " << _theta_Cu.at(key)[vecSize] << ", "
         << _ID_Cu.at(key)[vecSize] << ", " << _zone_Cu.at(key)[vecSize] << ", " << _roll_Cu.at(key)[vecSize] << ", "
         << _emtfSector_Cu.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Cu.at(key)[vecSize] << ", "
@@ -251,207 +270,43 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup) 
         exit(0);
       }
     } 
+    if (ifBxNotZero) 
+    {
+      h1_total_hits_unpacker_bx->Fill(nHit);
+      if (DEBUG) std::cout << "filled histogram..." << std::endl;
+    }    
     if (DEBUG) std::cout << "\t" << std::endl;
   }
   
-  std::cout << "\n\n=== Emulator vs Unpacker \t===\n" << std::endl;
+  if (DEBUG) std::cout << "\n\n=== Emulator vs Unpacker \t===\n" << std::endl;
 
   /**
    * ***Step:5*** : Now make the comparison between unpacker and emulator
    * then saves the variables.
    */
-  for (auto const& it : _nHit_Ce) {
+  for (auto const& it : _nHit_Ce)
+  {
     int key = it.first;
     int nHit = it.second;
     if (DEBUG) std::cout << "Main for loop starts for emulator vs unpacker..." << key << "\t" << nHit << std::endl;
-    
-    if (_nHit_Cu.find(key) != _nHit_Cu.end()) {
-      // if (_phi_Ce.find(key) != _phi_Ce.end()) {
-      if (DEBUG) std::cout << "key: " << key << "\tsize = " << _phi_Ce.at(key).size() <<";\t";
-      for (unsigned int vecSize = 0; vecSize < _phi_Ce.at(key).size(); vecSize++) {
-        //          std::cout << _phi_Cu.at(key)[vecSize] <<  " ( " << _theta_Cu.at(key)[vecSize] << ")\t";
-        if (_bx_Ce.at(key)[vecSize]==0)
-        if (DEBUG) std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ", "
-        << _ID_Ce.at(key)[vecSize] << ", " << _zone_Ce.at(key)[vecSize] << ", " << _roll_Ce.at(key)[vecSize] << ", "
-        << _emtfSector_Ce.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Ce.at(key)[vecSize] << ", "
-        << _bx_Ce.at(key)[vecSize] << ", " << _cluster_size_Ce.at(key)[vecSize] <<")\t";
+    if (_nHit_Cu.find(key) != _nHit_Cu.end())
+    {
+      if (_phi_Ce.find(key) != _phi_Ce.end()) 
+      {
+        if (DEBUG) std::cout << "key: " << key << "\tsize = " << _phi_Ce.at(key).size() <<";\t";
+        for (unsigned int vecSize = 0; vecSize < _phi_Ce.at(key).size(); vecSize++)
+        {
+          if (DEBUG) std::cout << _phi_Cu.at(key)[vecSize] <<  " ( " << _theta_Cu.at(key)[vecSize] << ")\t";
+          if (_bx_Ce.at(key)[vecSize]==0)
+            if (DEBUG) std::cout << _phi_Ce.at(key)[vecSize] <<  " ( " << _theta_Ce.at(key)[vecSize] << ", "
+              << _ID_Ce.at(key)[vecSize] << ", " << _zone_Ce.at(key)[vecSize] << ", " << _roll_Ce.at(key)[vecSize] << ", "
+            << _emtfSector_Ce.at(key)[vecSize] << ", " << ", " << _emtfSubsector_Ce.at(key)[vecSize] << ", "
+            << _bx_Ce.at(key)[vecSize] << ", " << _cluster_size_Ce.at(key)[vecSize] <<")\t";
+        }
       }
-      //      } else {
-      //        std::cout << "Key not found... " << std::endl;
-      //        exit(0);
-      //      }
-      
-      
-      
-      
       if (DEBUG) std::cout << "\t" << std::endl;
     }
-     
-     if (_nHit_Cu.find(key) != _nHit_Cu.end()) {
-     //std::cout << "DEBUG:1: key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl;
-     std::cout << "key = "<<key<<" Number of hits = it.second = " << it.second << "\t _nHit_Cu.at(key) = " << _nHit_Cu.at(key) << std::endl;
-     int region = 0;
-     int station = 0;
-     int ring = 0;
-     int sector = 0;
-     int subsector = 0;
-     // //int roll = 0;
-     // if (key < 0) {
-     // int splitter_temp = -1*key;
-     // region = -1*(splitter_temp/100000)%10;
-     // station = (splitter_temp/10000)%10;
-     // ring = (splitter_temp/1000)%10;
-     // sector = (splitter_temp/100)%10;
-     // subsector = (splitter_temp/10)%10;
-     // //roll = splitter_temp%10;
-     // std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
-     // h1_nHits_each_chamber_unpacker[0][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
-     // h1_nHits_each_chamber_emulator[0][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
-     // } else {
-     // region = (key/100000)%10;
-     // station = (key/10000)%10;
-     // ring = (key/1000)%10;
-     // sector = (key/100)%10;
-     // subsector = (key/10)%10;
-     // //roll = key%10;
-     // std::cout << region << "\t" << station << "\t" << ring << "\t" << sector << "\t" << subsector << "\t" << _nHit_Cu.at(key) << "\t" << _nHit_Ce.at(key) << std::endl;
-     // h1_nHits_each_chamber_unpacker[1][station][ring][sector][subsector]->Fill(_nHit_Cu.at(key));
-     // h1_nHits_each_chamber_emulator[1][station][ring][sector][subsector]->Fill(_nHit_Ce.at(key));
-     // }
-     // //std::cout << "====> " << region << "\t" << station << "\t" << ring << std::endl;
-     // total_hits_unpacker += _nHit_Cu.at(key);
-     // total_hits_emulator += _nHit_Ce.at(key);
-     
-     // h2_chamber_emu_unpacker->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // if (region==-1 && station==4 &&  ring==3 )  h2_chamber_emu_unpacker_REm43->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==-1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REm42->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==-1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REm33->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==-1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REm32->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==-1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REm22->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==-1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REm12->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==1 &&  ring==2 ) h2_chamber_emu_unpacker_REp12->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==2 &&  ring==2 ) h2_chamber_emu_unpacker_REp22->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==3 &&  ring==2 ) h2_chamber_emu_unpacker_REp32->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==3 &&  ring==3 ) h2_chamber_emu_unpacker_REp33->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==4 &&  ring==2 ) h2_chamber_emu_unpacker_REp42->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else if (region==+1 && station==4 &&  ring==3 ) h2_chamber_emu_unpacker_REp43->Fill(_ID_Ce.at(key), _ID_Cu.at(key));
-     // else {
-     // std::cout << "Region or Station or ring number does not have physical meaning!!!" << std::endl;
-     // std::cout << "Check below output and debug the code..." << std::endl;
-     // std::cout << "region = " << region << "\nstation = " << station << "\nring = " << ring << std::endl;
-     // std::cout << "Terminating the program." << std::endl;
-     // std::exit(0);
-     // }
-     
-     // h2_phi_emu_unpacker->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
-     // h2_theta_emu_unpacker->Fill(_theta_Ce.at(key), _theta_Cu.at(key));
-     // h2_bx_emu_unpacker->Fill(_bx_Ce.at(key),_bx_Cu.at(key));
-     // h1_bx_emulated->Fill(_bx_Ce.at(key));
-     // h1_bx_unpacker->Fill(_bx_Cu.at(key));
-     // h1_bx_diff_emu_unpacker->Fill(std::abs(_bx_Cu.at(key)-_bx_Ce.at(key)));
-     // h1_phi_diff_emu_unpacker->Fill(std::abs(_phi_Ce.at(key)-_phi_Cu.at(key)));
-     
-     // if(_bx_Ce.at(key) ==  _bx_Cu.at(key)){
-     // total_hits_unpacker_bx += _nHit_Cu.at(key);
-     // total_hits_emulator_bx += _nHit_Ce.at(key);
-     // h2_phi_emu_unpacker_bx->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
-     // h2_theta_emu_unpacker_bx->Fill(_theta_Ce.at(key), _theta_Cu.at(key));
-     // h2_bx_emu_unpacker_bx->Fill(_bx_Ce.at(key),_bx_Cu.at(key));
-     
-     // if((_phi_Ce.at(key) == _phi_Cu.at(key)) && (_theta_Ce.at(key) == _theta_Cu.at(key))){
-     // total_hits_unpacker_bx_phi += _nHit_Cu.at(key);
-     // total_hits_emulator_bx_phi += _nHit_Ce.at(key);
-     // h2_phi_emu_unpacker_bx_phi->Fill(_phi_Ce.at(key), _phi_Cu.at(key));
-     // h2_theta_emu_unpacker_bx_phi->Fill(_theta_Ce.at(key), _theta_Cu.at(key));
-     // //Occupancy
-     // h2_occupancy_unpacker_bx_phi->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // h2_occupancy_emu_unpacker_bx_phi->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // //bx occupancy
-     // //h2_bx_occupancy_unpacker_bx_phi->Fill(EMTF_bx, _zone_Cu.at(key));
-     // //h2_bx_occupancy_emu_unpacker_bx_phi->Fill(EMTF_bx, _zone_Ce.at(key));
-     // //bx
-     // //h2_bx_sector_unpacker_bx_phi->Fill(fill_bx_unpacker,EMTF_bx);
-     // //h2_bx_sector_emu_unpacker_bx_phi->Fill(fill_bx,EMTF_bx);
-     // }
-     }
-     
-     // if (it.second == 1 && _nHit_Cu.at(key) == 1) {
-     // //std::cout << "Entered in one hit condition" << std::endl;
-     // h2CeVsCuChamberCuChamberCe_OneHit->Fill(_ID_Cu.at(key), _ID_Ce.at(key));
-     // h2CeVsCuPhiCePhiCu_OneHit->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
-     // h2CeVsCuThetaCeThetaCu_OneHit->Fill(_theta_Cu.at(key), _theta_Ce.at(key));
-     // // Occupancy
-     // if (_bx_Ce.at(key) == 0 && _bx_Cu.at(key) == 0){
-     // h2CeVsCuChamberCuZoneCu_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // h2CeVsCuChamberCeZoneCe_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // }
-     // // Bx by zone
-     // h2CeVsCuBxCuZoneCuOccupancy_OneHit->Fill(_bx_Cu.at(key), _zone_Cu.at(key));
-     // h2CeVsCuBxCeZoneCeOccupancy_OneHit->Fill(_bx_Ce.at(key), _zone_Ce.at(key));
-     // // Bx by EMTF sector
-     // h2CeVsCuBxCuZoneCu_OneHit->Fill(_emtfSector_Cu.at(key), _bx_Cu.at(key));
-     // h2CeVsCuBxCeZoneCe_OneHit->Fill(_emtfSector_Ce.at(key), _bx_Ce.at(key));
-     // //Difference between variables
-     // h1CeVsCuPhiCePhiCuDiff_OneHit->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
-     // h1CeVsCuThetaCeThetaCuDiff_OneHit->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
-     // h1CeVsCuBxCeBxCuDiff_OneHit->Fill(_bx_Ce.at(key) - _bx_Cu.at(key));
-     
-     // if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) h1CeVsCuPhi_InDiagonal_OneHit->Fill(0.);
-     // else h1CeVsCuPhi_OffDiagonal_OneHit->Fill(0.);
-     // if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuTheta_InDiagonal_OneHit->Fill(0.);
-     // else h1CeVsCuTheta_OffDiagonal_OneHit->Fill(0.);
-     // if (_bx_Ce.at(key) == 0 && _bx_Cu.at(key) == 0){
-     // h1CeVsCuPhiCePhiCuDiff_OneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
-     // h1CeVsCuThetaCeThetaCuDiff_OneHit_bx->Fill(_theta_Ce.at(key) - _theta_Cu.at(key));
-     // h2CeVsCuPhiCePhiCu_OneHit_bx->Fill(_phi_Cu.at(key), _phi_Ce.at(key));
-     // h2CeVsCuThetaCeThetaCu_OneHit_bx->Fill(_theta_Cu.at(key), _theta_Ce.at(key));
-     // if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
-     // h1CeVsCuPhi_InDiagonal_OneHit_bx->Fill(0.);
-     // h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // }
-     // else {
-     // h1CeVsCuPhi_OffDiagonal_OneHit_bx->Fill(0.);
-     // h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // }
-     // if ((_theta_Ce.at(key) - _theta_Cu.at(key)) == 0) h1CeVsCuTheta_InDiagonal_OneHit_bx->Fill(0.);
-     // else {
-     // h1CeVsCuTheta_OffDiagonal_OneHit_bx->Fill(0.);
-     // h2CeVsCuBxCeZoneCeOccupancyOffThetaDiagonal_OneHit_bx->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // h2CeVsCuBxCuZoneCuOccupancyOffThetaDiagonal_OneHit_bx->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // }
-     // if ((_theta_Ce.at(key) == _theta_Cu.at(key)) && (_phi_Ce.at(key) != _phi_Cu.at(key))) h1CeVsCuThetaPhiCeThetaPhiCuDiff_OneHit_bx->Fill(_phi_Ce.at(key) - _phi_Cu.at(key));
-     // }
-     // }
-     // else {
-     // // Occupancy
-     // h2CeVsCuChamberCuZoneCu_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // h2CeVsCuChamberCeZoneCe_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // //std::cout << "Entered in more than one hit condition" << std::endl;
-     
-     // if ((_phi_Ce.at(key) - _phi_Cu.at(key)) == 0) {
-     // h1CeVsCuPhi_InDiagonal_NotOneHit_bx->Fill(0.);
-     // h2CeVsCuBxCeZoneCeOccupancy_InPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // h2CeVsCuBxCuZoneCuOccupancy_InPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // }
-     // else {
-     // h1CeVsCuPhi_OffDiagonal_NotOneHit_bx->Fill(0.);
-     // h2CeVsCuBxCeZoneCeOccupancyOffPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Ce.at(key), _zone_Ce.at(key));
-     // h2CeVsCuBxCuZoneCuOccupancyOffPhiDiagonal_NotOneHit->Fill(_emtfSubsector_Cu.at(key), _zone_Cu.at(key));
-     // }
-     // }
-     // }
   }
-  
-  // h1_total_hits_unpacker->Fill(total_hits_unpacker);
-  // h1_total_hits_unpacker_bx->Fill(total_hits_unpacker_bx);
-  // h1_total_hits_unpacker_bx_phi->Fill(total_hits_unpacker_bx_phi);
-  
-  // h1_total_hits_emulator->Fill(total_hits_emulator);
-  // h1_total_hits_emulator_bx->Fill(total_hits_emulator_bx);
-  // h1_total_hits_emulator_bx_phi->Fill(total_hits_emulator_bx_phi);
-  
 } //End class
 
 /**
@@ -543,15 +398,19 @@ void DQM_CPPF::beginRun(const edm::Run& run, const edm::EventSetup& iSetup){
   iSetup.get<MuonGeometryRecord>().get(rpcGeom);
 }
 
-void DQM_CPPF::beginJob(){
+void DQM_CPPF::beginJob()
+{
   edm::Service<TFileService> fs;
-  
-  // h1_total_hits_unpacker = fs->make<TH1D>("h1_total_hits_unpacker", "CPPFDigis_total_hits_unpacker" , 25, 0. , 25.);
-  // h1_total_hits_unpacker_bx = fs->make<TH1D>("h1_total_hits_unpacker_bx", "CPPFDigis_Matches_bx" , 25, 0. , 25.);
+
+  h1_nEvents = fs->make<TH1D>("h1_nEvents", "Total number of events", 3, 0., 3.);
+
+  h1_total_hits_unpacker = fs->make<TH1D>("h1_total_hits_unpacker", 
+                                          "Total number of hits in unpacker" , 5, 0. , 5.); 
+  h1_total_hits_unpacker_bx = fs->make<TH1D>("h1_total_hits_unpacker_bx", "Total number of hits in unpacker (bxE == bxU)" , 5, 0. , 5.);
   // h1_total_hits_unpacker_bx_phi = fs->make<TH1D>("h1_total_hits_unpacker_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
   
-  // h1_total_hits_emulator = fs->make<TH1D>("h1_total_hits_emulator", "CPPFDigis_total_hits_emulator" , 25, 0. , 25.);
-  // h1_total_hits_emulator_bx = fs->make<TH1D>("h1_total_hits_emulator_bx", "CPPFDigis_Matches_bx" , 25, 0. , 25.);
+  h1_total_hits_emulator = fs->make<TH1D>("h1_total_hits_emulator", "CPPFDigis_total_hits_emulator" , 5, 0. , 5.);
+  h1_total_hits_emulator_bx = fs->make<TH1D>("h1_total_hits_emulator_bx", "CPPFDigis_Matches_bx" , 5, 0. , 5.);
   // h1_total_hits_emulator_bx_phi = fs->make<TH1D>("h1_total_hits_emulator_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
   
   // h1_bx_emulated = fs->make<TH1D>("h1_bx_emulated","Emulated bunch crossing",8, -4., 4.);
