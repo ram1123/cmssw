@@ -242,26 +242,25 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    * - Now loop over number of hits in emulator and saves some
    *   useful variable for the emulator.
    */
-  bool nHit_Ce_Count_nHitMoreThan2 = false;
+  bool nHit_Ce_Count_nHitNotMoreThan2 = false;
   bool nHit_Ce_Count_bx = false;
   bool nHit_Ce_Count_Allbx = false;
   for (auto const& it : _nHit_Ce)
   {
     int key = it.first;
     int nHit = it.second;
+    h1_total_hits_emulator->Fill(nHit);
     /**
-     * .
-     *   - If the number of Hits for one key (i.e. for one chamber)
+     * \li If the number of Hits for one key (i.e. for one chamber)
      *     is more than 2 then skip that event.
      */
     if (nHit > 2) continue;
+    // h1_total_hits_emulator_nHitNotMoreThan2->Fill(nHit);
     /**
-     * .
-     *   - \bug nHit distribution is reduces nEvents by ~32%. Since h1_total_hits_emulator
+     * \li \bug nHit distribution is reduces nEvents by ~32%. Since h1_total_hits_emulator
      *      gives 2.
      */
-    nHit_Ce_Count_nHitMoreThan2 = true;
-    h1_total_hits_emulator->Fill(nHit);
+    nHit_Ce_Count_nHitNotMoreThan2 = true;
     bool ifBxZero = true; // This boolean helps us to identify
                           // if a chamber having hits have bx==0 for each hits.
     if (DEBUG) std::cout << "Main for loop starts for emulator..." << key << "\t" << nHit << std::endl;
@@ -331,7 +330,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       h1_emtfSubsector_Ce_Allbx->Fill(_emtfSubsector_Ce.at(key)[vecSize]);
     }
   }
-  if (nHit_Ce_Count_nHitMoreThan2) h1_nEvents_Ce_nHitMoreThan2->Fill(1.0);
+  if (nHit_Ce_Count_nHitNotMoreThan2) h1_nEvents_Ce_nHitNotMoreThan2->Fill(1.0);
   if (nHit_Ce_Count_bx) h1_nEvents_Ce_bx->Fill(1.0);
   if (nHit_Ce_Count_Allbx) h1_nEvents_Ce_Allbx->Fill(1.0);
 
@@ -342,7 +341,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
    * - Now loop over number of hits in unpacker:
    *   - Saves all the variables for the unpacker.
    */
-  bool nHit_Cu_Count_nHitMoreThan2 = false;
+  bool nHit_Cu_Count_nHitNotMoreThan2 = false;
   bool nHit_Cu_Count_bx = false;
   bool nHit_Cu_Count_Allbx = false;
   for (auto const& it : _nHit_Cu)
@@ -355,7 +354,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
      *     is more than 2 then skip that event.
      */
     if (nHit > 2) continue;
-    nHit_Cu_Count_nHitMoreThan2=true;
+    nHit_Cu_Count_nHitNotMoreThan2=true;
     h1_total_hits_unpacker->Fill(nHit);
     bool ifBxZero = true; // This boolean helps us to identify
                           // if a chamber having hits have bx==0 for each hits.
@@ -425,7 +424,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       h1_emtfSubsector_Cu_Allbx->Fill(_emtfSubsector_Cu.at(key)[vecSize]);
     }
   }
-  if (nHit_Cu_Count_nHitMoreThan2) h1_nEvents_Cu_nHitMoreThan2->Fill(1.0);
+  if (nHit_Cu_Count_nHitNotMoreThan2) h1_nEvents_Cu_nHitNotMoreThan2->Fill(1.0);
   if (nHit_Cu_Count_bx) h1_nEvents_Cu_bx->Fill(1.0);
   if (nHit_Cu_Count_Allbx) h1_nEvents_Cu_Allbx->Fill(1.0);
   if (DEBUG) std::cout << "\n\n=== Emulator And Unpacker Comparison \t===\n" << std::endl;
@@ -1071,27 +1070,27 @@ void DQM_CPPF::beginJob()
 
   h1_nEvents = fs->make<TH1D>("h1_nEvents", "Total number of events", 3, 0., 3.);
 
-  h1_nEvents_Ce_NoHits = fs->make<TH1D>("h1_nEvents_Ce_NoHits","h1_nEvents_Ce_NoHits",3, 0., 3.);
-  h1_nEvents_Cu_NoHits = fs->make<TH1D>("h1_nEvents_Cu_NoHits","h1_nEvents_Cu_NoHits",3, 0., 3.);
+  h1_nEvents_Ce_NoHits = fs->make<TH1D>("h1_nEvents_Ce_NoHits","Unpacker: nHits == 0 ;#nEvents;",3, 0., 3.);
+  h1_nEvents_Cu_NoHits = fs->make<TH1D>("h1_nEvents_Cu_NoHits","Emulator: nHits == 0 ;#nEvents;",3, 0., 3.);
 
-  h1_nChmbersWithHit_Ce = fs->make<TH1D>("h1_nChmbersWithHit_Ce","h1_nChmbersWithHit_Ce", 40, 0., 40. );
-  h1_nEvents_Ce_nHitMoreThan2 = fs->make<TH1D>("h1_nEvents_Ce_nHitMoreThan2", "h1_nEvents_Ce_nHitMoreThan2", 3, 0., 3.0);
-  h1_nEvents_Ce_bx = fs->make<TH1D>("h1_nEvents_Ce_bx", "h1_nEvents_Ce_bx", 3, 0., 3.0);
-  h1_nEvents_Ce_Allbx   = fs->make<TH1D>("h1_nEvents_Ce_Allbx", "h1_nEvents_Ce_Allbx", 3, 0., 3.0);
+  h1_nChmbersWithHit_Ce = fs->make<TH1D>("h1_nChmbersWithHit_Ce","Unpacker: #nChambers having Hit/event; #nChambers with Hit/event;", 40, 0., 40. );
+  h1_nEvents_Ce_nHitNotMoreThan2 = fs->make<TH1D>("h1_nEvents_Ce_nHitNotMoreThan2", "Unpacker: nHits >= 2;#nEvents;", 3, 0., 3.0);
+  h1_nEvents_Ce_bx = fs->make<TH1D>("h1_nEvents_Ce_bx", "Unpacker: nHits >= 2 && (bx==0 for each individual hit);#nEvents;", 3, 0., 3.0);
+  h1_nEvents_Ce_Allbx   = fs->make<TH1D>("h1_nEvents_Ce_Allbx", "Unpacker: nHits > 2 && (bx==0 for all hits on each chamber);#nEvents;", 3, 0., 3.0);
 
-  h1_nChmbersWithHit_Cu = fs->make<TH1D>("h1_nChmbersWithHit_Cu","h1_nChmbersWithHit_Cu", 40, 0., 40. );
-  h1_nEvents_Cu_nHitMoreThan2 = fs->make<TH1D>("h1_nEvents_Cu_nHitMoreThan2", "h1_nEvents_Cu_nHitMoreThan2", 3, 0., 3.0);
-  h1_nEvents_Cu_bx = fs->make<TH1D>("h1_nEvents_Cu_bx", "h1_nEvents_Cu_bx", 3, 0., 3.0);
-  h1_nEvents_Cu_Allbx   = fs->make<TH1D>("h1_nEvents_Cu_Allbx", "h1_nEvents_Cu_Allbx", 3, 0., 3.0);
+  h1_nChmbersWithHit_Cu = fs->make<TH1D>("h1_nChmbersWithHit_Cu","Emulator: #nChambers having Hit/event; #nChambers with Hit/event;", 40, 0., 40. );
+  h1_nEvents_Cu_nHitNotMoreThan2 = fs->make<TH1D>("h1_nEvents_Cu_nHitNotMoreThan2", "Emulator: nHits >= 2;#nEvents;", 3, 0., 3.0);
+  h1_nEvents_Cu_bx = fs->make<TH1D>("h1_nEvents_Cu_bx", "Emulator: nHits >= 2 && (bx==0 for each individual hit);#nEvents;", 3, 0., 3.0);
+  h1_nEvents_Cu_Allbx   = fs->make<TH1D>("h1_nEvents_Cu_Allbx", "Unpacker: nHits > 2 && (bx==0 for all hits on each chamber);#nEvents;", 3, 0., 3.0);
 
-  h1_nEvents_CuCe_SameKey = fs->make<TH1D>("h1_nEvents_CuCe_SameKey","h1_nEvents_CuCe_SameKey", 3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits","h1_nEvents_CuCe_SameKey_SameNHits", 3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx","h1_nEvents_CuCe_SameKey_SameNHits_AnyBx", 3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AllBx = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AllBx","h1_nEvents_CuCe_SameKey_SameNHits_AllBx", 3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi","h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi",3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi","h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi",3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta","h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta",3.0, 0., 3.0);
-  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta","h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta",3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey = fs->make<TH1D>("h1_nEvents_CuCe_SameKey","Same SubSector;#nEvents;", 3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits","Same (SubSector && nHits) ;#nEvents;", 3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx","Same (SubSector && nHits) && bx == 0 ;#nEvents;", 3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AllBx = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AllBx","Same (SubSector && nHits) && ;#nEvents;", 3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi","Same (SubSector && nHits) && ;#nEvents;",3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi","Same (SubSector && nHits) && ;#nEvents;",3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta","Same (SubSector && nHits) && ;#nEvents;",3.0, 0., 3.0);
+  h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta = fs->make<TH1D>("h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta","Same (SubSector && nHits) && ;#nEvents;",3.0, 0., 3.0);
 
   h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onPhi = fs->make<TH1D>("h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onPhi","h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onPhi",3.0, 0., 3.0);
   h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offPhi = fs->make<TH1D>("h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offPhi","h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offPhi",3.0, 0., 3.0);
@@ -1108,7 +1107,7 @@ void DQM_CPPF::beginJob()
   h1_total_hits_unpacker_bx_phi = fs->make<TH1D>("h1_total_hits_unpacker_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
 
   h1_cluster_size_Cu = fs->make<TH1D>("h1_cluster_size_Cu","h1_cluster_size_Cu", 10, 0., 10.);
-  h1_phi_Cu = fs->make<TH1D>("h1_phi_Cu","h1_phi_Cu", 124, 0.0, 1240.);
+  h1_phi_Cu = fs->make<TH1D>("h1_phi_Cu","h1_phi_Cu", 62, 0.0, 1240.);
   h1_phi_glob_Cu = fs->make<TH1D>("h1_phi_glob_Cu","h1_phi_glob_Cu", 180, 0.0, 180.0);
   h1_theta_Cu = fs->make<TH1D>("h1_theta_Cu","h1_theta_Cu", 32, 0, 32.);
   h1_theta_glob_Cu = fs->make<TH1D>("h1_theta_glob_Cu","h1_theta_glob_Cu", 180., 0, 180.);
@@ -1119,7 +1118,7 @@ void DQM_CPPF::beginJob()
   h1_emtfSubsector_Cu = fs->make<TH1D>("h1_emtfSubsector_Cu","h1_emtfSubsector_Cu", 38, 0, 38);
 
   h1_cluster_size_Cu_bx = fs->make<TH1D>("h1_cluster_size_Cu_bx","h1_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_phi_Cu_bx = fs->make<TH1D>("h1_phi_Cu_bx","h1_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_phi_Cu_bx = fs->make<TH1D>("h1_phi_Cu_bx","h1_phi_Cu_bx", 62, 0.0, 1240.);
   h1_phi_glob_Cu_bx = fs->make<TH1D>("h1_phi_glob_Cu_bx","h1_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_theta_Cu_bx = fs->make<TH1D>("h1_theta_Cu_bx","h1_theta_Cu_bx", 32, 0, 32.);
   h1_theta_glob_Cu_bx = fs->make<TH1D>("h1_theta_glob_Cu_bx","h1_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1130,7 +1129,7 @@ void DQM_CPPF::beginJob()
   h1_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_emtfSubsector_Cu_bx","h1_emtfSubsector_Cu_bx", 38, 0, 38);
 
   h1_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_cluster_size_Cu_Allbx","h1_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_phi_Cu_Allbx = fs->make<TH1D>("h1_phi_Cu_Allbx","h1_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_phi_Cu_Allbx = fs->make<TH1D>("h1_phi_Cu_Allbx","h1_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_phi_glob_Cu_Allbx","h1_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_theta_Cu_Allbx = fs->make<TH1D>("h1_theta_Cu_Allbx","h1_theta_Cu_Allbx", 32, 0, 32.);
   h1_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_theta_glob_Cu_Allbx","h1_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1145,7 +1144,7 @@ void DQM_CPPF::beginJob()
   h1_total_hits_emulator_bx_phi = fs->make<TH1D>("h1_total_hits_emulator_bx_phi", "CPPFDigis_Matches_int" , 25, 0. , 25.);
 
   h1_cluster_size_Ce = fs->make<TH1D>("h1_cluster_size_Ce","h1_cluster_size_Ce", 10, 0., 10.);
-  h1_phi_Ce = fs->make<TH1D>("h1_phi_Ce","h1_phi_Ce", 124, 0.0, 1240.);
+  h1_phi_Ce = fs->make<TH1D>("h1_phi_Ce","h1_phi_Ce", 62, 0.0, 1240.);
   h1_phi_glob_Ce = fs->make<TH1D>("h1_phi_glob_Ce","h1_phi_glob_Ce", 180, 0.0, 180.0);
   h1_theta_Ce = fs->make<TH1D>("h1_theta_Ce","h1_theta_Ce", 32, 0, 32.);
   h1_theta_glob_Ce = fs->make<TH1D>("h1_theta_glob_Ce","h1_theta_glob_Ce", 180., 0, 180.);
@@ -1156,7 +1155,7 @@ void DQM_CPPF::beginJob()
   h1_emtfSubsector_Ce = fs->make<TH1D>("h1_emtfSubsector_Ce","h1_emtfSubsector_Ce", 38, 0, 38);
 
   h1_cluster_size_Ce_bx = fs->make<TH1D>("h1_cluster_size_Ce_bx","h1_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_phi_Ce_bx = fs->make<TH1D>("h1_phi_Ce_bx","h1_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_phi_Ce_bx = fs->make<TH1D>("h1_phi_Ce_bx","h1_phi_Ce_bx", 62, 0.0, 1240.);
   h1_phi_glob_Ce_bx = fs->make<TH1D>("h1_phi_glob_Ce_bx","h1_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_theta_Ce_bx = fs->make<TH1D>("h1_theta_Ce_bx","h1_theta_Ce_bx", 32, 0, 32.);
   h1_theta_glob_Ce_bx = fs->make<TH1D>("h1_theta_glob_Ce_bx","h1_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1167,7 +1166,7 @@ void DQM_CPPF::beginJob()
   h1_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_emtfSubsector_Ce_bx","h1_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_cluster_size_Ce_Allbx","h1_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_phi_Ce_Allbx = fs->make<TH1D>("h1_phi_Ce_Allbx","h1_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_phi_Ce_Allbx = fs->make<TH1D>("h1_phi_Ce_Allbx","h1_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_phi_glob_Ce_Allbx","h1_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_theta_Ce_Allbx = fs->make<TH1D>("h1_theta_Ce_Allbx","h1_theta_Ce_Allbx", 32, 0, 32.);
   h1_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_theta_glob_Ce_Allbx","h1_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1178,7 +1177,7 @@ void DQM_CPPF::beginJob()
   h1_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_emtfSubsector_Ce_Allbx","h1_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
   h1_SameKey_cluster_size_Cu = fs->make<TH1D>("h1_SameKey_cluster_size_Cu","h1_SameKey_cluster_size_Cu", 10, 0., 10.);
-  h1_SameKey_phi_Cu = fs->make<TH1D>("h1_SameKey_phi_Cu","h1_SameKey_phi_Cu", 124, 0.0, 1240.);
+  h1_SameKey_phi_Cu = fs->make<TH1D>("h1_SameKey_phi_Cu","h1_SameKey_phi_Cu", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Cu = fs->make<TH1D>("h1_SameKey_phi_glob_Cu","h1_SameKey_phi_glob_Cu", 180, 0.0, 180.0);
   h1_SameKey_theta_Cu = fs->make<TH1D>("h1_SameKey_theta_Cu","h1_SameKey_theta_Cu", 32, 0, 32.);
   h1_SameKey_theta_glob_Cu = fs->make<TH1D>("h1_SameKey_theta_glob_Cu","h1_SameKey_theta_glob_Cu", 180., 0, 180.);
@@ -1188,7 +1187,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSector_Cu = fs->make<TH1D>("h1_SameKey_emtfSector_Cu","h1_SameKey_emtfSector_Cu", 8, 0, 8);
   h1_SameKey_emtfSubsector_Cu = fs->make<TH1D>("h1_SameKey_emtfSubsector_Cu","h1_SameKey_emtfSubsector_Cu", 38, 0, 38);
   h1_SameKey_cluster_size_Ce = fs->make<TH1D>("h1_SameKey_cluster_size_Ce","h1_SameKey_cluster_size_Ce", 10, 0., 10.);
-  h1_SameKey_phi_Ce = fs->make<TH1D>("h1_SameKey_phi_Ce","h1_SameKey_phi_Ce", 124, 0.0, 1240.);
+  h1_SameKey_phi_Ce = fs->make<TH1D>("h1_SameKey_phi_Ce","h1_SameKey_phi_Ce", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Ce = fs->make<TH1D>("h1_SameKey_phi_glob_Ce","h1_SameKey_phi_glob_Ce", 180, 0.0, 180.0);
   h1_SameKey_theta_Ce = fs->make<TH1D>("h1_SameKey_theta_Ce","h1_SameKey_theta_Ce", 32, 0, 32.);
   h1_SameKey_theta_glob_Ce = fs->make<TH1D>("h1_SameKey_theta_glob_Ce","h1_SameKey_theta_glob_Ce", 180., 0, 180.);
@@ -1199,7 +1198,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSubsector_Ce = fs->make<TH1D>("h1_SameKey_emtfSubsector_Ce","h1_SameKey_emtfSubsector_Ce", 38, 0, 38);
 
   h1_SameKey_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_cluster_size_Cu_bx","h1_SameKey_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_SameKey_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_phi_Cu_bx","h1_SameKey_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_SameKey_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_phi_Cu_bx","h1_SameKey_phi_Cu_bx", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_phi_glob_Cu_bx","h1_SameKey_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_SameKey_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_theta_Cu_bx","h1_SameKey_theta_Cu_bx", 32, 0, 32.);
   h1_SameKey_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_theta_glob_Cu_bx","h1_SameKey_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1209,7 +1208,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_emtfSector_Cu_bx","h1_SameKey_emtfSector_Cu_bx", 8, 0, 8);
   h1_SameKey_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_emtfSubsector_Cu_bx","h1_SameKey_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_SameKey_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_cluster_size_Ce_bx","h1_SameKey_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_SameKey_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_phi_Ce_bx","h1_SameKey_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_SameKey_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_phi_Ce_bx","h1_SameKey_phi_Ce_bx", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_phi_glob_Ce_bx","h1_SameKey_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_SameKey_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_theta_Ce_bx","h1_SameKey_theta_Ce_bx", 32, 0, 32.);
   h1_SameKey_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_theta_glob_Ce_bx","h1_SameKey_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1220,7 +1219,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_emtfSubsector_Ce_bx","h1_SameKey_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_SameKey_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_SameKey_cluster_size_Cu_Allbx","h1_SameKey_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_SameKey_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_phi_Cu_Allbx","h1_SameKey_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_phi_Cu_Allbx","h1_SameKey_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_phi_glob_Cu_Allbx","h1_SameKey_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_SameKey_theta_Cu_Allbx = fs->make<TH1D>("h1_SameKey_theta_Cu_Allbx","h1_SameKey_theta_Cu_Allbx", 32, 0, 32.);
   h1_SameKey_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_theta_glob_Cu_Allbx","h1_SameKey_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1230,7 +1229,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_emtfSector_Cu_Allbx","h1_SameKey_emtfSector_Cu_Allbx", 8, 0, 8);
   h1_SameKey_emtfSubsector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_emtfSubsector_Cu_Allbx","h1_SameKey_emtfSubsector_Cu_Allbx", 38, 0, 38);
   h1_SameKey_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_SameKey_cluster_size_Ce_Allbx","h1_SameKey_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_SameKey_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_phi_Ce_Allbx","h1_SameKey_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_phi_Ce_Allbx","h1_SameKey_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_SameKey_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_phi_glob_Ce_Allbx","h1_SameKey_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_SameKey_theta_Ce_Allbx = fs->make<TH1D>("h1_SameKey_theta_Ce_Allbx","h1_SameKey_theta_Ce_Allbx", 32, 0, 32.);
   h1_SameKey_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_theta_glob_Ce_Allbx","h1_SameKey_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1241,7 +1240,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_emtfSubsector_Ce_Allbx","h1_SameKey_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
   h1_SameKey_OnPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_cluster_size_Cu_bx","h1_SameKey_OnPhi_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_SameKey_OnPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Cu_bx","h1_SameKey_OnPhi_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_SameKey_OnPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Cu_bx","h1_SameKey_OnPhi_phi_Cu_bx", 62, 0.0, 1240.);
   h1_SameKey_OnPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_glob_Cu_bx","h1_SameKey_OnPhi_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_SameKey_OnPhi_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_Cu_bx","h1_SameKey_OnPhi_theta_Cu_bx", 32, 0, 32.);
   h1_SameKey_OnPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_glob_Cu_bx","h1_SameKey_OnPhi_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1251,7 +1250,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSector_Cu_bx","h1_SameKey_OnPhi_emtfSector_Cu_bx", 8, 0, 8);
   h1_SameKey_OnPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSubsector_Cu_bx","h1_SameKey_OnPhi_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_SameKey_OnPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_cluster_size_Ce_bx","h1_SameKey_OnPhi_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_SameKey_OnPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Ce_bx","h1_SameKey_OnPhi_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_SameKey_OnPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Ce_bx","h1_SameKey_OnPhi_phi_Ce_bx", 62, 0.0, 1240.);
   h1_SameKey_OnPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_glob_Ce_bx","h1_SameKey_OnPhi_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_SameKey_OnPhi_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_Ce_bx","h1_SameKey_OnPhi_theta_Ce_bx", 32, 0, 32.);
   h1_SameKey_OnPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_glob_Ce_bx","h1_SameKey_OnPhi_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1262,7 +1261,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSubsector_Ce_bx","h1_SameKey_OnPhi_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_Matching_SameKey_OnPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_cluster_size_Cu_bx","h1_Matching_SameKey_OnPhi_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OnPhi_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_Cu_bx","h1_Matching_SameKey_OnPhi_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OnPhi_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_Cu_bx","h1_Matching_SameKey_OnPhi_phi_Cu_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OnPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_glob_Cu_bx","h1_Matching_SameKey_OnPhi_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OnPhi_theta_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_theta_Cu_bx","h1_Matching_SameKey_OnPhi_theta_Cu_bx", 32, 0, 32.);
   h1_Matching_SameKey_OnPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_theta_glob_Cu_bx","h1_Matching_SameKey_OnPhi_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1272,7 +1271,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OnPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_emtfSector_Cu_bx","h1_Matching_SameKey_OnPhi_emtfSector_Cu_bx", 8, 0, 8);
   h1_Matching_SameKey_OnPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_emtfSubsector_Cu_bx","h1_Matching_SameKey_OnPhi_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_Matching_SameKey_OnPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_cluster_size_Ce_bx","h1_Matching_SameKey_OnPhi_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OnPhi_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_Ce_bx","h1_Matching_SameKey_OnPhi_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OnPhi_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_Ce_bx","h1_Matching_SameKey_OnPhi_phi_Ce_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OnPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_phi_glob_Ce_bx","h1_Matching_SameKey_OnPhi_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OnPhi_theta_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_theta_Ce_bx","h1_Matching_SameKey_OnPhi_theta_Ce_bx", 32, 0, 32.);
   h1_Matching_SameKey_OnPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_theta_glob_Ce_bx","h1_Matching_SameKey_OnPhi_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1283,7 +1282,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OnPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnPhi_emtfSubsector_Ce_bx","h1_Matching_SameKey_OnPhi_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_SameKey_OnPhi_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_cluster_size_Cu_Allbx","h1_SameKey_OnPhi_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_SameKey_OnPhi_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Cu_Allbx","h1_SameKey_OnPhi_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OnPhi_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Cu_Allbx","h1_SameKey_OnPhi_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OnPhi_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_glob_Cu_Allbx","h1_SameKey_OnPhi_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OnPhi_theta_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_Cu_Allbx","h1_SameKey_OnPhi_theta_Cu_Allbx", 32, 0, 32.);
   h1_SameKey_OnPhi_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_glob_Cu_Allbx","h1_SameKey_OnPhi_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1293,7 +1292,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnPhi_emtfSector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSector_Cu_Allbx","h1_SameKey_OnPhi_emtfSector_Cu_Allbx", 8, 0, 8);
   h1_SameKey_OnPhi_emtfSubsector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSubsector_Cu_Allbx","h1_SameKey_OnPhi_emtfSubsector_Cu_Allbx", 38, 0, 38);
   h1_SameKey_OnPhi_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_cluster_size_Ce_Allbx","h1_SameKey_OnPhi_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_SameKey_OnPhi_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Ce_Allbx","h1_SameKey_OnPhi_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OnPhi_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_Ce_Allbx","h1_SameKey_OnPhi_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OnPhi_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_phi_glob_Ce_Allbx","h1_SameKey_OnPhi_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OnPhi_theta_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_Ce_Allbx","h1_SameKey_OnPhi_theta_Ce_Allbx", 32, 0, 32.);
   h1_SameKey_OnPhi_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_theta_glob_Ce_Allbx","h1_SameKey_OnPhi_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1304,7 +1303,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnPhi_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnPhi_emtfSubsector_Ce_Allbx","h1_SameKey_OnPhi_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
   h1_SameKey_OffPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Cu_bx","h1_SameKey_OffPhi_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_SameKey_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Cu_bx","h1_SameKey_OffPhi_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_SameKey_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Cu_bx","h1_SameKey_OffPhi_phi_Cu_bx", 62, 0.0, 1240.);
   h1_SameKey_OffPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Cu_bx","h1_SameKey_OffPhi_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_SameKey_OffPhi_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Cu_bx","h1_SameKey_OffPhi_theta_Cu_bx", 32, 0, 32.);
   h1_SameKey_OffPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Cu_bx","h1_SameKey_OffPhi_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1314,7 +1313,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSector_Cu_bx","h1_SameKey_OffPhi_emtfSector_Cu_bx", 8, 0, 8);
   h1_SameKey_OffPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Cu_bx","h1_SameKey_OffPhi_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_SameKey_OffPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Ce_bx","h1_SameKey_OffPhi_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_SameKey_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Ce_bx","h1_SameKey_OffPhi_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_SameKey_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Ce_bx","h1_SameKey_OffPhi_phi_Ce_bx", 62, 0.0, 1240.);
   h1_SameKey_OffPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Ce_bx","h1_SameKey_OffPhi_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_SameKey_OffPhi_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Ce_bx","h1_SameKey_OffPhi_theta_Ce_bx", 32, 0, 32.);
   h1_SameKey_OffPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Ce_bx","h1_SameKey_OffPhi_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1325,7 +1324,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Ce_bx","h1_SameKey_OffPhi_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_Matching_SameKey_OffPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_cluster_size_Cu_bx","h1_Matching_SameKey_OffPhi_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_Cu_bx","h1_Matching_SameKey_OffPhi_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_Cu_bx","h1_Matching_SameKey_OffPhi_phi_Cu_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OffPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_glob_Cu_bx","h1_Matching_SameKey_OffPhi_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OffPhi_theta_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_theta_Cu_bx","h1_Matching_SameKey_OffPhi_theta_Cu_bx", 32, 0, 32.);
   h1_Matching_SameKey_OffPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_theta_glob_Cu_bx","h1_Matching_SameKey_OffPhi_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1335,7 +1334,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OffPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_emtfSector_Cu_bx","h1_Matching_SameKey_OffPhi_emtfSector_Cu_bx", 8, 0, 8);
   h1_Matching_SameKey_OffPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_emtfSubsector_Cu_bx","h1_Matching_SameKey_OffPhi_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_Matching_SameKey_OffPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_cluster_size_Ce_bx","h1_Matching_SameKey_OffPhi_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_Ce_bx","h1_Matching_SameKey_OffPhi_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_Ce_bx","h1_Matching_SameKey_OffPhi_phi_Ce_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OffPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_glob_Ce_bx","h1_Matching_SameKey_OffPhi_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OffPhi_theta_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_theta_Ce_bx","h1_Matching_SameKey_OffPhi_theta_Ce_bx", 32, 0, 32.);
   h1_Matching_SameKey_OffPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_theta_glob_Ce_bx","h1_Matching_SameKey_OffPhi_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1346,7 +1345,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OffPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_emtfSubsector_Ce_bx","h1_Matching_SameKey_OffPhi_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_SameKey_OffPhi_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Cu_Allbx","h1_SameKey_OffPhi_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_SameKey_OffPhi_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Cu_Allbx","h1_SameKey_OffPhi_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OffPhi_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Cu_Allbx","h1_SameKey_OffPhi_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OffPhi_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Cu_Allbx","h1_SameKey_OffPhi_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OffPhi_theta_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Cu_Allbx","h1_SameKey_OffPhi_theta_Cu_Allbx", 32, 0, 32.);
   h1_SameKey_OffPhi_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Cu_Allbx","h1_SameKey_OffPhi_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1356,7 +1355,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffPhi_emtfSector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSector_Cu_Allbx","h1_SameKey_OffPhi_emtfSector_Cu_Allbx", 8, 0, 8);
   h1_SameKey_OffPhi_emtfSubsector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Cu_Allbx","h1_SameKey_OffPhi_emtfSubsector_Cu_Allbx", 38, 0, 38);
   h1_SameKey_OffPhi_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Ce_Allbx","h1_SameKey_OffPhi_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_SameKey_OffPhi_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Ce_Allbx","h1_SameKey_OffPhi_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OffPhi_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Ce_Allbx","h1_SameKey_OffPhi_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OffPhi_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Ce_Allbx","h1_SameKey_OffPhi_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OffPhi_theta_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Ce_Allbx","h1_SameKey_OffPhi_theta_Ce_Allbx", 32, 0, 32.);
   h1_SameKey_OffPhi_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Ce_Allbx","h1_SameKey_OffPhi_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1367,7 +1366,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffPhi_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Ce_Allbx","h1_SameKey_OffPhi_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
   h1_SameKey_OnTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Cu_bx","h1_SameKey_OnTheta_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_SameKey_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Cu_bx","h1_SameKey_OnTheta_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_SameKey_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Cu_bx","h1_SameKey_OnTheta_phi_Cu_bx", 62, 0.0, 1240.);
   h1_SameKey_OnTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Cu_bx","h1_SameKey_OnTheta_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_SameKey_OnTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Cu_bx","h1_SameKey_OnTheta_theta_Cu_bx", 32, 0, 32.);
   h1_SameKey_OnTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Cu_bx","h1_SameKey_OnTheta_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1377,7 +1376,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSector_Cu_bx","h1_SameKey_OnTheta_emtfSector_Cu_bx", 8, 0, 8);
   h1_SameKey_OnTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Cu_bx","h1_SameKey_OnTheta_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_SameKey_OnTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Ce_bx","h1_SameKey_OnTheta_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_SameKey_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Ce_bx","h1_SameKey_OnTheta_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_SameKey_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Ce_bx","h1_SameKey_OnTheta_phi_Ce_bx", 62, 0.0, 1240.);
   h1_SameKey_OnTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Ce_bx","h1_SameKey_OnTheta_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_SameKey_OnTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Ce_bx","h1_SameKey_OnTheta_theta_Ce_bx", 32, 0, 32.);
   h1_SameKey_OnTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Ce_bx","h1_SameKey_OnTheta_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1388,7 +1387,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Ce_bx","h1_SameKey_OnTheta_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_Matching_SameKey_OnTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_cluster_size_Cu_bx","h1_Matching_SameKey_OnTheta_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_Cu_bx","h1_Matching_SameKey_OnTheta_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_Cu_bx","h1_Matching_SameKey_OnTheta_phi_Cu_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OnTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_glob_Cu_bx","h1_Matching_SameKey_OnTheta_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OnTheta_theta_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_theta_Cu_bx","h1_Matching_SameKey_OnTheta_theta_Cu_bx", 32, 0, 32.);
   h1_Matching_SameKey_OnTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_theta_glob_Cu_bx","h1_Matching_SameKey_OnTheta_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1398,7 +1397,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OnTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_emtfSector_Cu_bx","h1_Matching_SameKey_OnTheta_emtfSector_Cu_bx", 8, 0, 8);
   h1_Matching_SameKey_OnTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_emtfSubsector_Cu_bx","h1_Matching_SameKey_OnTheta_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_Matching_SameKey_OnTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_cluster_size_Ce_bx","h1_Matching_SameKey_OnTheta_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_Ce_bx","h1_Matching_SameKey_OnTheta_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_Ce_bx","h1_Matching_SameKey_OnTheta_phi_Ce_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OnTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_glob_Ce_bx","h1_Matching_SameKey_OnTheta_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OnTheta_theta_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_theta_Ce_bx","h1_Matching_SameKey_OnTheta_theta_Ce_bx", 32, 0, 32.);
   h1_Matching_SameKey_OnTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_theta_glob_Ce_bx","h1_Matching_SameKey_OnTheta_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1409,7 +1408,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OnTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_emtfSubsector_Ce_bx","h1_Matching_SameKey_OnTheta_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_SameKey_OnTheta_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Cu_Allbx","h1_SameKey_OnTheta_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_SameKey_OnTheta_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Cu_Allbx","h1_SameKey_OnTheta_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OnTheta_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Cu_Allbx","h1_SameKey_OnTheta_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OnTheta_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Cu_Allbx","h1_SameKey_OnTheta_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OnTheta_theta_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Cu_Allbx","h1_SameKey_OnTheta_theta_Cu_Allbx", 32, 0, 32.);
   h1_SameKey_OnTheta_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Cu_Allbx","h1_SameKey_OnTheta_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1419,7 +1418,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnTheta_emtfSector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSector_Cu_Allbx","h1_SameKey_OnTheta_emtfSector_Cu_Allbx", 8, 0, 8);
   h1_SameKey_OnTheta_emtfSubsector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Cu_Allbx","h1_SameKey_OnTheta_emtfSubsector_Cu_Allbx", 38, 0, 38);
   h1_SameKey_OnTheta_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Ce_Allbx","h1_SameKey_OnTheta_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_SameKey_OnTheta_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Ce_Allbx","h1_SameKey_OnTheta_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OnTheta_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Ce_Allbx","h1_SameKey_OnTheta_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OnTheta_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Ce_Allbx","h1_SameKey_OnTheta_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OnTheta_theta_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Ce_Allbx","h1_SameKey_OnTheta_theta_Ce_Allbx", 32, 0, 32.);
   h1_SameKey_OnTheta_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Ce_Allbx","h1_SameKey_OnTheta_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1430,7 +1429,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnTheta_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Ce_Allbx","h1_SameKey_OnTheta_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
   h1_SameKey_OffTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Cu_bx","h1_SameKey_OffTheta_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_SameKey_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Cu_bx","h1_SameKey_OffTheta_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_SameKey_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Cu_bx","h1_SameKey_OffTheta_phi_Cu_bx", 62, 0.0, 1240.);
   h1_SameKey_OffTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Cu_bx","h1_SameKey_OffTheta_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_SameKey_OffTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Cu_bx","h1_SameKey_OffTheta_theta_Cu_bx", 32, 0, 32.);
   h1_SameKey_OffTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Cu_bx","h1_SameKey_OffTheta_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1440,7 +1439,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Cu_bx","h1_SameKey_OffTheta_emtfSector_Cu_bx", 8, 0, 8);
   h1_SameKey_OffTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Cu_bx","h1_SameKey_OffTheta_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_SameKey_OffTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Ce_bx","h1_SameKey_OffTheta_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_SameKey_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Ce_bx","h1_SameKey_OffTheta_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_SameKey_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Ce_bx","h1_SameKey_OffTheta_phi_Ce_bx", 62, 0.0, 1240.);
   h1_SameKey_OffTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Ce_bx","h1_SameKey_OffTheta_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_SameKey_OffTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Ce_bx","h1_SameKey_OffTheta_theta_Ce_bx", 32, 0, 32.);
   h1_SameKey_OffTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Ce_bx","h1_SameKey_OffTheta_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1451,7 +1450,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Ce_bx","h1_SameKey_OffTheta_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_Matching_SameKey_OffTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_cluster_size_Cu_bx","h1_Matching_SameKey_OffTheta_cluster_size_Cu_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_Cu_bx","h1_Matching_SameKey_OffTheta_phi_Cu_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_Cu_bx","h1_Matching_SameKey_OffTheta_phi_Cu_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OffTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_glob_Cu_bx","h1_Matching_SameKey_OffTheta_phi_glob_Cu_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OffTheta_theta_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_theta_Cu_bx","h1_Matching_SameKey_OffTheta_theta_Cu_bx", 32, 0, 32.);
   h1_Matching_SameKey_OffTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_theta_glob_Cu_bx","h1_Matching_SameKey_OffTheta_theta_glob_Cu_bx", 180., 0, 180.);
@@ -1461,7 +1460,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OffTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_emtfSector_Cu_bx","h1_Matching_SameKey_OffTheta_emtfSector_Cu_bx", 8, 0, 8);
   h1_Matching_SameKey_OffTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_emtfSubsector_Cu_bx","h1_Matching_SameKey_OffTheta_emtfSubsector_Cu_bx", 38, 0, 38);
   h1_Matching_SameKey_OffTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_cluster_size_Ce_bx","h1_Matching_SameKey_OffTheta_cluster_size_Ce_bx", 10, 0., 10.);
-  h1_Matching_SameKey_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_Ce_bx","h1_Matching_SameKey_OffTheta_phi_Ce_bx", 124, 0.0, 1240.);
+  h1_Matching_SameKey_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_Ce_bx","h1_Matching_SameKey_OffTheta_phi_Ce_bx", 62, 0.0, 1240.);
   h1_Matching_SameKey_OffTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_glob_Ce_bx","h1_Matching_SameKey_OffTheta_phi_glob_Ce_bx", 180, 0.0, 180.0);
   h1_Matching_SameKey_OffTheta_theta_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_theta_Ce_bx","h1_Matching_SameKey_OffTheta_theta_Ce_bx", 32, 0, 32.);
   h1_Matching_SameKey_OffTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_theta_glob_Ce_bx","h1_Matching_SameKey_OffTheta_theta_glob_Ce_bx", 180., 0, 180.);
@@ -1472,7 +1471,7 @@ void DQM_CPPF::beginJob()
   h1_Matching_SameKey_OffTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_emtfSubsector_Ce_bx","h1_Matching_SameKey_OffTheta_emtfSubsector_Ce_bx", 38, 0, 38);
 
   h1_SameKey_OffTheta_cluster_size_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Cu_Allbx","h1_SameKey_OffTheta_cluster_size_Cu_Allbx", 10, 0., 10.);
-  h1_SameKey_OffTheta_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Cu_Allbx","h1_SameKey_OffTheta_phi_Cu_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OffTheta_phi_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Cu_Allbx","h1_SameKey_OffTheta_phi_Cu_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OffTheta_phi_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Cu_Allbx","h1_SameKey_OffTheta_phi_glob_Cu_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OffTheta_theta_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Cu_Allbx","h1_SameKey_OffTheta_theta_Cu_Allbx", 32, 0, 32.);
   h1_SameKey_OffTheta_theta_glob_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Cu_Allbx","h1_SameKey_OffTheta_theta_glob_Cu_Allbx", 180., 0, 180.);
@@ -1482,7 +1481,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffTheta_emtfSector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Cu_Allbx","h1_SameKey_OffTheta_emtfSector_Cu_Allbx", 8, 0, 8);
   h1_SameKey_OffTheta_emtfSubsector_Cu_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Cu_Allbx","h1_SameKey_OffTheta_emtfSubsector_Cu_Allbx", 38, 0, 38);
   h1_SameKey_OffTheta_cluster_size_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Ce_Allbx","h1_SameKey_OffTheta_cluster_size_Ce_Allbx", 10, 0., 10.);
-  h1_SameKey_OffTheta_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Ce_Allbx","h1_SameKey_OffTheta_phi_Ce_Allbx", 124, 0.0, 1240.);
+  h1_SameKey_OffTheta_phi_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Ce_Allbx","h1_SameKey_OffTheta_phi_Ce_Allbx", 62, 0.0, 1240.);
   h1_SameKey_OffTheta_phi_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Ce_Allbx","h1_SameKey_OffTheta_phi_glob_Ce_Allbx", 180, 0.0, 180.0);
   h1_SameKey_OffTheta_theta_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Ce_Allbx","h1_SameKey_OffTheta_theta_Ce_Allbx", 32, 0, 32.);
   h1_SameKey_OffTheta_theta_glob_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Ce_Allbx","h1_SameKey_OffTheta_theta_glob_Ce_Allbx", 180., 0, 180.);
@@ -1492,7 +1491,7 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffTheta_emtfSector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Ce_Allbx","h1_SameKey_OffTheta_emtfSector_Ce_Allbx", 8, 0, 8);
   h1_SameKey_OffTheta_emtfSubsector_Ce_Allbx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Ce_Allbx","h1_SameKey_OffTheta_emtfSubsector_Ce_Allbx", 38, 0, 38);
 
-  h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx","h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx","h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OnPhi_theta_Ce_theta_Cu = fs->make<TH2D>("h2_SameKey_OnPhi_theta_Ce_theta_Cu","h2_SameKey_OnPhi_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OnPhi_ID_Ce_ID_Cu = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_ID_Cu","h2_SameKey_OnPhi_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OnPhi_ID_Ce_roll_Ce = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_roll_Ce","h2_SameKey_OnPhi_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1502,7 +1501,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce","h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OnPhi_zone_Ce_zone_Cu = fs->make<TH2D>("h2_SameKey_OnPhi_zone_Ce_zone_Cu","h2_SameKey_OnPhi_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OnPhi_theta_Ce_theta_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_theta_Ce_theta_Cu","h2_Matching_SameKey_OnPhi_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_Matching_SameKey_OnPhi_ID_Ce_ID_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_ID_Ce_ID_Cu","h2_Matching_SameKey_OnPhi_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_Matching_SameKey_OnPhi_ID_Ce_roll_Ce = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_ID_Ce_roll_Ce","h2_Matching_SameKey_OnPhi_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1512,7 +1511,7 @@ void DQM_CPPF::beginJob()
   h2_Matching_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce","h2_Matching_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_Matching_SameKey_OnPhi_zone_Ce_zone_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_zone_Ce_zone_Cu","h2_Matching_SameKey_OnPhi_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx","h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx","h2_SameKey_OnPhi_phi_Ce_phi_Cu_Allbx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OnPhi_theta_Ce_theta_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_theta_Ce_theta_Cu_Allbx","h2_SameKey_OnPhi_theta_Ce_theta_Cu_Allbx", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OnPhi_ID_Ce_ID_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_ID_Cu_Allbx","h2_SameKey_OnPhi_ID_Ce_ID_Cu_Allbx", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OnPhi_ID_Ce_roll_Ce_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_roll_Ce_Allbx","h2_SameKey_OnPhi_ID_Ce_roll_Ce_Allbx", 38, 0, 38, 4, 0, 4);
@@ -1523,7 +1522,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnPhi_zone_Ce_zone_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnPhi_zone_Ce_zone_Cu_Allbx","h2_SameKey_OnPhi_zone_Ce_zone_Cu_Allbx", 15, 0, 15, 15, 0, 15);
 
 
-  h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx","h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx","h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OffPhi_theta_Ce_theta_Cu = fs->make<TH2D>("h2_SameKey_OffPhi_theta_Ce_theta_Cu","h2_SameKey_OffPhi_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OffPhi_ID_Ce_ID_Cu = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_ID_Cu","h2_SameKey_OffPhi_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OffPhi_ID_Ce_roll_Ce = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_roll_Ce","h2_SameKey_OffPhi_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1533,7 +1532,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce","h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OffPhi_zone_Ce_zone_Cu = fs->make<TH2D>("h2_SameKey_OffPhi_zone_Ce_zone_Cu","h2_SameKey_OffPhi_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OffPhi_theta_Ce_theta_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_theta_Ce_theta_Cu","h2_Matching_SameKey_OffPhi_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_Matching_SameKey_OffPhi_ID_Ce_ID_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_ID_Ce_ID_Cu","h2_Matching_SameKey_OffPhi_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_Matching_SameKey_OffPhi_ID_Ce_roll_Ce = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_ID_Ce_roll_Ce","h2_Matching_SameKey_OffPhi_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1543,7 +1542,7 @@ void DQM_CPPF::beginJob()
   h2_Matching_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce","h2_Matching_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_Matching_SameKey_OffPhi_zone_Ce_zone_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_zone_Ce_zone_Cu","h2_Matching_SameKey_OffPhi_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx","h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx","h2_SameKey_OffPhi_phi_Ce_phi_Cu_Allbx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OffPhi_theta_Ce_theta_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_theta_Ce_theta_Cu_Allbx","h2_SameKey_OffPhi_theta_Ce_theta_Cu_Allbx", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OffPhi_ID_Ce_ID_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_ID_Cu_Allbx","h2_SameKey_OffPhi_ID_Ce_ID_Cu_Allbx", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OffPhi_ID_Ce_roll_Ce_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_roll_Ce_Allbx","h2_SameKey_OffPhi_ID_Ce_roll_Ce_Allbx", 38, 0, 38, 4, 0, 4);
@@ -1553,7 +1552,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_Allbx   = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_Allbx","h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_Allbx", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OffPhi_zone_Ce_zone_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffPhi_zone_Ce_zone_Cu_Allbx","h2_SameKey_OffPhi_zone_Ce_zone_Cu_Allbx", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx","h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx","h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OnTheta_theta_Ce_theta_Cu = fs->make<TH2D>("h2_SameKey_OnTheta_theta_Ce_theta_Cu","h2_SameKey_OnTheta_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OnTheta_ID_Ce_ID_Cu = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_ID_Cu","h2_SameKey_OnTheta_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OnTheta_ID_Ce_roll_Ce = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_roll_Ce","h2_SameKey_OnTheta_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1563,7 +1562,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce","h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OnTheta_zone_Ce_zone_Cu = fs->make<TH2D>("h2_SameKey_OnTheta_zone_Ce_zone_Cu","h2_SameKey_OnTheta_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OnTheta_theta_Ce_theta_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_theta_Ce_theta_Cu","h2_Matching_SameKey_OnTheta_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_Matching_SameKey_OnTheta_ID_Ce_ID_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_ID_Ce_ID_Cu","h2_Matching_SameKey_OnTheta_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_Matching_SameKey_OnTheta_ID_Ce_roll_Ce = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_ID_Ce_roll_Ce","h2_Matching_SameKey_OnTheta_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1573,7 +1572,7 @@ void DQM_CPPF::beginJob()
   h2_Matching_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce","h2_Matching_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_Matching_SameKey_OnTheta_zone_Ce_zone_Cu = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_zone_Ce_zone_Cu","h2_Matching_SameKey_OnTheta_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx","h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx","h2_SameKey_OnTheta_phi_Ce_phi_Cu_Allbx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OnTheta_theta_Ce_theta_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_theta_Ce_theta_Cu_Allbx","h2_SameKey_OnTheta_theta_Ce_theta_Cu_Allbx", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OnTheta_ID_Ce_ID_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_ID_Cu_Allbx","h2_SameKey_OnTheta_ID_Ce_ID_Cu_Allbx", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OnTheta_ID_Ce_roll_Ce_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_roll_Ce_Allbx","h2_SameKey_OnTheta_ID_Ce_roll_Ce_Allbx", 38, 0, 38, 4, 0, 4);
@@ -1583,7 +1582,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_Allbx   = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_Allbx","h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_Allbx", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OnTheta_zone_Ce_zone_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OnTheta_zone_Ce_zone_Cu_Allbx","h2_SameKey_OnTheta_zone_Ce_zone_Cu_Allbx", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx","h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx","h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OffTheta_theta_Ce_theta_Cu = fs->make<TH2D>("h2_SameKey_OffTheta_theta_Ce_theta_Cu","h2_SameKey_OffTheta_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OffTheta_ID_Ce_ID_Cu = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_ID_Cu","h2_SameKey_OffTheta_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OffTheta_ID_Ce_roll_Ce = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_roll_Ce","h2_SameKey_OffTheta_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1593,7 +1592,7 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce","h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OffTheta_zone_Ce_zone_Cu = fs->make<TH2D>("h2_SameKey_OffTheta_zone_Ce_zone_Cu","h2_SameKey_OffTheta_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx","h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OffTheta_theta_Ce_theta_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_theta_Ce_theta_Cu","h2_Matching_SameKey_OffTheta_theta_Ce_theta_Cu", 32, 0, 32., 32, 0, 32.);
   h2_Matching_SameKey_OffTheta_ID_Ce_ID_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_ID_Ce_ID_Cu","h2_Matching_SameKey_OffTheta_ID_Ce_ID_Cu", 38, 0, 38, 38, 0, 38);
   h2_Matching_SameKey_OffTheta_ID_Ce_roll_Ce = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_ID_Ce_roll_Ce","h2_Matching_SameKey_OffTheta_ID_Ce_roll_Ce", 38, 0, 38, 4, 0, 4);
@@ -1603,7 +1602,7 @@ void DQM_CPPF::beginJob()
   h2_Matching_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce   = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce","h2_Matching_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce", 38, 0, 38, 15, 0, 15);
   h2_Matching_SameKey_OffTheta_zone_Ce_zone_Cu = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_zone_Ce_zone_Cu","h2_Matching_SameKey_OffTheta_zone_Ce_zone_Cu", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx","h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx", 124, 0.0, 1240., 124, 0.0, 1240.);
+  h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx","h2_SameKey_OffTheta_phi_Ce_phi_Cu_Allbx", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_SameKey_OffTheta_theta_Ce_theta_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffTheta_theta_Ce_theta_Cu_Allbx","h2_SameKey_OffTheta_theta_Ce_theta_Cu_Allbx", 32, 0, 32., 32, 0, 32.);
   h2_SameKey_OffTheta_ID_Ce_ID_Cu_Allbx = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_ID_Cu_Allbx","h2_SameKey_OffTheta_ID_Ce_ID_Cu_Allbx", 38, 0, 38, 38, 0, 38);
   h2_SameKey_OffTheta_ID_Ce_roll_Ce_Allbx = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_roll_Ce_Allbx","h2_SameKey_OffTheta_ID_Ce_roll_Ce_Allbx", 38, 0, 38, 4, 0, 4);

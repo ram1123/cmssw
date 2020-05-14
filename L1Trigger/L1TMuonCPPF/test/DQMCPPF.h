@@ -72,41 +72,44 @@ private:
   // std::vector<int> EMTFsector6bins;
 
   // std::map<int , std::vector<int>> fill_info;
+  //
+  // comment format
+  // Title;x-axis;y-axis
+  TH1D* h1_nEvents; ///< #events
 
-  TH1D* h1_nEvents; ///< Total number of event over which we run this framework
+  TH1D* h1_nEvents_Ce_NoHits; ///< Unpacker: nHits == 0 ;#nEvents;
+  TH1D* h1_nEvents_Cu_NoHits; ///< Emulator: nHits == 0 ;#nEvents;
 
-  TH1D* h1_nEvents_Ce_NoHits; ///< Number of events having zero hits on emulator
-  TH1D* h1_nEvents_Cu_NoHits; ///< Number of events having zero hits on unpacker
   TH1D* h1_nChmbersWithHit_Cu;  ///< Number of chamber distribution having hits
-  TH1D* h1_nEvents_Cu_nHitMoreThan2;  ///< #nEvents for unpacker if (nHits > 2 )
-  TH1D* h1_nEvents_Cu_bx; ///< #nEvents for unpacker if (nHits > 2 && bx==0 for each individual hit)
-  TH1D* h1_nEvents_Cu_Allbx;  ///< #nEvents for unpacker if (nHits > 2 && bx==0 for all hits on an individual chamber.)
+  TH1D* h1_nEvents_Cu_nHitNotMoreThan2;  ///< Unpacker: nHits >= 2;#nEvents;
+  TH1D* h1_nEvents_Cu_bx; ///<  Unpacker: nHits >= 2 && (bx==0 for each individual hit);#nEvents;
+  TH1D* h1_nEvents_Cu_Allbx;  ///<  Unpacker: nHits > 2 && (bx==0 for all hits on each chamber);#nEvents;
 
   TH1D* h1_nChmbersWithHit_Ce;  ///< Number of chamber distribution having hits
-  TH1D* h1_nEvents_Ce_nHitMoreThan2;  ///< #nEvents for emulator if (nHits > 2 )
-  TH1D* h1_nEvents_Ce_bx; ///< #nEvents for emulator if (nHits > 2 && bx==0 for each individual hit)
-  TH1D* h1_nEvents_Ce_Allbx;  ///< #nEvents for emulator if (nHits > 2 && bx==0 for all hits on an individual chamber.)
+  TH1D* h1_nEvents_Ce_nHitNotMoreThan2;  ///< Emulator: nHits >= 2;#nEvents;
+  TH1D* h1_nEvents_Ce_bx; ///< Emulator: nHits >= 2 && (bx==0 for each individual hit);#nEvents;
+  TH1D* h1_nEvents_Ce_Allbx;  ///< Unpacker: nHits > 2 && (bx==0 for all hits on each chamber);#nEvents;
 
-  TH1D* h1_nEvents_CuCe_SameKey;  ///< #nEvents if unpacker and emulator have same key
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits;  ///< #nEvents if unpacker and emulator have same key && same total number of hits on each chamber
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx;  ///< #nEvents if unpacker and emulator have same key && same total number of hits on each chamber && if any hit has bx==0
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx; ///< #nEvents if unpacker and emulator have same key&& same total number of hits on each chamber && if all hits has bx==0
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnPhi
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffPhi
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnTheta
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffTheta
-  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onPhi; ///< #nEvents after matching if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnPhi
-  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offPhi; ///< #nEvents after matching if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffPhi
-  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onTheta; ///< #nEvents after matching if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnTheta
-  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offTheta; ///< #nEvents after matching if unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffTheta
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_onPhi; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OnPhi
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_offPhi; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OffPhi
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_onTheta; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OnTheta
-  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_offTheta; ///< #nEvents if unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OffTheta
+  TH1D* h1_nEvents_CuCe_SameKey;  ///< #nEvents if Unpacker and emulator have same key
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits;  ///< #nEvents if Unpacker and emulator have same key && same total number of hits on each chamber
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx;  ///< #nEvents if Unpacker and emulator have same key && same total number of hits on each chamber && if any hit has bx==0
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx; ///< #nEvents if Unpacker and emulator have same key&& same total number of hits on each chamber && if all hits has bx==0
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onPhi; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnPhi
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offPhi; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffPhi
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_onTheta; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnTheta
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AnyBx_offTheta; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffTheta
+  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onPhi; ///< #nEvents after matching if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnPhi
+  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offPhi; ///< #nEvents after matching if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffPhi
+  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_onTheta; ///< #nEvents after matching if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OnTheta
+  TH1D* h1_nEvents_CuCe_Matching_SameKey_SameNHits_AnyBx_offTheta; ///< #nEvents after matching if Unpacker and emulator have same keys && Same number of total hits on each chamber && if any hit has bx==0 && OffTheta
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_onPhi; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OnPhi
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_offPhi; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OffPhi
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_onTheta; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OnTheta
+  TH1D* h1_nEvents_CuCe_SameKey_SameNHits_AllBx_offTheta; ///< #nEvents if Unpacker and emulator have same keys && Same number of total hits on each chamber && if all hit has bx==0 && OffTheta
 
-  TH1D* h1_total_hits_unpacker; ///< Number of total hits on one chamber in an unpacker.
-  TH1D* h1_total_hits_unpacker_bx; ///< Number of hits on one chamber in unpacker (bxE == bxU)
-  TH1D* h1_total_hits_unpacker_bx_phi;  ///< Number of hits  on one chamber in unpacker (#phiE == #phiU)
+  TH1D* h1_total_hits_unpacker; ///< Number of total hits on one chamber in an Unpacker.
+  TH1D* h1_total_hits_unpacker_bx; ///< Number of hits on one chamber in Unpacker (bxE == bxU)
+  TH1D* h1_total_hits_unpacker_bx_phi;  ///< Number of hits  on one chamber in Unpacker (#phiE == #phiU)
 
   TH1D* h1_cluster_size_Cu;  ///<  ;Unpacker; Number of hits on a chamber > 2
   TH1D* h1_phi_Cu; ///<  ;Unpacker; Number of hits on a chamber > 2
@@ -184,74 +187,74 @@ private:
   TH1D* h1_emtfSector_Ce_Allbx;  ///< ;Emulator; #nHits on chamber > 2 && bunch crossing == 0 for all hits on a chamber.
   TH1D* h1_emtfSubsector_Ce_Allbx; ///< ;Emulator; #nHits on chamber > 2 && bunch crossing == 0 for all hits on a chamber.
 
-  TH1D* h1_SameKey_cluster_size_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_phi_Cu; ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_theta_Cu; ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_ID_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_zone_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_roll_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_ring_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Cu;  ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Cu  ; ///<  ;Unpacker; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_cluster_size_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_phi_Ce; ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_theta_Ce; ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_ID_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_zone_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_roll_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_ring_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Ce;  ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Ce; ///< ;Emulator; && Hit at same chamber in unpacker and emulator && #nHits is same in both unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_phi_Cu; ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_theta_Cu; ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_ID_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_zone_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_roll_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_ring_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Cu;  ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Cu  ; ///<  ;Unpacker; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_phi_Ce; ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_theta_Ce; ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_ID_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_zone_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_roll_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_ring_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Ce;  ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Ce; ///< ;Emulator; && Hit at same chamber in Unpacker and emulator && #nHits is same in both Unpacker and emulator
 
-  TH1D* h1_SameKey_cluster_size_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_Cu_bx; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_Cu_bx; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ID_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_zone_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_roll_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ring_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Cu_bx  ; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_cluster_size_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ID_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_zone_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_roll_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ring_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_Cu_bx; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_Cu_bx; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ID_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_zone_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_roll_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ring_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Cu_bx;  ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Cu_bx  ; ///<  ;Unpacker; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ID_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_zone_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_roll_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ring_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Ce_bx;  ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Ce_bx; ///< ;Emulator; bunch crossing == 0; && Hit at same chamber in Unpacker and emulator
 
-  TH1D* h1_SameKey_cluster_size_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_Cu_Allbx; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_Cu_Allbx; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ID_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_zone_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_roll_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ring_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Cu_Allbx  ; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_cluster_size_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_phi_glob_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_theta_glob_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ID_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_zone_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_roll_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_ring_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSector_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
-  TH1D* h1_SameKey_emtfSubsector_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_Cu_Allbx; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_Cu_Allbx; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ID_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_zone_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_roll_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ring_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Cu_Allbx;  ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Cu_Allbx  ; ///<  ;Unpacker; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_cluster_size_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_phi_glob_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_theta_glob_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ID_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_zone_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_roll_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_ring_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSector_Ce_Allbx;  ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
+  TH1D* h1_SameKey_emtfSubsector_Ce_Allbx; ///< ;Emulator; bunch crossing == 0 for all hits on a chamber; && Hit at same chamber in Unpacker and emulator
 
   TH1D* h1_SameKey_OnPhi_cluster_size_Cu_bx; ///< ; ; bunch crossing ==0 && Hit at same chamber && OnPhi Axis
   TH1D* h1_SameKey_OnPhi_phi_Cu_bx; ///<  ; ; bunch crossing ==0 && Hit at same chamber && OnPhi Axis
