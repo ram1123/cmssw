@@ -312,7 +312,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         h1_emtfSubsector_Ce_bx_OneHit->Fill(_emtfSubsector_Ce.at(key)[vecSize]);
       }
     }
-    h1_total_hits_emulator_LessThan3Hit_BxZero->Fill(countNHitsHavingBxZero);
+    if (countNHitsHavingBxZero) h1_total_hits_emulator_LessThan3Hit_BxZero->Fill(countNHitsHavingBxZero);
     if (DEBUG) std::cout << "\t" << std::endl;
   }
   if (nHit_Ce_Count_nHitNotMoreThan2) h1_nEvents_Ce_nHitNotMoreThan2->Fill(1.0);
@@ -391,7 +391,7 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         h1_emtfSubsector_Cu_bx_OneHit->Fill(_emtfSubsector_Cu.at(key)[vecSize]);
       }
     }
-    h1_total_hits_emulator_LessThan3Hit_BxZero->Fill(countNHitsHavingBxZero);
+    if (countNHitsHavingBxZero) h1_total_hits_unpacker_LessThan3Hit_BxZero->Fill(countNHitsHavingBxZero);
     if (DEBUG) std::cout << "\t" << std::endl;
   }
   if (nHit_Cu_Count_nHitNotMoreThan2) h1_nEvents_Cu_nHitNotMoreThan2->Fill(1.0);
@@ -653,11 +653,11 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           h2_SameKey_OffTheta_zone_Ce_zone_Cu_bx->Fill(_zone_Ce.at(key_Ce)[vecSize], _zone_Cu.at(key_Cu)[vecSize]);
         }
       }
-      h1_total_hits_SameKey_SameNHits_bx->Fill(countNHitsHavingBxZero);
-      h1_total_hits_SameKey_SameNHits_bx_OnPhi->Fill(countNHitsHavingBxZero_OnPhi);
-      h1_total_hits_SameKey_SameNHits_bx_OffPhi->Fill(countNHitsHavingBxZero_OffPhi);
-      h1_total_hits_SameKey_SameNHits_bx_OnTheta->Fill(countNHitsHavingBxZero_OnTheta);
-      h1_total_hits_SameKey_SameNHits_bx_OffTheta->Fill(countNHitsHavingBxZero_OffTheta);
+      if (countNHitsHavingBxZero) h1_total_hits_SameKey_SameNHits_bx->Fill(countNHitsHavingBxZero);
+      if (countNHitsHavingBxZero_OnPhi) h1_total_hits_SameKey_SameNHits_bx_OnPhi->Fill(countNHitsHavingBxZero_OnPhi);
+      if (countNHitsHavingBxZero_OffPhi) h1_total_hits_SameKey_SameNHits_bx_OffPhi->Fill(countNHitsHavingBxZero_OffPhi);
+      if (countNHitsHavingBxZero_OnTheta) h1_total_hits_SameKey_SameNHits_bx_OnTheta->Fill(countNHitsHavingBxZero_OnTheta);
+      if (countNHitsHavingBxZero_OffTheta) h1_total_hits_SameKey_SameNHits_bx_OffTheta->Fill(countNHitsHavingBxZero_OffTheta);
       /**
        * ## matching scenario
        *
@@ -855,10 +855,10 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
           h2_Matching_SameKey_OffTheta_zone_Ce_zone_Cu_bx->Fill(_zone_Ce.at(key_Ce)[index_Ce], _zone_Cu.at(key_Cu)[index_Cu]);
         }
       }
-      h1_total_hits_SameKey_SameNHits_bx_Matching_OnPhi->Fill(countNHitsHavingBxZero_Matching_OnPhi);
-      h1_total_hits_SameKey_SameNHits_bx_Matching_OffPhi->Fill(countNHitsHavingBxZero_Matching_OffPhi);
-      h1_total_hits_SameKey_SameNHits_bx_Matching_OnTheta->Fill(countNHitsHavingBxZero_Matching_OnTheta);
-      h1_total_hits_SameKey_SameNHits_bx_Matching_OffTheta->Fill(countNHitsHavingBxZero_Matching_OffTheta);
+      if (countNHitsHavingBxZero_Matching_OnPhi) h1_total_hits_SameKey_SameNHits_bx_Matching_OnPhi->Fill(countNHitsHavingBxZero_Matching_OnPhi);
+      if (countNHitsHavingBxZero_Matching_OffPhi) h1_total_hits_SameKey_SameNHits_bx_Matching_OffPhi->Fill(countNHitsHavingBxZero_Matching_OffPhi);
+      if (countNHitsHavingBxZero_Matching_OnTheta) h1_total_hits_SameKey_SameNHits_bx_Matching_OnTheta->Fill(countNHitsHavingBxZero_Matching_OnTheta);
+      if (countNHitsHavingBxZero_Matching_OffTheta) h1_total_hits_SameKey_SameNHits_bx_Matching_OffTheta->Fill(countNHitsHavingBxZero_Matching_OffTheta);
 
       if (nHit_Ce == 1 && nHit_Cu == 1)
       {
@@ -1154,16 +1154,16 @@ void DQM_CPPF::beginJob()
   h1_emtfSector_Cu_bx = fs->make<TH1D>("h1_emtfSector_Cu_bx","Unpacker: Bx==0; EMTF Sector ;", 8, 0, 8);
   h1_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_emtfSubsector_Cu_bx","Unpacker: Bx==0; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_cluster_size_Cu_bx_OneHit = fs->make<TH1D>("h1_cluster_size_Cu_bx_OneHit","Unpacker: Bx==0; Cluster Size ;", 10, 0., 10.);
-  h1_phi_Cu_bx_OneHit = fs->make<TH1D>("h1_phi_Cu_bx_OneHit","Unpacker: Bx==0; #phi;", 62, 0.0, 1240.);
-  h1_phi_glob_Cu_bx_OneHit = fs->make<TH1D>("h1_phi_glob_Cu_bx_OneHit","Unpacker: Bx==0; Global #phi;", 180, 0.0, 180.0);
-  h1_theta_Cu_bx_OneHit = fs->make<TH1D>("h1_theta_Cu_bx_OneHit","Unpacker: Bx==0; #theta ;", 32, 0, 32.);
-  h1_theta_glob_Cu_bx_OneHit = fs->make<TH1D>("h1_theta_glob_Cu_bx_OneHit","Unpacker: Bx==0; Global #theta;", 180., 0, 180.);
-  h1_ID_Cu_bx_OneHit = fs->make<TH1D>("h1_ID_Cu_bx_OneHit","Unpacker: Bx==0; Chamber ID;", 38, 0, 38);
-  h1_zone_Cu_bx_OneHit = fs->make<TH1D>("h1_zone_Cu_bx_OneHit","Unpacker: Bx==0; Zone ;", 15, 0, 15);
-  h1_roll_Cu_bx_OneHit = fs->make<TH1D>("h1_roll_Cu_bx_OneHit","Unpacker: Bx==0; Roll ;", 4, 0, 4);
-  h1_emtfSector_Cu_bx_OneHit = fs->make<TH1D>("h1_emtfSector_Cu_bx_OneHit","Unpacker: Bx==0; EMTF Sector ;", 8, 0, 8);
-  h1_emtfSubsector_Cu_bx_OneHit = fs->make<TH1D>("h1_emtfSubsector_Cu_bx_OneHit","Unpacker: Bx==0; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_cluster_size_Cu_bx_OneHit = fs->make<TH1D>("h1_cluster_size_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Cluster Size ;", 10, 0., 10.);
+  h1_phi_Cu_bx_OneHit = fs->make<TH1D>("h1_phi_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; #phi;", 62, 0.0, 1240.);
+  h1_phi_glob_Cu_bx_OneHit = fs->make<TH1D>("h1_phi_glob_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Global #phi;", 180, 0.0, 180.0);
+  h1_theta_Cu_bx_OneHit = fs->make<TH1D>("h1_theta_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; #theta ;", 32, 0, 32.);
+  h1_theta_glob_Cu_bx_OneHit = fs->make<TH1D>("h1_theta_glob_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Global #theta;", 180., 0, 180.);
+  h1_ID_Cu_bx_OneHit = fs->make<TH1D>("h1_ID_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Chamber ID;", 38, 0, 38);
+  h1_zone_Cu_bx_OneHit = fs->make<TH1D>("h1_zone_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Zone ;", 15, 0, 15);
+  h1_roll_Cu_bx_OneHit = fs->make<TH1D>("h1_roll_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; Roll ;", 4, 0, 4);
+  h1_emtfSector_Cu_bx_OneHit = fs->make<TH1D>("h1_emtfSector_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; EMTF Sector ;", 8, 0, 8);
+  h1_emtfSubsector_Cu_bx_OneHit = fs->make<TH1D>("h1_emtfSubsector_Cu_bx_OneHit","Unpacker: Bx==0 && One Hit; EMTF Sub-Sector ;", 38, 0, 38);
 
   h1_total_hits_emulator = fs->make<TH1D>("h1_total_hits_emulator", "CPPFDigis_total_hits_emulator" , 5, 0. , 5.);
   h1_total_hits_emulator_LessThan3Hit = fs->make<TH1D>("h1_total_hits_emulator_LessThan3Hit", "h1_total_hits_emulator_LessThan3Hit" , 5, 0. , 5.);
@@ -1180,27 +1180,27 @@ void DQM_CPPF::beginJob()
   h1_emtfSector_Ce = fs->make<TH1D>("h1_emtfSector_Ce","Emulator: No Cuts; EMTF Sector ;", 8, 0, 8);
   h1_emtfSubsector_Ce = fs->make<TH1D>("h1_emtfSubsector_Ce","Emulator: No Cuts; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_cluster_size_Ce_bx = fs->make<TH1D>("h1_cluster_size_Ce_bx","Unpacker: Bx==0; Cluster Size ;", 10, 0., 10.);
-  h1_phi_Ce_bx = fs->make<TH1D>("h1_phi_Ce_bx","Unpacker: Bx==0; #phi;", 62, 0.0, 1240.);
-  h1_phi_glob_Ce_bx = fs->make<TH1D>("h1_phi_glob_Ce_bx","Unpacker: Bx==0; Global #phi;", 180, 0.0, 180.0);
-  h1_theta_Ce_bx = fs->make<TH1D>("h1_theta_Ce_bx","Unpacker: Bx==0; #theta ;", 32, 0, 32.);
-  h1_theta_glob_Ce_bx = fs->make<TH1D>("h1_theta_glob_Ce_bx","Unpacker: Bx==0; Global #theta;", 180., 0, 180.);
-  h1_ID_Ce_bx = fs->make<TH1D>("h1_ID_Ce_bx","Unpacker: Bx==0; Chamber ID;", 38, 0, 38);
-  h1_zone_Ce_bx = fs->make<TH1D>("h1_zone_Ce_bx","Unpacker: Bx==0; Zone ;", 15, 0, 15);
-  h1_roll_Ce_bx = fs->make<TH1D>("h1_roll_Ce_bx","Unpacker: Bx==0; Roll ;", 4, 0, 4);
-  h1_emtfSector_Ce_bx = fs->make<TH1D>("h1_emtfSector_Ce_bx","Unpacker: Bx==0; EMTF Sector ;", 8, 0, 8);
-  h1_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_emtfSubsector_Ce_bx","Unpacker: Bx==0; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_cluster_size_Ce_bx = fs->make<TH1D>("h1_cluster_size_Ce_bx","Emulator: Bx==0; Cluster Size ;", 10, 0., 10.);
+  h1_phi_Ce_bx = fs->make<TH1D>("h1_phi_Ce_bx","Emulator: Bx==0; #phi;", 62, 0.0, 1240.);
+  h1_phi_glob_Ce_bx = fs->make<TH1D>("h1_phi_glob_Ce_bx","Emulator: Bx==0; Global #phi;", 180, 0.0, 180.0);
+  h1_theta_Ce_bx = fs->make<TH1D>("h1_theta_Ce_bx","Emulator: Bx==0; #theta ;", 32, 0, 32.);
+  h1_theta_glob_Ce_bx = fs->make<TH1D>("h1_theta_glob_Ce_bx","Emulator: Bx==0; Global #theta;", 180., 0, 180.);
+  h1_ID_Ce_bx = fs->make<TH1D>("h1_ID_Ce_bx","Emulator: Bx==0; Chamber ID;", 38, 0, 38);
+  h1_zone_Ce_bx = fs->make<TH1D>("h1_zone_Ce_bx","Emulator: Bx==0; Zone ;", 15, 0, 15);
+  h1_roll_Ce_bx = fs->make<TH1D>("h1_roll_Ce_bx","Emulator: Bx==0; Roll ;", 4, 0, 4);
+  h1_emtfSector_Ce_bx = fs->make<TH1D>("h1_emtfSector_Ce_bx","Emulator: Bx==0; EMTF Sector ;", 8, 0, 8);
+  h1_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_emtfSubsector_Ce_bx","Emulator: Bx==0; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_cluster_size_Ce_bx_OneHit = fs->make<TH1D>("h1_cluster_size_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Cluster Size ;", 10, 0., 10.);
-  h1_phi_Ce_bx_OneHit = fs->make<TH1D>("h1_phi_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; #phi;", 62, 0.0, 1240.);
-  h1_phi_glob_Ce_bx_OneHit = fs->make<TH1D>("h1_phi_glob_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Global #phi;", 180, 0.0, 180.0);
-  h1_theta_Ce_bx_OneHit = fs->make<TH1D>("h1_theta_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; #theta ;", 32, 0, 32.);
-  h1_theta_glob_Ce_bx_OneHit = fs->make<TH1D>("h1_theta_glob_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Global #theta;", 180., 0, 180.);
-  h1_ID_Ce_bx_OneHit = fs->make<TH1D>("h1_ID_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Chamber ID;", 38, 0, 38);
-  h1_zone_Ce_bx_OneHit = fs->make<TH1D>("h1_zone_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Zone ;", 15, 0, 15);
-  h1_roll_Ce_bx_OneHit = fs->make<TH1D>("h1_roll_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; Roll ;", 4, 0, 4);
-  h1_emtfSector_Ce_bx_OneHit = fs->make<TH1D>("h1_emtfSector_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; EMTF Sector ;", 8, 0, 8);
-  h1_emtfSubsector_Ce_bx_OneHit = fs->make<TH1D>("h1_emtfSubsector_Ce_bx_OneHit","Unpacker: Bx==0 && OneHit; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_cluster_size_Ce_bx_OneHit = fs->make<TH1D>("h1_cluster_size_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Cluster Size ;", 10, 0., 10.);
+  h1_phi_Ce_bx_OneHit = fs->make<TH1D>("h1_phi_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; #phi;", 62, 0.0, 1240.);
+  h1_phi_glob_Ce_bx_OneHit = fs->make<TH1D>("h1_phi_glob_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Global #phi;", 180, 0.0, 180.0);
+  h1_theta_Ce_bx_OneHit = fs->make<TH1D>("h1_theta_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; #theta ;", 32, 0, 32.);
+  h1_theta_glob_Ce_bx_OneHit = fs->make<TH1D>("h1_theta_glob_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Global #theta;", 180., 0, 180.);
+  h1_ID_Ce_bx_OneHit = fs->make<TH1D>("h1_ID_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Chamber ID;", 38, 0, 38);
+  h1_zone_Ce_bx_OneHit = fs->make<TH1D>("h1_zone_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Zone ;", 15, 0, 15);
+  h1_roll_Ce_bx_OneHit = fs->make<TH1D>("h1_roll_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; Roll ;", 4, 0, 4);
+  h1_emtfSector_Ce_bx_OneHit = fs->make<TH1D>("h1_emtfSector_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; EMTF Sector ;", 8, 0, 8);
+  h1_emtfSubsector_Ce_bx_OneHit = fs->make<TH1D>("h1_emtfSubsector_Ce_bx_OneHit","Emulator: Bx==0 && OneHit; EMTF Sub-Sector ;", 38, 0, 38);
 
   h1_SameKey_cluster_size_Cu = fs->make<TH1D>("h1_SameKey_cluster_size_Cu","Unpacker: Same SubSector; Cluster Size ;", 10, 0., 10.);
   h1_SameKey_phi_Cu = fs->make<TH1D>("h1_SameKey_phi_Cu","Unpacker: Same SubSector; #phi;", 62, 0.0, 1240.);
@@ -1370,26 +1370,26 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffPhi_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; EMTF Sector ;", 8, 0, 8);
   h1_SameKey_OffPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_SameKey_OneHit_OffPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OffPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OffPhi_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OffPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OffPhi_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_ID_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OffPhi_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_zone_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OffPhi_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_roll_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OffPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OffPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi; EMTF Sub-Sector ;", 38, 0, 38);
-  h1_SameKey_OneHit_OffPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_cluster_size_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OffPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_phi_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OffPhi_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OffPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_theta_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OffPhi_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_ID_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OffPhi_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_zone_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OffPhi_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_roll_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OffPhi_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OffPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffPhi_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffPhi; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OffPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_cluster_size_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_phi_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OffPhi_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_phi_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OffPhi_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_theta_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OffPhi_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_theta_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OffPhi_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_ID_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OffPhi_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_zone_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OffPhi_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_roll_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OffPhi_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_emtfSector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OffPhi_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_emtfSubsector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffPhi; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OffPhi_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_cluster_size_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OffPhi_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_phi_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OffPhi_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_phi_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OffPhi_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_theta_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OffPhi_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_theta_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OffPhi_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_ID_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OffPhi_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_zone_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OffPhi_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_roll_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OffPhi_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_emtfSector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OffPhi_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffPhi_emtfSubsector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffPhi; EMTF Sub-Sector ;", 38, 0, 38);
 
   h1_Matching_SameKey_OffPhi_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi && Matching; Cluster Size ;", 10, 0., 10.);
   h1_Matching_SameKey_OffPhi_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffPhi_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffPhi && Matching; #phi;", 62, 0.0, 1240.);
@@ -1433,26 +1433,26 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OnTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; EMTF Sector ;", 8, 0, 8);
   h1_SameKey_OnTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_SameKey_OneHit_OnTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OnTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OnTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OnTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OnTheta_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_ID_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OnTheta_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_zone_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OnTheta_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_roll_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OnTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OnTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta; EMTF Sub-Sector ;", 38, 0, 38);
-  h1_SameKey_OneHit_OnTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_cluster_size_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OnTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_phi_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OnTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OnTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_theta_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OnTheta_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_ID_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OnTheta_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_zone_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OnTheta_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_roll_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OnTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OnTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OnTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OnTheta; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OnTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_phi_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OnTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_phi_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OnTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_theta_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OnTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_theta_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OnTheta_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_ID_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OnTheta_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_zone_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OnTheta_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_roll_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OnTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_emtfSector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OnTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_emtfSubsector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OnTheta; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OnTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_cluster_size_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OnTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_phi_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OnTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_phi_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OnTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_theta_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OnTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_theta_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OnTheta_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_ID_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OnTheta_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_zone_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OnTheta_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_roll_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OnTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_emtfSector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OnTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OnTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OnTheta; EMTF Sub-Sector ;", 38, 0, 38);
 
   h1_Matching_SameKey_OnTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta && Matching; Cluster Size ;", 10, 0., 10.);
   h1_Matching_SameKey_OnTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OnTheta_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OnTheta && Matching; #phi;", 62, 0.0, 1240.);
@@ -1496,26 +1496,26 @@ void DQM_CPPF::beginJob()
   h1_SameKey_OffTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; EMTF Sector ;", 8, 0, 8);
   h1_SameKey_OffTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; EMTF Sub-Sector ;", 38, 0, 38);
 
-  h1_SameKey_OneHit_OffTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OffTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OffTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OffTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OffTheta_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_ID_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OffTheta_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_zone_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OffTheta_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_roll_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OffTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OffTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta; EMTF Sub-Sector ;", 38, 0, 38);
-  h1_SameKey_OneHit_OffTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_cluster_size_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Cluster Size ;", 10, 0., 10.);
-  h1_SameKey_OneHit_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; #phi;", 62, 0.0, 1240.);
-  h1_SameKey_OneHit_OffTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_phi_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Global #phi;", 180, 0.0, 180.0);
-  h1_SameKey_OneHit_OffTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; #theta ;", 32, 0, 32.);
-  h1_SameKey_OneHit_OffTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_theta_glob_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Global #theta;", 180., 0, 180.);
-  h1_SameKey_OneHit_OffTheta_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_ID_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Chamber ID;", 38, 0, 38);
-  h1_SameKey_OneHit_OffTheta_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_zone_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Zone ;", 15, 0, 15);
-  h1_SameKey_OneHit_OffTheta_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_roll_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; Roll ;", 4, 0, 4);
-  h1_SameKey_OneHit_OffTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; EMTF Sector ;", 8, 0, 8);
-  h1_SameKey_OneHit_OffTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OffTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && Bx==0 && OffTheta; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OffTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_phi_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OffTheta_phi_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_phi_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OffTheta_theta_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_theta_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OffTheta_theta_glob_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_theta_glob_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OffTheta_ID_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_ID_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OffTheta_zone_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_zone_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OffTheta_roll_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_roll_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OffTheta_emtfSector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_emtfSector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OffTheta_emtfSubsector_Cu_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_emtfSubsector_Cu_bx","Unpacker: Same SubSector && OneHit && Bx==0 && OffTheta; EMTF Sub-Sector ;", 38, 0, 38);
+  h1_SameKey_OneHit_OffTheta_cluster_size_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_cluster_size_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Cluster Size ;", 10, 0., 10.);
+  h1_SameKey_OneHit_OffTheta_phi_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_phi_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; #phi;", 62, 0.0, 1240.);
+  h1_SameKey_OneHit_OffTheta_phi_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_phi_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Global #phi;", 180, 0.0, 180.0);
+  h1_SameKey_OneHit_OffTheta_theta_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_theta_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; #theta ;", 32, 0, 32.);
+  h1_SameKey_OneHit_OffTheta_theta_glob_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_theta_glob_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Global #theta;", 180., 0, 180.);
+  h1_SameKey_OneHit_OffTheta_ID_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_ID_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Chamber ID;", 38, 0, 38);
+  h1_SameKey_OneHit_OffTheta_zone_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_zone_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Zone ;", 15, 0, 15);
+  h1_SameKey_OneHit_OffTheta_roll_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_roll_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; Roll ;", 4, 0, 4);
+  h1_SameKey_OneHit_OffTheta_emtfSector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_emtfSector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; EMTF Sector ;", 8, 0, 8);
+  h1_SameKey_OneHit_OffTheta_emtfSubsector_Ce_bx = fs->make<TH1D>("h1_SameKey_OneHit_OffTheta_emtfSubsector_Ce_bx","Emulator: Same SubSector && OneHit && Bx==0 && OffTheta; EMTF Sub-Sector ;", 38, 0, 38);
 
   h1_Matching_SameKey_OffTheta_cluster_size_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_cluster_size_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta && Matching; Cluster Size ;", 10, 0., 10.);
   h1_Matching_SameKey_OffTheta_phi_Cu_bx = fs->make<TH1D>("h1_Matching_SameKey_OffTheta_phi_Cu_bx","Unpacker: Same SubSector && Bx==0 && OffTheta && Matching; #phi;", 62, 0.0, 1240.);
@@ -1558,25 +1558,25 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OnPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OneHit_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_phi_Ce_phi_Cu_bx","Same SubSector; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
-  h2_SameKey_OneHit_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_theta_Ce_theta_Cu_bx","Same SubSector && bx==0; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
-  h2_SameKey_OneHit_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_ID_Ce_ID_Cu_bx","Same SubSector && bx==0; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_ID_Ce_roll_Ce_bx","Same SubSector && bx==0;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_ID_Cu_roll_Cu_bx","Same SubSector && bx==0;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && bx==0;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && bx==0;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_zone_Ce_zone_Cu_bx","Same SubSector && bx==0;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
+  h2_SameKey_OneHit_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_phi_Ce_phi_Cu_bx","Same SubSector && OneHit && bx==0; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
+  h2_SameKey_OneHit_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_theta_Ce_theta_Cu_bx","Same SubSector && OneHit && bx==0; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
+  h2_SameKey_OneHit_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_ID_Ce_ID_Cu_bx","Same SubSector && OneHit && bx==0; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OneHit_ID_Ce_roll_Ce_bx","Same SubSector && OneHit && bx==0;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_ID_Cu_roll_Cu_bx","Same SubSector && OneHit && bx==0;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && OneHit && bx==0;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && OneHit && bx==0;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OneHit_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && OneHit && bx==0;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_zone_Ce_zone_Cu_bx","Same SubSector && OneHit && bx==0;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OneHit_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_phi_Ce_phi_Cu_bx","Same SubSector && OnPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
-  h2_SameKey_OneHit_OnPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_theta_Ce_theta_Cu_bx","Same SubSector && bx==0 && OnPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
-  h2_SameKey_OneHit_OnPhi_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_ID_Cu_bx","Same SubSector && bx==0 && OnPhi ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OnPhi_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Ce_roll_Ce_bx","Same SubSector && bx==0 && OnPhi ;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OnPhi_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_ID_Cu_roll_Cu_bx","Same SubSector && bx==0 && OnPhi ;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && bx==0 && OnPhi ;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OnPhi_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OnPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OnPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnPhi_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
+  h2_SameKey_OneHit_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_phi_Ce_phi_Cu_bx","Same SubSector && OneHit && OnPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
+  h2_SameKey_OneHit_OnPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_theta_Ce_theta_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
+  h2_SameKey_OneHit_OnPhi_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_ID_Ce_ID_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OnPhi_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_ID_Ce_roll_Ce_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OnPhi_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_ID_Cu_roll_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OnPhi_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OnPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnPhi_zone_Ce_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
   h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_phi_Ce_phi_Cu_bx","Matching && Same SubSector && OnPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OnPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnPhi_theta_Ce_theta_Cu_bx","Matching && Same SubSector && bx==0 && OnPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
@@ -1598,15 +1598,15 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OffPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OffPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OffPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OneHit_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_phi_Ce_phi_Cu_bx","Same SubSector && OffPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
-  h2_SameKey_OneHit_OffPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_theta_Ce_theta_Cu_bx","Same SubSector && bx==0 && OffPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
-  h2_SameKey_OneHit_OffPhi_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_ID_Cu_bx","Same SubSector && bx==0 && OffPhi ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OffPhi_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Ce_roll_Ce_bx","Same SubSector && bx==0 && OffPhi ;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OffPhi_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_ID_Cu_roll_Cu_bx","Same SubSector && bx==0 && OffPhi ;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && bx==0 && OffPhi ;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OffPhi_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && bx==0 && OffPhi ;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OffPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OffPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OffPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffPhi_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OffPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
+  h2_SameKey_OneHit_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_phi_Ce_phi_Cu_bx","Same SubSector && OneHit && OffPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
+  h2_SameKey_OneHit_OffPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_theta_Ce_theta_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
+  h2_SameKey_OneHit_OffPhi_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_ID_Ce_ID_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OffPhi_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_ID_Ce_roll_Ce_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Emulator Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OffPhi_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_ID_Cu_roll_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Unpacker Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Emulator EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OffPhi_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Unpacker EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Emulator EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OffPhi_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffPhi_zone_Ce_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OffPhi ;Emulator Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
   h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_phi_Ce_phi_Cu_bx","Matching && Same SubSector && OffPhi ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OffPhi_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffPhi_theta_Ce_theta_Cu_bx","Matching && Same SubSector && bx==0 && OffPhi ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
@@ -1628,15 +1628,15 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OnTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OneHit_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_phi_Ce_phi_Cu_bx","Same SubSector && OnTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
-  h2_SameKey_OneHit_OnTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_theta_Ce_theta_Cu_bx","Same SubSector && bx==0 && OnTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
-  h2_SameKey_OneHit_OnTheta_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_ID_Cu_bx","Same SubSector && bx==0 && OnTheta ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OnTheta_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Ce_roll_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OnTheta_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_ID_Cu_roll_Cu_bx","Same SubSector && bx==0 && OnPhi ;UnpacTheta Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OnTheta_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;UnpacTheta EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OnTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OnTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OnTheta_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulaTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
+  h2_SameKey_OneHit_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_phi_Ce_phi_Cu_bx","Same SubSector && OneHit && OnTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
+  h2_SameKey_OneHit_OnTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_theta_Ce_theta_Cu_bx","Same SubSector && OneHit && bx==0 && OnTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
+  h2_SameKey_OneHit_OnTheta_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_ID_Ce_ID_Cu_bx","Same SubSector && OneHit && bx==0 && OnTheta ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OnTheta_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_ID_Ce_roll_Ce_bx","Same SubSector && OneHit && bx==0 && OnPhi ;EmulaTheta Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OnTheta_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_ID_Cu_roll_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;UnpacTheta Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;EmulaTheta EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OnTheta_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;UnpacTheta EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && OneHit && bx==0 && OnPhi ;EmulaTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OnTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OnTheta_zone_Ce_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OnPhi ;EmulaTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
   h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_phi_Ce_phi_Cu_bx","Matching && Same SubSector && OnTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OnTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OnTheta_theta_Ce_theta_Cu_bx","Matching && Same SubSector && bx==0 && OnTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
@@ -1658,15 +1658,15 @@ void DQM_CPPF::beginJob()
   h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
   h2_SameKey_OffTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
-  h2_SameKey_OneHit_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_phi_Ce_phi_Cu_bx","Same SubSector && OffTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
-  h2_SameKey_OneHit_OffTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_theta_Ce_theta_Cu_bx","Same SubSector && bx==0 && OffTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
-  h2_SameKey_OneHit_OffTheta_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_ID_Cu_bx","Same SubSector && bx==0 && OffTheta ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OffTheta_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Ce_roll_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OffTheta_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_ID_Cu_roll_Cu_bx","Same SubSector && bx==0 && OnPhi ;UnpaffTheta Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
-  h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
-  h2_SameKey_OneHit_OffTheta_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;UnpaffTheta EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OffTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
-  h2_SameKey_OneHit_OffTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OffTheta_zone_Ce_zone_Cu_bx","Same SubSector && bx==0 && OnPhi ;EmulffTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
+  h2_SameKey_OneHit_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_phi_Ce_phi_Cu_bx","Same SubSector && OneHit && OffTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
+  h2_SameKey_OneHit_OffTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_theta_Ce_theta_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
+  h2_SameKey_OneHit_OffTheta_ID_Ce_ID_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_ID_Ce_ID_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ; Emulator Chamber ID;Unpacker Chamber ID ", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OffTheta_ID_Ce_roll_Ce_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_ID_Ce_roll_Ce_bx","Same SubSector && OneHit && bx==0 && OffTheta ;EmulffTheta Chamber ID ;Emulator Roll ", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OffTheta_ID_Cu_roll_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_ID_Cu_roll_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ;UnpaffTheta Chamber ID ;Unpacker Roll", 38, 0, 38, 4, 0, 4);
+  h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_emtfSubsector_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ;EmulffTheta EMTF SubSector ; Unpacker EMTF SubSector", 38, 0, 38, 38, 0, 38);
+  h2_SameKey_OneHit_OffTheta_emtfSubsector_Cu_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_emtfSubsector_Cu_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ;UnpaffTheta EMTF SubSector ;Unpacker Zone ", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_zone_Ce_bx   = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_emtfSubsector_Ce_zone_Ce_bx","Same SubSector && OneHit && bx==0 && OffTheta ;EmulffTheta EMTF SubSector ;Emulator Zone", 38, 0, 38, 15, 0, 15);
+  h2_SameKey_OneHit_OffTheta_zone_Ce_zone_Cu_bx = fs->make<TH2D>("h2_SameKey_OneHit_OffTheta_zone_Ce_zone_Cu_bx","Same SubSector && OneHit && bx==0 && OffTheta ;EmulffTheta Zone ;Unpacker Zone ", 15, 0, 15, 15, 0, 15);
 
   h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_phi_Ce_phi_Cu_bx","Matching && Same SubSector && OffTheta ; Emulator #phi ; Unpacker #phi", 62, 0.0, 1240., 62, 0.0, 1240.);
   h2_Matching_SameKey_OffTheta_theta_Ce_theta_Cu_bx = fs->make<TH2D>("h2_Matching_SameKey_OffTheta_theta_Ce_theta_Cu_bx","Matching && Same SubSector && bx==0 && OffTheta ; Emulator #theta ; Unpacker #theta ", 32, 0, 32., 32, 0, 32.);
