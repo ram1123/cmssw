@@ -12,6 +12,8 @@
 
 <!-- /MarkdownTOC -->
 
+- Introduction to CMSSW: http://cms-sw.github.io
+
 # Setup
 
 ```bash

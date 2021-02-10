@@ -5,14 +5,25 @@ import subprocess
 process = cms.Process("DQMPlots")
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
-process.MessageLogger.cerr.threshold = 'INFO'
-process.MessageLogger.categories.append('DQMPlots')
-process.MessageLogger.cerr.INFO = cms.untracked.PSet(
-                                                    limit = cms.untracked.int32(0)
-                                                    )
-process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
+#process.MessageLogger.cerr.threshold = 'INFO'
+#process.MessageLogger.categories.append('DQMPlots')
+#process.MessageLogger.cerr.INFO = cms.untracked.PSet(
+#                                                    limit = cms.untracked.int32(0)
+#                                                    )
+#process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(5000)
+process.MessageLogger = cms.Service("MessageLogger",
+                            destinations = cms.untracked.vstring('unordered_map'),
+                            categories = cms.untracked.vstring('DQMPlots'),
+                            unordered_map = cms.untracked.PSet(
+                                threshold = cms.untracked.string('INFO'),
+                                INFO = cms.untracked.PSet(limit = cms.untracked.int32(0)),
+                                )
+                            )
 
-process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(-1))
+process.Timing = cms.Service("Timing",
+			     summaryOnly = cms.untracked.bool(False)
+			     )
+process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(10000))
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
@@ -28,9 +39,10 @@ process.source = cms.Source("PoolSource",
                             fileNames = READFILES,
                             )
 DIRECTORYNAME = 'rootFiles/'
-#READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator.root') )
+# READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator.root') )
+# READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'cppf_unpacker_emulator-2018-200k-BugFix-2018JSON_Third101To200.root') )
+# READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2017-200k.root') )
 READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2018-200k-BugFix-2018JSON.root') )
-#READFILES.extend( cms.untracked.vstring('file:'+DIRECTORYNAME+'test_cppf_unpacker_emulator-2017-200k.root') )
 
 process.load('L1Trigger.L1TMuonCPPF.cppf_dqm_cfi')
 process.TFileService = cms.Service("TFileService",

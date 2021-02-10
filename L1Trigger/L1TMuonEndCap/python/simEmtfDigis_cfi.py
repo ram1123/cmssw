@@ -11,7 +11,7 @@ import FWCore.ParameterSet.Config as cms
 
 simEmtfDigisMC = cms.EDProducer("L1TMuonEndCapTrackProducer",
     # Verbosity level
-    verbosity = cms.untracked.int32(0),
+    verbosity = cms.untracked.int32(1),
 
     # Configure by firmware version, which may be different than the default parameters in this file
     FWConfig = cms.bool(True),
@@ -31,7 +31,7 @@ simEmtfDigisMC = cms.EDProducer("L1TMuonEndCapTrackProducer",
     GEMEnable = cms.bool(False), # Use hits from GEMs in track-building
 
     # Era (options: 'Run2_2016', 'Run2_2017', 'Run2_2018')
-    Era = cms.string('Run2_2017'),
+    Era = cms.string('Run2_2018'),
 
     # BX
     MinBX    = cms.int32(-3), # Minimum BX considered

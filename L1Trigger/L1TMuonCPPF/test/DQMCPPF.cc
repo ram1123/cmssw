@@ -41,30 +41,30 @@ void DQM_CPPF::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   ///
   /// Syntax: EMTF unpacked (Eu) and EMTF emulator (Ee)
   ///////////////////////////////////////////////////////////
-  std::map<int,int> _nHit_Ce;
-  std::map<int,int> _nHit_Cu;
-  std::map<int,std::vector<int>> _phi_Ce;
-  std::map<int,std::vector<int>> _phi_Cu;
-  std::map<int,std::vector<int>> _phi_glob_Ce;
-  std::map<int,std::vector<int>> _phi_glob_Cu;
-  std::map<int,std::vector<int>> _theta_Ce;
-  std::map<int,std::vector<int>> _theta_Cu;
-  std::map<int,std::vector<int>> _theta_glob_Ce;
-  std::map<int,std::vector<int>> _theta_glob_Cu;
-  std::map<int,std::vector<int>> _roll_Ce;
-  std::map<int,std::vector<int>> _roll_Cu;
-  std::map<int,std::vector<int>> _zone_Ce;
-  std::map<int,std::vector<int>> _zone_Cu;
-  std::map<int,std::vector<int>> _ID_Ce;
-  std::map<int,std::vector<int>> _ID_Cu;
-  std::map<int,std::vector<int>> _emtfSubsector_Ce;
-  std::map<int,std::vector<int>> _emtfSubsector_Cu;
-  std::map<int,std::vector<int>> _emtfSector_Ce;
-  std::map<int,std::vector<int>> _emtfSector_Cu;
-  std::map<int,std::vector<int>> _bx_Ce;
-  std::map<int,std::vector<int>> _bx_Cu;
-  std::map<int,std::vector<int>> _cluster_size_Ce;
-  std::map<int,std::vector<int>> _cluster_size_Cu;
+  std::unordered_map<int,int> _nHit_Ce;
+  std::unordered_map<int,int> _nHit_Cu;
+  std::unordered_map<int,std::vector<int>> _phi_Ce;
+  std::unordered_map<int,std::vector<int>> _phi_Cu;
+  std::unordered_map<int,std::vector<int>> _phi_glob_Ce;
+  std::unordered_map<int,std::vector<int>> _phi_glob_Cu;
+  std::unordered_map<int,std::vector<int>> _theta_Ce;
+  std::unordered_map<int,std::vector<int>> _theta_Cu;
+  std::unordered_map<int,std::vector<int>> _theta_glob_Ce;
+  std::unordered_map<int,std::vector<int>> _theta_glob_Cu;
+  std::unordered_map<int,std::vector<int>> _roll_Ce;
+  std::unordered_map<int,std::vector<int>> _roll_Cu;
+  std::unordered_map<int,std::vector<int>> _zone_Ce;
+  std::unordered_map<int,std::vector<int>> _zone_Cu;
+  std::unordered_map<int,std::vector<int>> _ID_Ce;
+  std::unordered_map<int,std::vector<int>> _ID_Cu;
+  std::unordered_map<int,std::vector<int>> _emtfSubsector_Ce;
+  std::unordered_map<int,std::vector<int>> _emtfSubsector_Cu;
+  std::unordered_map<int,std::vector<int>> _emtfSector_Ce;
+  std::unordered_map<int,std::vector<int>> _emtfSector_Cu;
+  std::unordered_map<int,std::vector<int>> _bx_Ce;
+  std::unordered_map<int,std::vector<int>> _bx_Cu;
+  std::unordered_map<int,std::vector<int>> _cluster_size_Ce;
+  std::unordered_map<int,std::vector<int>> _cluster_size_Cu;
 
   /**
    * # Step-1 : Get map for Emulator
